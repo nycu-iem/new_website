@@ -131,39 +131,45 @@ function Newsletter() {
 }
 
 function Resume() {
-    let resume = [
-        {
-            company: 'Planetaria',
-            title: 'CEO',
-            logo: logoPlanetaria,
-            start: '2019',
-            end: {
-                label: 'Present',
-                dateTime: new Date().getFullYear(),
+    let resume: {
+        company: string,
+        title: string,
+        logo: any,
+        start: string | { label: string, dateTime: any },
+        end: string | { label: string, dateTime: any }
+    }[] = [
+            {
+                company: 'Planetaria',
+                title: 'CEO',
+                logo: logoPlanetaria,
+                start: '2019',
+                end: {
+                    label: 'Present',
+                    dateTime: new Date().getFullYear(),
+                },
             },
-        },
-        {
-            company: 'Airbnb',
-            title: 'Product Designer',
-            logo: logoAirbnb,
-            start: '2014',
-            end: '2019',
-        },
-        {
-            company: 'Facebook',
-            title: 'iOS Software Engineer',
-            logo: logoFacebook,
-            start: '2011',
-            end: '2014',
-        },
-        {
-            company: 'Starbucks',
-            title: 'Shift Supervisor',
-            logo: logoStarbucks,
-            start: '2008',
-            end: '2011',
-        },
-    ]
+            {
+                company: 'Airbnb',
+                title: 'Product Designer',
+                logo: logoAirbnb,
+                start: '2014',
+                end: '2019',
+            },
+            {
+                company: 'Facebook',
+                title: 'iOS Software Engineer',
+                logo: logoFacebook,
+                start: '2011',
+                end: '2014',
+            },
+            {
+                company: 'Starbucks',
+                title: 'Shift Supervisor',
+                logo: logoStarbucks,
+                start: '2008',
+                end: '2011',
+            },
+        ]
 
     return (
         <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
@@ -189,14 +195,18 @@ function Resume() {
                             <dt className="sr-only">Date</dt>
                             <dd
                                 className="ml-auto text-xs text-zinc-400 dark:text-zinc-500"
-                                aria-label={`${role.start.label ?? role.start} until ${role.end.label ?? role.end
-                                    }`}
+                                // @ts-ignore
+                                aria-label={`${role.start.label ?? role.start} until ${role.end.label ?? role.end}`}
                             >
+                                {/* @ts-ignore */}
                                 <time dateTime={role.start.dateTime ?? role.start}>
+                                    {/* @ts-ignore */}
                                     {role.start.label ?? role.start}
                                 </time>{' '}
                                 <span aria-hidden="true">—</span>{' '}
+                                {/* @ts-ignore */}
                                 <time dateTime={role.end.dateTime ?? role.end}>
+                                    {/* @ts-ignore */}
                                     {role.end.label ?? role.end}
                                 </time>
                             </dd>
@@ -239,7 +249,10 @@ function Photos() {
     )
 }
 
-export default function Home({ articles }) {
+
+export default async function Home() {
+    const articles = await getArticles();
+    // console.log(props)
     return (
         <>
             <Head>
@@ -290,9 +303,9 @@ export default function Home({ articles }) {
             <Container className="mt-24 md:mt-28">
                 <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
                     <div className="flex flex-col gap-16">
-                        <Article key='abc' article={{
-
-                        }} />
+                        {articles && articles.map((article) => (
+                            <Article key={article.slug} article={article} />
+                        ))}
                     </div>
                     <div className="space-y-10 lg:pl-16 xl:pl-24">
                         <Newsletter />
@@ -302,4 +315,64 @@ export default function Home({ articles }) {
             </Container>
         </>
     )
+}
+
+// export async function generateStaticParams() {
+//     // const posts: any[] = await fetch('https://.../posts').then((res) => res.json())
+
+//     const posts: {
+//         slug: string,
+//         title: string,
+//         date: string,
+//         description: string,
+//     }[] = [
+//         {
+//             slug: "abc",
+//             title: "Hello",
+//             date: "sometime",
+//             description: "Description of hello"
+//         }, {
+//             slug: "cba",
+//             title: "Hola",
+//             date: "sometime",
+//             description: "Description of hola"
+//         }, {
+//             slug: "acb",
+//             title: "こんにちは",
+//             date: "sometime",
+//             description: "Description of こんにちは"
+//         }
+//     ].slice(0, 4);
+
+//     return ;
+// }
+
+
+const getArticles = async () => {
+
+    const posts: {
+        slug: string,
+        title: string,
+        date: string,
+        description: string,
+    }[] = [
+        {
+            slug: "abc",
+            title: "Hello",
+            date: "sometime",
+            description: "Description of hello"
+        }, {
+            slug: "cba",
+            title: "Hola",
+            date: "sometime",
+            description: "Description of hola"
+        }, {
+            slug: "acb",
+            title: "こんにちは",
+            date: "sometime",
+            description: "Description of こんにちは"
+        }
+    ].slice(0, 4);
+
+    return posts;
 }
