@@ -19,7 +19,7 @@ const menuOptions: { title: string, href: string }[] = [
         title: "Activities",
         href: "/activities"
     }, {
-        title: "house",
+        title: "House",
         href: "/booking"
     }, {
         title: "Exams",
@@ -240,7 +240,7 @@ function Avatar({ large = false, className, ...props }: { large?: boolean, class
             className={clsx(className, 'pointer-events-auto')}
             {...props}
         >
-            <Image src="/images/avatar.jpg"
+            <Image src="/images/logos/iem.png"
                 alt=""
                 fill={true}
                 sizes={large ? '4rem' : '2.25rem'}
@@ -361,8 +361,7 @@ export function Header() {
 
     return (
         <>
-            <header
-                className="pointer-events-none relative z-50 flex flex-col"
+            <header className="pointer-events-none relative z-50 flex flex-col"
                 style={{
                     height: 'var(--header-height)',
                     marginBottom: 'var(--header-mb)',
@@ -370,8 +369,7 @@ export function Header() {
             >
                 {isHomePage && (
                     <>
-                        <div
-                            ref={avatarRef}
+                        <div ref={avatarRef}
                             className="order-last mt-[calc(theme(spacing.16)-theme(spacing.3))]"
                         />
                         <Container className="top-0 order-last -mb-3 pt-3"

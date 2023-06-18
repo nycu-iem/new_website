@@ -14,15 +14,6 @@ import {
     TwitterIcon,
 } from '../../components/SocialIcons'
 
-import logoAirbnb from '../public/images/logos/airbnb.svg'
-import logoFacebook from '../public/images/logos/facebook.svg'
-import logoPlanetaria from '../public/images/logos/planetaria.svg'
-import logoStarbucks from '../public/images/logos/starbucks.svg'
-import image1 from '../public/images/photos/image-1.jpg'
-import image2 from '../public/images/photos/image-2.jpg'
-import image3 from '../public/images/photos/image-3.jpg'
-import image4 from '../public/images/photos/image-4.jpg'
-import image5 from '../public/images/photos/image-5.jpg'
 import { formatDate } from '../../lib/formatDate'
 
 function MailIcon(props: any) {
@@ -68,8 +59,7 @@ function BriefcaseIcon(props: any) {
 function ArrowDownIcon(props: any) {
     return (
         <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
-            <path
-                d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
+            <path d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
                 strokeWidth="1.5"
                 strokeLinecap="round"
                 strokeLinejoin="round"
@@ -103,8 +93,7 @@ function SocialLink({ icon: Icon, ...props }: { icon: any, href: string }) {
 
 function Newsletter() {
     return (
-        <form
-            action="/thank-you"
+        <form action="/thank-you"
             className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
         >
             <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
@@ -134,14 +123,14 @@ function Resume() {
     let resume: {
         company: string,
         title: string,
-        logo: any,
+        href: string,
         start: string | { label: string, dateTime: any },
         end: string | { label: string, dateTime: any }
     }[] = [
             {
                 company: 'Planetaria',
                 title: 'CEO',
-                logo: logoPlanetaria,
+                href: "/images/logos/planetaria.svg",
                 start: '2019',
                 end: {
                     label: 'Present',
@@ -151,21 +140,21 @@ function Resume() {
             {
                 company: 'Airbnb',
                 title: 'Product Designer',
-                logo: logoAirbnb,
+                href: "/images/logos/airbnb.svg",
                 start: '2014',
                 end: '2019',
             },
             {
                 company: 'Facebook',
                 title: 'iOS Software Engineer',
-                logo: logoFacebook,
+                href: "/images/logos/facebook.svg",
                 start: '2011',
                 end: '2014',
             },
             {
                 company: 'Starbucks',
                 title: 'Shift Supervisor',
-                logo: logoStarbucks,
+                href: "/images/logos/starbucks.svg",
                 start: '2008',
                 end: '2011',
             },
@@ -181,7 +170,7 @@ function Resume() {
                 {resume.map((role, roleIndex) => (
                     <li key={roleIndex} className="flex gap-4">
                         <div className="relative mt-1 flex h-10 w-10 flex-none items-center justify-center rounded-full shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
-                            <Image src={role.logo} alt="" className="h-7 w-7" unoptimized />
+                            <Image src={role.href} alt="" fill={true} className="h-7 w-7" unoptimized />
                         </div>
                         <dl className="flex flex-auto flex-wrap gap-x-2">
                             <dt className="sr-only">Company</dt>
@@ -228,17 +217,16 @@ function Photos() {
     return (
         <div className="mt-16 sm:mt-20">
             <div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
-                {[image1, image2, image3, image4, image5].map((image, imageIndex) => (
-                    <div
-                        key={image.src}
+                {["/images/photos/image-1.jpg", "/images/photos/image-2.jpg", "/images/photos/image-3.jpg", "/images/photos/image-4.jpg", "/images/photos/image-5.jpg"].map((uri, imageIndex) => (
+                    <div key={uri}
                         className={clsx(
                             'relative aspect-[9/10] w-44 flex-none overflow-hidden rounded-xl bg-zinc-100 dark:bg-zinc-800 sm:w-72 sm:rounded-2xl',
                             rotations[imageIndex % rotations.length]
                         )}
                     >
-                        <Image
-                            src={image}
+                        <Image src={uri}
                             alt=""
+                            fill={true}
                             sizes="(min-width: 640px) 18rem, 11rem"
                             className="absolute inset-0 h-full w-full object-cover"
                         />
