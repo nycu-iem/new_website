@@ -1,11 +1,12 @@
 import '../globals.css'
+import 'react-toastify/dist/ReactToastify.css';
+
 import { Inter } from 'next/font/google'
 
 import { Footer } from "../../components/Footer"
 import { Header } from "../../components/Header"
+import { ToastContainer } from 'react-toastify';
 import clsx from 'clsx'
-// import { useEffect, useRef } from 'react'
-// import { useRouter } from 'next/router'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -45,6 +46,7 @@ export default function RootLayout({
                     </div>
                 </div>
                 <div className="relative">
+                    <ToastContainer />
                     <Header />
                     <main>
                         {children}

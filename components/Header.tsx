@@ -7,23 +7,33 @@ import clsx from 'clsx'
 
 import { Container } from './Container'
 import { usePathname } from "next/navigation"
+// import { toast } from 'react-toastify';
+import Swal from "sweetalert2"
+import { error } from 'console'
 
-const menuOptions: { title: string, href: string }[] = [
+const menuOptions: { title: string, href: string, blocked: boolean, reason?: string }[] = [
     {
         title: "About",
-        href: "/about"
+        href: "/about",
+        blocked: false
     }, {
         title: "Articles",
-        href: "/articles"
+        href: "/articles",
+        blocked: false
     }, {
         title: "Activities",
-        href: "/activities"
+        href: "/activities",
+        blocked: false
     }, {
         title: "House",
-        href: "/booking"
+        href: "/booking",
+        blocked: true,
+        reason: "Not Yet Implemented"
     }, {
         title: "Exams",
-        href: "/exams"
+        href: "/exams",
+        blocked: true,
+        reason: "Not Yet Implemented"
     }
 ]
 
@@ -147,23 +157,39 @@ function MobileNavigation(props: any) {
     )
 }
 
-function NavItem({ href, children }: { href: string, children: React.ReactNode }) {
+function NavItem({ href, children, ...props }: { href: string, children: React.ReactNode, reason?: string, blocked: boolean }) {
     const isActive = usePathname() === href
 
     return (
         <li>
-            <Link href={href} passHref>
-                <div className={clsx(
-                    'relative block px-3 py-2 transition',
-                    isActive ? 'text-teal-500 dark:text-teal-400' : 'hover:text-teal-500 dark:hover:text-teal-400'
-                )}>
-                    {children}
+            {!props.blocked ?
+                <Link href={href} passHref>
+                    <div className={clsx(
+                        'relative block px-3 py-2 transition',
+                        isActive ? 'text-teal-500 dark:text-teal-400' : 'hover:text-teal-500 dark:hover:text-teal-400'
+                    )}>
+                        {children}
 
-                    {isActive && (
-                        <span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0" />
-                    )}
+                        {isActive && (
+                            <span className="absolute inset-x-1 -bottom-px h-px bg-gradient-to-r from-teal-500/0 via-teal-500/40 to-teal-500/0 dark:from-teal-400/0 dark:via-teal-400/40 dark:to-teal-400/0" />
+                        )}
+                    </div>
+                </Link>
+                :
+                <div className='relative block px-3 py-2 transition hover:text-teal-500 dark:hover:text-teal-400 cursor-pointer' onClick={() => {
+                    // toast(props.reason, {
+                    //     autoClose: 5000,
+                    // });
+                    Swal.fire({
+                        icon: "error",
+                        text: props.reason
+                    })
+                    console.log("pressed", props.reason)
+                }}>
+                    {children}
                 </div>
-            </Link>
+            }
+
         </li>
     )
 }
@@ -173,7 +199,7 @@ function DesktopNavigation(props: any) {
         <nav {...props}>
             <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
                 {menuOptions.map((option) => (
-                    <NavItem href={option.href} key={option.title}>{option.title}</NavItem>
+                    <NavItem key={option.title} {...option}>{option.title}</NavItem>
                 ))}
             </ul>
         </nav>
@@ -260,6 +286,8 @@ export function Header() {
     let headerRef = useRef<HTMLDivElement>(null);
     let avatarRef = useRef<HTMLDivElement>(null);
     let isInitial = useRef<boolean>(true);
+
+
 
     useEffect(() => {
         let downDelay = avatarRef.current?.offsetTop ?? 0
