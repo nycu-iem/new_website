@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
 
-import { Card, CardLink, CardDescription } from '../../components/Card'
-import { SimpleLayout } from '../../components/SimpleLayout'
-import logoAnimaginary from '../../public/images/logos/animaginary.svg'
-import logoCosmos from '../../public/images/logos/cosmos.svg'
-import logoHelioStream from '../../public/images/logos/helio-stream.svg'
-import logoOpenShuttle from '../../public/images/logos/open-shuttle.svg'
-import logoPlanetaria from '../../public/images/logos/planetaria.svg'
+import { Card, CardLink, CardDescription } from '../../../components/Card'
+import { SimpleLayout } from '../../../components/SimpleLayout'
+import logoAnimaginary from '../../../public/images/logos/animaginary.svg'
+import logoCosmos from '../../../public/images/logos/cosmos.svg'
+import logoHelioStream from '../../../public/images/logos/helio-stream.svg'
+import logoOpenShuttle from '../../../public/images/logos/open-shuttle.svg'
+import logoPlanetaria from '../../../public/images/logos/planetaria.svg'
 
 const page = [
     {

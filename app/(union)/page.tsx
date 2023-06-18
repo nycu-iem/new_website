@@ -4,15 +4,15 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 
-import { Button } from '../components/Button'
-import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from '../components/Card'
-import { Container } from '../components/Container'
+import { Button } from '../../components/Button'
+import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from '../../components/Card'
+import { Container } from '../../components/Container'
 import {
     GitHubIcon,
     InstagramIcon,
     LinkedInIcon,
     TwitterIcon,
-} from '../components/SocialIcons'
+} from '../../components/SocialIcons'
 
 import logoAirbnb from '../public/images/logos/airbnb.svg'
 import logoFacebook from '../public/images/logos/facebook.svg'
@@ -23,7 +23,7 @@ import image2 from '../public/images/photos/image-2.jpg'
 import image3 from '../public/images/photos/image-3.jpg'
 import image4 from '../public/images/photos/image-4.jpg'
 import image5 from '../public/images/photos/image-5.jpg'
-import { formatDate } from '../lib/formatDate'
+import { formatDate } from '../../lib/formatDate'
 
 function MailIcon(props: any) {
     return (

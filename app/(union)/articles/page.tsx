@@ -1,8 +1,8 @@
 import Head from 'next/head'
 
-import { Card, CardCta, CardDescription, CardEyebrow, CardTitle } from '../../components/Card'
-import { SimpleLayout } from '../../components/SimpleLayout'
-import { formatDate } from '../../lib/formatDate'
+import { Card, CardCta, CardDescription, CardEyebrow, CardTitle } from '../../../components/Card'
+import { SimpleLayout } from '../../../components/SimpleLayout'
+import { formatDate } from '../../../lib/formatDate'
 
 function Article({ article }: { article: { slug: string, title: string, date: string, description: string } }) {
 

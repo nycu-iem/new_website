@@ -1,8 +1,8 @@
 import Head from 'next/head'
 
-import { Card, CardTitle, CardDescription } from '../../components/Card'
-import { Section } from '../../components/Section'
-import { SimpleLayout } from '../../components/SimpleLayout'
+import { Card, CardTitle, CardDescription } from '../../../components/Card'
+import { Section } from '../../../components/Section'
+import { SimpleLayout } from '../../../components/SimpleLayout'
 import React from 'react'
 
 function ToolsSection({ children, ...props }: { children: React.ReactNode, title: string }) {

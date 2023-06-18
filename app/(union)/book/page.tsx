@@ -1,8 +1,8 @@
 import Head from 'next/head'
 
-import { Card, CardTitle, CardEyebrow, CardDescription, CardCta } from '../../components/Card'
-import { Section } from '../../components/Section'
-import { SimpleLayout } from '../../components/SimpleLayout'
+import { Card, CardTitle, CardEyebrow, CardDescription, CardCta } from '../../../components/Card'
+import { Section } from '../../../components/Section'
+import { SimpleLayout } from '../../../components/SimpleLayout'
 import React from 'react'
 
 function SpeakingSection({ children, ...props }: { children: React.ReactNode, title: string }) {

@@ -2,13 +2,30 @@
 import { Fragment, useEffect, useRef } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { useRouter } from 'next/router'
 import { Popover, Transition } from '@headlessui/react'
 import clsx from 'clsx'
 
 import { Container } from './Container'
-// import avatarImage from '../../images/avatar.jpg'
 import { usePathname } from "next/navigation"
+
+const menuOptions: { title: string, href: string }[] = [
+    {
+        title: "About",
+        href: "/about"
+    }, {
+        title: "Articles",
+        href: "/articles"
+    }, {
+        title: "Activities",
+        href: "/activities"
+    }, {
+        title: "house",
+        href: "/booking"
+    }, {
+        title: "Exams",
+        href: "/exams"
+    }
+]
 
 function CloseIcon(props: any) {
     return (
@@ -118,11 +135,9 @@ function MobileNavigation(props: any) {
                         </div>
                         <nav className="mt-6">
                             <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
-                                <MobileNavItem href="/about">About</MobileNavItem>
-                                <MobileNavItem href="/articles">Articles</MobileNavItem>
-                                <MobileNavItem href="/projects">Projects</MobileNavItem>
-                                <MobileNavItem href="/speaking">Speaking</MobileNavItem>
-                                <MobileNavItem href="/uses">Uses</MobileNavItem>
+                                {menuOptions.map((option) => (
+                                    <MobileNavItem href={option.href} key={option.title}>{option.title}</MobileNavItem>
+                                ))}
                             </ul>
                         </nav>
                     </Popover.Panel>
@@ -157,11 +172,9 @@ function DesktopNavigation(props: any) {
     return (
         <nav {...props}>
             <ul className="flex rounded-full bg-white/90 px-3 text-sm font-medium text-zinc-800 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:text-zinc-200 dark:ring-white/10">
-                <NavItem href="/about">About</NavItem>
-                <NavItem href="/articles">Articles</NavItem>
-                <NavItem href="/projects">Projects</NavItem>
-                <NavItem href="/speaking">Speaking</NavItem>
-                <NavItem href="/uses">Uses</NavItem>
+                {menuOptions.map((option) => (
+                    <NavItem href={option.href} key={option.title}>{option.title}</NavItem>
+                ))}
             </ul>
         </nav>
     )
