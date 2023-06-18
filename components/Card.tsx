@@ -16,7 +16,7 @@ function ChevronRightIcon(props: any) {
     )
 }
 
-export function Card({ as = 'div', className, children }: { as: React.ElementType, className?: string, children: React.ReactNode }) {
+export function Card({ as = 'div', className, children }: { as?: React.ElementType, className?: string, children: React.ReactNode }) {
     const As = as;
     return (
         <As className={clsx(className, 'group relative flex flex-col items-start')}>
@@ -37,7 +37,8 @@ export const CardLink = ({ children, ...props }: { children: React.ReactNode, hr
     )
 }
 
-export const CardTitle = ({ Component = 'h2', href, children }: { Component?: React.ElementType, href: string, children: React.ReactNode }) => {
+export const CardTitle = ({ as = 'h2', href, children }: { as?: React.ElementType, href?: string, children: React.ReactNode }) => {
+    const Component = as;
     return (
         <Component className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
             {href ? <CardLink href={href}>{children}</CardLink> : children}
@@ -71,7 +72,7 @@ export const CardEyebrow = ({
     className,
     children,
     ...props
-}: { as?: React.ElementType, decorate: boolean, className?: string, children: React.ReactNode, dateTime?: any }) => {
+}: { as?: React.ElementType, decorate?: boolean, className?: string, children: React.ReactNode, dateTime?: any }) => {
     const Component = as;
     return (
         <Component className={clsx(

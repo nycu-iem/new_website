@@ -1,13 +1,13 @@
 import Head from 'next/head'
 import Image from 'next/image'
 
-import { Card } from '../../components/Card'
+import { Card, CardLink, CardDescription } from '../../components/Card'
 import { SimpleLayout } from '../../components/SimpleLayout'
-import logoAnimaginary from '../../images/logos/animaginary.svg'
-import logoCosmos from '../../images/logos/cosmos.svg'
-import logoHelioStream from '../../images/logos/helio-stream.svg'
-import logoOpenShuttle from '../../images/logos/open-shuttle.svg'
-import logoPlanetaria from '../../images/logos/planetaria.svg'
+import logoAnimaginary from '../../public/images/logos/animaginary.svg'
+import logoCosmos from '../../public/images/logos/cosmos.svg'
+import logoHelioStream from '../../public/images/logos/helio-stream.svg'
+import logoOpenShuttle from '../../public/images/logos/open-shuttle.svg'
+import logoPlanetaria from '../../public/images/logos/planetaria.svg'
 
 const page = [
     {
@@ -87,9 +87,9 @@ export default function Projects() {
                                 />
                             </div>
                             <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
-                                <Card.Link href={project.link.href}>{project.name}</Card.Link>
+                                <CardLink href={project.link.href}>{project.name}</CardLink>
                             </h2>
-                            <Card.Description>{project.description}</Card.Description>
+                            <CardDescription>{project.description}</CardDescription>
                             <p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
                                 <LinkIcon className="h-6 w-6 flex-none" />
                                 <span className="ml-2">{project.link.label}</span>

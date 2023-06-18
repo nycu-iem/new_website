@@ -7,10 +7,10 @@ interface Props {
     children: React.ReactNode
 }
 
-export const OuterContainer = forwardRef<HTMLDivElement, Props>((
+export const OuterContainer = forwardRef<HTMLDivElement, Props>(function OuterContainer(
     { className, children, ...props },
     ref
-) => {
+) {
     return (
         <div ref={ref} className={clsx('sm:px-8', className)} {...props}>
             <div className="mx-auto max-w-7xl lg:px-8">{children}</div>
