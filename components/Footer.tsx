@@ -1,13 +1,41 @@
 import Link from 'next/link'
 
-import { Container, OuterContainer, InnerContainer } from './Container'
+import { OuterContainer, InnerContainer } from './Container'
+
+const menuOptions: { title: string, href: string, blocked: boolean, reason?: string }[] = [
+    {
+        title: "關於系學會",
+        href: "/about",
+        blocked: false
+    }, {
+        title: "文章",
+        href: "/articles",
+        blocked: false
+    }, {
+        title: "相關活動",
+        href: "/activities",
+        blocked: false
+    }, {
+        title: "公開文件",
+        href: "/docs",
+        blocked: false
+    }, {
+        title: "系窩租借",
+        href: "/booking",
+        blocked: true,
+        reason: "Not Yet Implemented"
+    }, {
+        title: "歷屆考古題",
+        href: "/exams",
+        blocked: true,
+        reason: "Not Yet Implemented"
+    }
+]
 
 function NavLink({ href, children }: { href: string, children: React.ReactNode }) {
     return (
-        <Link
-            href={href}
-            className="transition hover:text-teal-500 dark:hover:text-teal-400"
-        >
+        <Link href={href}
+            className="transition hover:text-teal-500 dark:hover:text-teal-400">
             {children}
         </Link>
     )
@@ -21,14 +49,12 @@ export function Footer() {
                     <InnerContainer>
                         <div className="flex flex-col items-center justify-between gap-6 sm:flex-row">
                             <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 text-sm font-medium text-zinc-800 dark:text-zinc-200">
-                                <NavLink href="/about">About</NavLink>
-                                <NavLink href="/projects">Projects</NavLink>
-                                <NavLink href="/speaking">Speaking</NavLink>
-                                <NavLink href="/uses">Uses</NavLink>
+                                {menuOptions.map(option => (
+                                    <NavLink href={option.href} key={option.href}>{option.title}</NavLink>
+                                ))}
                             </div>
                             <p className="text-sm text-zinc-400 dark:text-zinc-500">
-                                &copy; {new Date().getFullYear()} Spencer Sharp. All rights
-                                reserved.
+                                &copy; {new Date().getFullYear()} NYCU IEM SA. All rights reserved.
                             </p>
                         </div>
                     </InnerContainer>

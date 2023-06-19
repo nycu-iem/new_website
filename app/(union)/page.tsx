@@ -11,6 +11,7 @@ import {
     InstagramIcon,
     LinkedInIcon,
     TwitterIcon,
+    FacebookIcon
 } from '../../components/SocialIcons'
 
 import { formatDate } from '../../lib/formatDate'
@@ -92,29 +93,28 @@ function SocialLink({ icon: Icon, ...props }: { icon: any, href: string }) {
 
 function Newsletter() {
     return (
-        <form action="/thank-you"
-            className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40"
-        >
+        <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
             <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                 <MailIcon className="h-6 w-6 flex-none" />
-                <span className="ml-3">Stay up to date</span>
+                <span className="ml-3">聯絡我們</span>
             </h2>
             <p className="mt-2 text-sm text-zinc-600 dark:text-zinc-400">
-                Get notified when I publish something new, and unsubscribe at any time.
+                你們的鼓勵以及指教，一直是我們系學會持續下去的動力，敬請填寫回饋表單。
             </p>
-            <div className="mt-6 flex">
-                <input
+            <div className="mt-6 flex justify-end">
+                {/* <input
                     type="email"
                     placeholder="Email address"
                     aria-label="Email address"
                     required
                     className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 dark:border-zinc-700 dark:bg-zinc-700/[0.15] dark:text-zinc-200 dark:placeholder:text-zinc-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/10 sm:text-sm"
-                />
-                <Button type="submit" className="ml-4 flex-none">
-                    Join
+                /> */}
+                {/* TODO: awaiting report form */}
+                <Button className="ml-4 flex-none" href="/someplace">
+                    填寫表單
                 </Button>
             </div>
-        </form>
+        </div>
     )
 }
 
@@ -245,7 +245,8 @@ export default async function Home() {
             <Container className="mt-9">
                 <div className="max-w-2xl">
                     <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-                        Software designer, founder, and amateur astronaut.
+                        國立陽明交通大學<br/>
+                        工業工程與管理學系 系學會
                     </h1>
                     <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
                         I’m Spencer, a software designer and entrepreneur based in New York
@@ -260,20 +261,25 @@ export default async function Home() {
                             icon={TwitterIcon}
                         />
                         <SocialLink
+                            href="https://www.facebook.com/IEMhome"
+                            aria-label="Follow on Facebook"
+                            icon={FacebookIcon}
+                        />
+                        {/* <SocialLink
                             href="https://instagram.com"
                             aria-label="Follow on Instagram"
                             icon={InstagramIcon}
-                        />
-                        <SocialLink
+                        /> */}
+                        {/* <SocialLink
                             href="https://github.com"
                             aria-label="Follow on GitHub"
                             icon={GitHubIcon}
-                        />
-                        <SocialLink
+                        /> */}
+                        {/* <SocialLink
                             href="https://linkedin.com"
                             aria-label="Follow on LinkedIn"
                             icon={LinkedInIcon}
-                        />
+                        /> */}
                     </div>
                 </div>
             </Container>

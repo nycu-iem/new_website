@@ -25,6 +25,8 @@
 1. 展現出我們很會運動？
 
 ### 其他系學會官網
+[輔仁公衛](https://www.medph.fju.edu.tw/student-club-record)
+[高科大資應](http://203.64.169.100/misacad/php/index.php)
 [成大工資管](https://im.ncku.edu.tw/p/412-1138-19455.php?Lang=zh-tw)
 [台科大材料](https://mse.ntust.edu.tw/p/412-1019-266.php?Lang=zh-tw)
 [台大資工](https://www.csie.ntu.edu.tw/~b88x003/council.html)

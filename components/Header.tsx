@@ -9,28 +9,31 @@ import { Container } from './Container'
 import { usePathname } from "next/navigation"
 // import { toast } from 'react-toastify';
 import Swal from "sweetalert2"
-import { error } from 'console'
 
 const menuOptions: { title: string, href: string, blocked: boolean, reason?: string }[] = [
     {
-        title: "About",
+        title: "關於系學會",
         href: "/about",
         blocked: false
     }, {
-        title: "Articles",
+        title: "文章",
         href: "/articles",
         blocked: false
     }, {
-        title: "Activities",
+        title: "相關活動",
         href: "/activities",
         blocked: false
     }, {
-        title: "House",
+        title: "公開文件",
+        href: "/docs",
+        blocked: false
+    }, {
+        title: "系窩租借",
         href: "/booking",
         blocked: true,
         reason: "Not Yet Implemented"
     }, {
-        title: "Exams",
+        title: "歷屆考古題",
         href: "/exams",
         blocked: true,
         reason: "Not Yet Implemented"
@@ -265,14 +268,15 @@ function Avatar({ large = false, className, ...props }: { large?: boolean, class
             aria-label="Home"
             className={clsx(className, 'pointer-events-auto')}
             {...props}
+            passHref
         >
             <Image src="/images/logos/iem.png"
-                alt=""
+                alt="Logo of NYCU IEM"
                 fill={true}
                 sizes={large ? '4rem' : '2.25rem'}
                 className={clsx(
-                    'rounded-full bg-zinc-100 object-cover dark:bg-zinc-800',
-                    large ? 'h-16 w-16' : 'h-9 w-9'
+                    'rounded-full bg-zinc-100 object-cover',
+                    large ? 'h-16 h-16' : 'h-9 w-9'
                 )}
                 priority
             />
@@ -286,8 +290,6 @@ export function Header() {
     let headerRef = useRef<HTMLDivElement>(null);
     let avatarRef = useRef<HTMLDivElement>(null);
     let isInitial = useRef<boolean>(true);
-
-
 
     useEffect(() => {
         let downDelay = avatarRef.current?.offsetTop ?? 0
@@ -441,7 +443,7 @@ export function Header() {
                                     </AvatarContainer>
                                 )}
                             </div>
-                            <div className="flex flex-1 justify-end md:justify-center">
+                            <div className="flex flex-auto justify-end md:justify-center">
                                 <MobileNavigation className="pointer-events-auto md:hidden" />
                                 <DesktopNavigation className="pointer-events-auto hidden md:block" />
                             </div>

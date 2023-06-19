@@ -5,7 +5,7 @@ import { Inter } from 'next/font/google'
 
 import { Footer } from "../../components/Footer"
 import { Header } from "../../components/Header"
-import { ToastContainer } from 'react-toastify';
+// import { ToastContainer } from 'react-toastify';
 import clsx from 'clsx'
 
 const inter = Inter({ subsets: ['latin'] })
@@ -46,7 +46,7 @@ export default function RootLayout({
                     </div>
                 </div>
                 <div className="relative">
-                    <ToastContainer />
+                    {/* <ToastContainer /> */}
                     <Header />
                     <main>
                         {children}
