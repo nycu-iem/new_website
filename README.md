@@ -1,34 +1,32 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 陽明交通大學 工業工程與管理學系 系學會官網
 
-## Getting Started
+## 網頁組成
 
-First, run the development server:
+### 主頁面
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
+1. 主要簡介交大系學會所有辦理的活動以及日程
+2. 用 carousel 展示一下活動經過？
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 關於我們
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+1. 簡介系學會成立目的
+2. 展示幹部資訊
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+### 考古題系統
 
-## Learn More
+1. 跟資工系車拚
 
-To learn more about Next.js, take a look at the following resources:
+### 活動
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. 列出所有辦理活動、日程、報名方式
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+### 系隊
 
-## Deploy on Vercel
+1. 展現出我們很會運動？
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+### 其他系學會官網
+[輔仁公衛](https://www.medph.fju.edu.tw/student-club-record)
+[高科大資應](http://203.64.169.100/misacad/php/index.php)
+[成大工資管](https://im.ncku.edu.tw/p/412-1138-19455.php?Lang=zh-tw)
+[台科大材料](https://mse.ntust.edu.tw/p/412-1019-266.php?Lang=zh-tw)
+[台大資工](https://www.csie.ntu.edu.tw/~b88x003/council.html)
