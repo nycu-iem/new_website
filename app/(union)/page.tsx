@@ -54,18 +54,6 @@ function BriefcaseIcon(props: any) {
     )
 }
 
-function ArrowDownIcon(props: any) {
-    return (
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
-            <path d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-            />
-        </svg>
-    )
-}
-
 function Article({ article }: { article: { title: string, slug: string, date: string, description: string } }) {
     return (
         <Card as="article">
@@ -237,7 +225,7 @@ export default async function Home() {
                     </p>
                     <div className="mt-6 flex gap-6">
                         <SocialLink
-                            href="https://twitter.com"
+                            href="https://twitter.com/nycu_iemsa"
                             aria-label="Follow on Twitter"
                             icon={TwitterIcon}
                         />
@@ -247,7 +235,7 @@ export default async function Home() {
                             icon={FacebookIcon}
                         />
                         <SocialLink
-                            href="https://instagram.com"
+                            href="https://www.instagram.com/nycu.iem.sa"
                             aria-label="Follow on Instagram"
                             icon={InstagramIcon}
                         />

@@ -73,13 +73,13 @@ export default function About() {
                     </div>
                     <div className="lg:pl-20">
                         <ul role="list">
-                            <SocialLink href="#" icon={TwitterIcon}>
+                            <SocialLink href="https://twitter.com/nycu_iemsa" icon={TwitterIcon}>
                                 Follow on Twitter
                             </SocialLink>
-                            <SocialLink href="#" icon={InstagramIcon} className="mt-4">
+                            <SocialLink href="https://www.instagram.com/nycu.iem.sa" icon={InstagramIcon} className="mt-4">
                                 Follow on Instagram
                             </SocialLink>
-                            <SocialLink href="#" icon={FacebookIcon} className="mt-4">
+                            <SocialLink href="https://www.facebook.com/IEMhome" icon={FacebookIcon} className="mt-4">
                                 Follow on Facebook
                             </SocialLink>
                             <SocialLink
