@@ -1,0 +1,96 @@
+import Link from 'next/link'
+import clsx from 'clsx'
+import React from 'react';
+import next from 'next/types';
+
+function ChevronRightIcon(props: any) {
+    return (
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
+            <path
+                d="M6.75 5.75 9.25 8l-2.5 2.25"
+                strokeWidth="1.5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+        </svg>
+    )
+}
+
+export function Card({ as = 'div', className, children }: { as?: React.ElementType, className?: string, children: React.ReactNode }) {
+    const As = as;
+    return (
+        <As className={clsx(className, 'group relative flex flex-col items-start')}>
+            {children}
+        </As>
+    )
+}
+
+export const CardLink = ({ children, ...props }: { children: React.ReactNode, href: string }) => {
+    return (
+        <>
+            <div className="absolute -inset-x-4 -inset-y-6 z-0 scale-95 bg-zinc-50 opacity-0 transition group-hover:scale-100 group-hover:opacity-100 dark:bg-zinc-800/50 sm:-inset-x-6 sm:rounded-2xl" />
+            <Link {...props}>
+                <span className="absolute -inset-x-4 -inset-y-6 z-20 sm:-inset-x-6 sm:rounded-2xl" />
+                <span className="relative z-10">{children}</span>
+            </Link>
+        </>
+    )
+}
+
+export const CardTitle = ({ as = 'h2', href, children }: { as?: React.ElementType, href?: string, children: React.ReactNode }) => {
+    const Component = as;
+    return (
+        <Component className="text-base font-semibold tracking-tight text-zinc-800 dark:text-zinc-100">
+            {href ? <CardLink href={href}>{children}</CardLink> : children}
+        </Component>
+    )
+}
+
+export const CardDescription = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <p className="relative z-10 mt-2 text-sm text-zinc-600 dark:text-zinc-400">
+            {children}
+        </p>
+    )
+}
+
+export const CardCta = ({ children }: { children: React.ReactNode }) => {
+    return (
+        <div
+            aria-hidden="true"
+            className="relative z-10 mt-4 flex items-center text-sm font-medium text-teal-500"
+        >
+            {children}
+            <ChevronRightIcon className="ml-1 h-4 w-4 stroke-current" />
+        </div>
+    )
+}
+
+export const CardEyebrow = ({
+    as = 'p',
+    decorate = false,
+    className,
+    children,
+    ...props
+}: { as?: React.ElementType, decorate?: boolean, className?: string, children: React.ReactNode, dateTime?: any }) => {
+    const Component = as;
+    return (
+        <Component className={clsx(
+            className,
+            'relative z-10 order-first mb-3 flex items-center text-sm text-zinc-400 dark:text-zinc-500',
+            decorate && 'pl-3.5'
+        )}
+            {...props}
+        >
+            {decorate && (
+                <span
+                    className="absolute inset-y-0 left-0 flex items-center"
+                    aria-hidden="true"
+                >
+                    <span className="h-4 w-0.5 rounded-full bg-zinc-200 dark:bg-zinc-500" />
+                </span>
+            )}
+            {children}
+        </Component>
+    )
+}
