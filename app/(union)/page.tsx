@@ -7,9 +7,7 @@ import { Button } from '../../components/Button'
 import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from '../../components/Card'
 import { Container } from '../../components/Container'
 import {
-    GitHubIcon,
     InstagramIcon,
-    LinkedInIcon,
     TwitterIcon,
     FacebookIcon
 } from '../../components/SocialIcons'
@@ -110,7 +108,7 @@ function Newsletter() {
                     className="min-w-0 flex-auto appearance-none rounded-md border border-zinc-900/10 bg-white px-3 py-[calc(theme(spacing.2)-1px)] shadow-md shadow-zinc-800/5 placeholder:text-zinc-400 focus:border-teal-500 focus:outline-none focus:ring-4 focus:ring-teal-500/10 dark:border-zinc-700 dark:bg-zinc-700/[0.15] dark:text-zinc-200 dark:placeholder:text-zinc-500 dark:focus:border-teal-400 dark:focus:ring-teal-400/10 sm:text-sm"
                 /> */}
                 {/* TODO: awaiting report form */}
-                <Button className="ml-4 flex-none" href="/someplace">
+                <Button className="ml-4 flex-none" href="https://forms.gle/uaWQiyeHZoyqX7CZA">
                     填寫表單
                 </Button>
             </div>
@@ -127,35 +125,21 @@ function Resume() {
         end: string | { label: string, dateTime: any }
     }[] = [
             {
-                company: 'Planetaria',
-                title: 'CEO',
-                href: "/images/logos/planetaria.svg",
-                start: '2019',
+                company: '國立陽明交通大學',
+                title: '管理學院',
+                href: "/images/logos/nycu.png",
+                start: '2021',
                 end: {
                     label: 'Present',
                     dateTime: new Date().getFullYear(),
                 },
             },
             {
-                company: 'Airbnb',
-                title: 'Product Designer',
-                href: "/images/logos/airbnb.svg",
-                start: '2014',
-                end: '2019',
-            },
-            {
-                company: 'Facebook',
-                title: 'iOS Software Engineer',
-                href: "/images/logos/facebook.svg",
-                start: '2011',
-                end: '2014',
-            },
-            {
-                company: 'Starbucks',
-                title: 'Shift Supervisor',
-                href: "/images/logos/starbucks.svg",
-                start: '2008',
-                end: '2011',
+                company: '國立交通大學',
+                title: '管理學院',
+                href: "/images/logos/nctu.png",
+                start: '1984',
+                end: '2021',
             },
         ]
 
@@ -163,7 +147,7 @@ function Resume() {
         <div className="rounded-2xl border border-zinc-100 p-6 dark:border-zinc-700/40">
             <h2 className="flex text-sm font-semibold text-zinc-900 dark:text-zinc-100">
                 <BriefcaseIcon className="h-6 w-6 flex-none" />
-                <span className="ml-3">Work</span>
+                <span className="ml-3">隸屬單位</span>
             </h2>
             <ol className="mt-6 space-y-4">
                 {resume.map((role, roleIndex) => (
@@ -202,10 +186,10 @@ function Resume() {
                     </li>
                 ))}
             </ol>
-            <Button href="#" variant="secondary" className="group mt-6 w-full">
+            {/* <Button href="#" variant="secondary" className="group mt-6 w-full">
                 Download CV
                 <ArrowDownIcon className="h-4 w-4 stroke-zinc-400 transition group-active:stroke-zinc-600 dark:group-hover:stroke-zinc-50 dark:group-active:stroke-zinc-50" />
-            </Button>
+            </Button> */}
         </div>
     )
 }
@@ -249,10 +233,7 @@ export default async function Home() {
                         工業工程與管理學系 系學會
                     </h1>
                     <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
-                        I’m Spencer, a software designer and entrepreneur based in New York
-                        City. I’m the founder and CEO of Planetaria, where we develop
-                        technologies that empower regular people to explore space on their
-                        own terms.
+                        這裡是陽明交大工工系學會，由一群有著高度熱誠的年輕學子所組成，主要職責為辦理系上各式活動以及管理系上公共設施等。歡迎有興趣的工工系學生加入我們。
                     </p>
                     <div className="mt-6 flex gap-6">
                         <SocialLink
@@ -265,21 +246,11 @@ export default async function Home() {
                             aria-label="Follow on Facebook"
                             icon={FacebookIcon}
                         />
-                        {/* <SocialLink
+                        <SocialLink
                             href="https://instagram.com"
                             aria-label="Follow on Instagram"
                             icon={InstagramIcon}
-                        /> */}
-                        {/* <SocialLink
-                            href="https://github.com"
-                            aria-label="Follow on GitHub"
-                            icon={GitHubIcon}
-                        /> */}
-                        {/* <SocialLink
-                            href="https://linkedin.com"
-                            aria-label="Follow on LinkedIn"
-                            icon={LinkedInIcon}
-                        /> */}
+                        />
                     </div>
                 </div>
             </Container>

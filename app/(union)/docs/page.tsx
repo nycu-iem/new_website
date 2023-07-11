@@ -5,6 +5,10 @@ import { Section } from '../../../components/Section'
 import { SimpleLayout } from '../../../components/SimpleLayout'
 import React from 'react'
 
+export const metadata = {
+    title: '公開文件 | 陽明交大 工工系學會 | NYCU IEM SA',
+}
+
 function SpeakingSection({ children, ...props }: { children: React.ReactNode, title: string }) {
     return (
         <Section {...props}>
@@ -29,19 +33,12 @@ function Appearance({ title, description, event, cta, href }: { title: string, d
 export default function Speaking() {
     return (
         <>
-            <Head>
-                <title>Speaking - Spencer Sharp</title>
-                <meta
-                    name="description"
-                    content="I’ve spoken at events all around the world and been interviewed for many podcasts."
-                />
-            </Head>
             <SimpleLayout
-                title="I’ve spoken at events all around the world and been interviewed for many podcasts."
-                intro="One of my favorite ways to share my ideas is live on stage, where there’s so much more communication bandwidth than there is in writing, and I love podcast interviews because they give me the opportunity to answer questions instead of just present my opinions."
+                title="公開文件"
+                intro="資料公開是本會所秉持的信念，故所有會議記錄只要能公開的都會放在這邊"
             >
                 <div className="space-y-20">
-                    <SpeakingSection title="Conferences">
+                    <SpeakingSection title="組織章程">
                         <Appearance
                             href="#"
                             title="In space, no one can watch you stream — until now"
@@ -49,15 +46,15 @@ export default function Speaking() {
                             event="SysConf 2021"
                             cta="Watch video"
                         />
-                        <Appearance
+                        {/* <Appearance
                             href="#"
                             title="Lessons learned from our first product recall"
                             description="They say that if you’re not embarassed by your first version, you’re doing it wrong. Well when you’re selling DIY space shuttle kits it turns out it’s a bit more complicated."
                             event="Business of Startups 2020"
                             cta="Watch video"
-                        />
+                        /> */}
                     </SpeakingSection>
-                    <SpeakingSection title="Podcasts">
+                    <SpeakingSection title="會議記錄">
                         <Appearance
                             href="#"
                             title="Using design as a competitive advantage"
@@ -65,7 +62,7 @@ export default function Speaking() {
                             event="Encoding Design, July 2022"
                             cta="Listen to podcast"
                         />
-                        <Appearance
+                        {/* <Appearance
                             href="#"
                             title="Bootstrapping an aerospace company to $17M ARR"
                             description="The story of how we built one of the most promising space startups in the world without taking any capital from investors."
@@ -78,7 +75,7 @@ export default function Speaking() {
                             description="On the importance of creating systems and processes for running your business so that everyone on the team knows how to make the right decision no matter the situation."
                             event="How They Work Radio, September 2021"
                             cta="Listen to podcast"
-                        />
+                        /> */}
                     </SpeakingSection>
                 </div>
             </SimpleLayout>

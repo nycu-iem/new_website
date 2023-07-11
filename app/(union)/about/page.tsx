@@ -1,13 +1,11 @@
-
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 
 import { Container } from '../../../components/Container'
 import {
-    GitHubIcon,
+    FacebookIcon,
     InstagramIcon,
-    LinkedInIcon,
     TwitterIcon,
 } from '../../../components/SocialIcons'
 
@@ -55,35 +53,21 @@ export default function About() {
                     </div>
                     <div className="lg:order-first lg:row-span-2">
                         <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-                            I’m Spencer Sharp. I live in New York City, where I design the
-                            future.
+                            陽明交大工工系學會
                         </h1>
                         <div className="mt-6 space-y-7 text-base text-zinc-600 dark:text-zinc-400">
                             <p>
-                                I’ve loved making things for as long as I can remember, and
-                                wrote my first program when I was 6 years old, just two weeks
-                                after my mom brought home the brand new Macintosh LC 550 that I
-                                taught myself to type on.
+                                大家好！我們是陽明交通大學工業工程與管理學系學會。
                             </p>
                             <p>
-                                The only thing I loved more than computers as a kid was space.
-                                When I was 8, I climbed the 40-foot oak tree at the back of our
-                                yard while wearing my older sister’s motorcycle helmet, counted
-                                down from three, and jumped — hoping the tree was tall enough
-                                that with just a bit of momentum I’d be able to get to orbit.
+                                國立陽明交通大學工業工程與管理學系系學會(以下簡稱系學會)，唯以交大工工系大學部為主體的學生自治組織，凡為交大工工系大學部之學生皆為本會之當然成員。
+                                成立宗旨以爭取與維護會員權益為基本原則，並為系上事務給與協助。目前系學會設置會長一名、副會長一名、幹部及組員若干名。任期為一學年，採學年制。
                             </p>
                             <p>
-                                I spent the next few summers indoors working on a rocket design,
-                                while I recovered from the multiple surgeries it took to fix my
-                                badly broken legs. It took nine iterations, but when I was 15 I
-                                sent my dad’s Blackberry into orbit and was able to transmit a
-                                photo back down to our family computer from space.
+                                系學會所提供之事務相當廣泛，舉凡舉辦活動增進系上學生情誼、提升系上同學向心力、學習力、建立學生與教授間溝通的管道以及增加和其他系交流的機會都是系學會所努力的方向。
                             </p>
                             <p>
-                                Today, I’m the founder of Planetaria, where we’re working on
-                                civilian space suits and manned shuttle kits you can assemble at
-                                home so that the next generation of kids really <em>can</em>{' '}
-                                make it to orbit — from the comfort of their own backyards.
+                                秉持著服務的精神，系學會希望能與各成員一起創造更美好的工工系，也期許每一位對於工工系有美好願景的同學一通參與，為工工系奮鬥。
                             </p>
                         </div>
                     </div>
@@ -95,18 +79,15 @@ export default function About() {
                             <SocialLink href="#" icon={InstagramIcon} className="mt-4">
                                 Follow on Instagram
                             </SocialLink>
-                            <SocialLink href="#" icon={GitHubIcon} className="mt-4">
-                                Follow on GitHub
-                            </SocialLink>
-                            <SocialLink href="#" icon={LinkedInIcon} className="mt-4">
-                                Follow on LinkedIn
+                            <SocialLink href="#" icon={FacebookIcon} className="mt-4">
+                                Follow on Facebook
                             </SocialLink>
                             <SocialLink
-                                href="mailto:spencer@planetaria.tech"
+                                href="mailto:milliax.mg11@nycu.edu.tw"
                                 icon={MailIcon}
                                 className="mt-8 border-t border-zinc-100 pt-8 dark:border-zinc-700/40"
                             >
-                                spencer@planetaria.tech
+                                milliax.mg11@nycu.edu.tw
                             </SocialLink>
                         </ul>
                     </div>

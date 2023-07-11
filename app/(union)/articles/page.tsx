@@ -1,11 +1,12 @@
-import Head from 'next/head'
-
 import { Card, CardCta, CardDescription, CardEyebrow, CardTitle } from '../../../components/Card'
 import { SimpleLayout } from '../../../components/SimpleLayout'
 import { formatDate } from '../../../lib/formatDate'
 
-function Article({ article }: { article: { slug: string, title: string, date: string, description: string } }) {
+export const metadata = {
+    title: '相關文章 | 陽明交大 工工系學會 | NYCU IEM SA',
+}
 
+function Article({ article }: { article: { slug: string, title: string, date: string, description: string } }) {
     return (
         <article className="md:grid md:grid-cols-4 md:items-baseline">
             <Card className="md:col-span-3">
@@ -39,16 +40,9 @@ export default async function ArticlesIndex() {
 
     return (
         <>
-            <Head>
-                <title>Articles - Spencer Sharp</title>
-                <meta
-                    name="description"
-                    content="All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order."
-                />
-            </Head>
             <SimpleLayout
-                title="Writing on software design, company building, and the aerospace industry."
-                intro="All of my long-form thoughts on programming, leadership, product design, and more, collected in chronological order."
+                title="相關文章"
+                intro="所有工工系學會的公告以及活動宣傳都在這邊"
             >
                 <div className="md:border-l md:border-zinc-100 md:pl-6 md:dark:border-zinc-700/40">
                     <div className="flex max-w-3xl flex-col space-y-16">

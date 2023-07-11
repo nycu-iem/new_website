@@ -252,11 +252,10 @@ function clamp(number: number, a: number, b: number) {
 
 function AvatarContainer({ className, ...props }: { className?: string, style?: any, children?: React.ReactNode }) {
     return (
-        <div
-            className={clsx(
-                className,
-                'h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10'
-            )}
+        <div className={clsx(
+            className,
+            'h-10 w-10 rounded-full bg-white/90 p-0.5 shadow-lg shadow-zinc-800/5 ring-1 ring-zinc-900/5 backdrop-blur dark:bg-zinc-800/90 dark:ring-white/10'
+        )}
             {...props}
         />
     )
@@ -410,8 +409,7 @@ export function Header() {
                                 style={{ position: 'var(--header-inner-position)' }}
                             >
                                 <div className="relative">
-                                    <AvatarContainer
-                                        className="absolute left-0 top-3 origin-left transition-opacity"
+                                    <AvatarContainer className="absolute left-0 top-3 origin-left transition-opacity"
                                         style={{
                                             opacity: 'var(--avatar-border-opacity, 0)',
                                             transform: 'var(--avatar-border-transform)',
@@ -439,7 +437,7 @@ export function Header() {
                         <div className="relative flex gap-4">
                             <div className="flex flex-1">
                                 {!isHomePage && (
-                                    <AvatarContainer>
+                                    <AvatarContainer className='relative'>
                                         <Avatar />
                                     </AvatarContainer>
                                 )}
