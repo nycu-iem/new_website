@@ -1,6 +1,6 @@
 import { cache } from "react"
 
-export const getPosts = async ({ isHomePage }: { isHomePage: boolean }) => {
+export const getPosts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
     const page = "27a55c38f3774cceabedfbce1690347e"
     const res = await fetch(`https://api.notion.com/v1/databases/${page}/query`, {
         method: "POST",
@@ -30,11 +30,69 @@ export const getPosts = async ({ isHomePage }: { isHomePage: boolean }) => {
         posts.push(post)
     }
 
-    return isHomePage ? posts.filter((post) => (post.highlight === true)) : posts;
-    // return posts
+    if (verify_post) {
+        return posts.filter((post) => (post.slug === verify_post))
+    }
+
+    return isHomePage ? posts.filter((post) => (post.highlight === true)).slice(0, 3) : posts;
 }
 
 const trim = (str: string) => {
     var newStr = str.replace(/-/g, "");
     return newStr;
+}
+
+export const getPost = async (id: string) => {
+    // const post_exist = await getPosts({ verify_post: id });
+
+    // if (post_exist.length) {
+    // get post detail
+
+    const res = await fetch(`https://api.notion.com/v1/pages/${id}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
+            "Notion-Version": "2022-06-28"
+        }, next: {
+            revalidate: 10
+        }
+    })
+    const post = await res.json();
+
+    const block = await fetch(`https://api.notion.com/v1/blocks/${id}/children?page_size=100`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
+            "Notion-Version": "2022-06-28"
+        }, next: {
+            revalidate: 10
+        }
+    })
+    const blocks = await block.json();
+    // console.log(blocks)
+
+    let content = [];
+    for (let e of blocks.results) {
+        let cont = {
+            type: e.type,
+            paragraph: e.paragraph.rich_text[0].plain_text
+        }
+        content.push(cont)
+    }
+
+    if (post.object !== 'page') {
+        return undefined
+    }
+    return {
+        title: post.properties.title.title[0].plain_text,
+        description: post.properties.description.rich_text[0].plain_text,
+        content: content,
+    }
+
+    // return post_exist[0];
+    // }
+
+    // return undefined
 }
