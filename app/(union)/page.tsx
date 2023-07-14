@@ -1,4 +1,3 @@
-"use client"
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
@@ -13,6 +12,8 @@ import {
 } from '../../components/SocialIcons'
 
 import { formatDate } from '../../lib/formatDate'
+import { getPosts } from '../../components/api'
+
 
 function MailIcon(props: any) {
     return (
@@ -210,14 +211,16 @@ function Photos() {
 
 
 export default async function Home() {
-    const articles = await getArticles();
+    const articles = await getPosts({ isHomePage: true });
+    console.log(articles)
+
     // console.log(props)
     return (
         <>
             <Container className="mt-9">
                 <div className="max-w-2xl">
                     <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-                        國立陽明交通大學<br/>
+                        國立陽明交通大學<br />
                         工業工程與管理學系 系學會
                     </h1>
                     <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
@@ -247,8 +250,11 @@ export default async function Home() {
                 <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
                     <div className="flex flex-col gap-16">
                         {articles && articles.map((article) => (
-                            <Article key={article.slug} article={article} />
+                            <Article key={article.description} article={article} />
                         ))}
+                        {articles.length === 0 && <div>
+                            近期無活動
+                        </div>}
                     </div>
                     <div className="space-y-10 lg:pl-16 xl:pl-24">
                         <Newsletter />
@@ -258,64 +264,4 @@ export default async function Home() {
             </Container>
         </>
     )
-}
-
-// export async function generateStaticParams() {
-//     // const posts: any[] = await fetch('https://.../posts').then((res) => res.json())
-
-//     const posts: {
-//         slug: string,
-//         title: string,
-//         date: string,
-//         description: string,
-//     }[] = [
-//         {
-//             slug: "abc",
-//             title: "Hello",
-//             date: "sometime",
-//             description: "Description of hello"
-//         }, {
-//             slug: "cba",
-//             title: "Hola",
-//             date: "sometime",
-//             description: "Description of hola"
-//         }, {
-//             slug: "acb",
-//             title: "こんにちは",
-//             date: "sometime",
-//             description: "Description of こんにちは"
-//         }
-//     ].slice(0, 4);
-
-//     return ;
-// }
-
-
-const getArticles = async () => {
-
-    const posts: {
-        slug: string,
-        title: string,
-        date: string,
-        description: string,
-    }[] = [
-        {
-            slug: "abc",
-            title: "Hello",
-            date: "sometime",
-            description: "Description of hello"
-        }, {
-            slug: "cba",
-            title: "Hola",
-            date: "sometime",
-            description: "Description of hola"
-        }, {
-            slug: "acb",
-            title: "こんにちは",
-            date: "sometime",
-            description: "Description of こんにちは"
-        }
-    ].slice(0, 4);
-
-    return posts;
 }
