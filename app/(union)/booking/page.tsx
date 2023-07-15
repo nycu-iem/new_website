@@ -5,6 +5,8 @@ import { Section } from '../../../components/Section'
 import { SimpleLayout } from '../../../components/SimpleLayout'
 import React from 'react'
 
+import { useRouter } from "next/router"
+
 function SpeakingSection({ children, ...props }: { children: React.ReactNode, title: string }) {
     return (
         <Section {...props}>
@@ -27,6 +29,8 @@ function Appearance({ title, description, event, cta, href }: { title: string, d
 }
 
 export default function Speaking() {
+    const router = useRouter();
+    router.push("/");
     return (
         <>
             <Head>

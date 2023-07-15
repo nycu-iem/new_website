@@ -41,10 +41,10 @@ export default function Speaking() {
                     <SpeakingSection title="組織章程">
                         <Appearance
                             href="#"
-                            title="In space, no one can watch you stream — until now"
-                            description="A technical deep-dive into HelioStream, the real-time streaming library I wrote for transmitting live video back to Earth."
-                            event="SysConf 2021"
-                            cta="Watch video"
+                            title="工工系學會組織章程"
+                            description="其實沒有"
+                            event="XXX年系學會議"
+                            cta="檔案不存在"
                         />
                         {/* <Appearance
                             href="#"
@@ -56,11 +56,11 @@ export default function Speaking() {
                     </SpeakingSection>
                     <SpeakingSection title="會議記錄">
                         <Appearance
-                            href="#"
-                            title="Using design as a competitive advantage"
-                            description="How we used world-class visual design to attract a great team, win over customers, and get more press for Planetaria."
-                            event="Encoding Design, July 2022"
-                            cta="Listen to podcast"
+                            href="/files/工工系學會第一次會議紀錄.pdf"
+                            title="112年工工系學會第一次會議紀錄"
+                            description="討論上學期的活動概要以及成員小破冰"
+                            event="線上會議, July 2023"
+                            cta="立即查看"
                         />
                         {/* <Appearance
                             href="#"
