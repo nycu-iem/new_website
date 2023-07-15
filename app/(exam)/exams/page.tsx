@@ -1,5 +1,5 @@
-import Head from 'next/head'
 
+// import Head from 'next/head'
 import { Card, CardTitle, CardDescription } from '../../../components/Card'
 import { Section } from '../../../components/Section'
 import { SimpleLayout } from '../../../components/SimpleLayout'
@@ -27,15 +27,16 @@ function Tool({ title, href, children }: { title: string, href?: string, childre
 }
 
 export default function Uses() {
+    
     return (
         <>
-            <Head>
+            {/* <Head>
                 <title>Uses - Spencer Sharp</title>
                 <meta
                     name="description"
                     content="Software I use, gadgets I love, and other things I recommend."
                 />
-            </Head>
+            </Head> */}
             <SimpleLayout
                 title="Software I use, gadgets I love, and other things I recommend."
                 intro="I get asked a lot about the things I use to build software, stay productive, or buy to fool myself into thinking I’m being productive when I’m really just procrastinating. Here’s a big list of all of my favorite stuff."

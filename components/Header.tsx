@@ -96,12 +96,23 @@ function MoonIcon(props: any) {
     )
 }
 
-function MobileNavItem({ href, children }: { href: string, children: React.ReactNode }) {
+function MobileNavItem({ href, children, ...props }: { href: string, children: React.ReactNode, blocked: boolean, reason?: string }) {
     return (
         <li>
-            <Popover.Button as={Link} href={href} className="block py-2">
-                {children}
-            </Popover.Button>
+            {props.blocked ?
+                <Popover.Button className="block py-2" onClick={() => {
+                    Swal.fire({
+                        icon: "error",
+                        text: props.reason
+                    })
+                }}>
+                    {children}
+                </Popover.Button>
+                :
+                <Popover.Button as={Link} href={href} className="block py-2">
+                    {children}
+                </Popover.Button>
+            }
         </li>
     )
 }
@@ -149,7 +160,7 @@ function MobileNavigation(props: any) {
                         <nav className="mt-6">
                             <ul className="-my-2 divide-y divide-zinc-100 text-base text-zinc-800 dark:divide-zinc-100/5 dark:text-zinc-300">
                                 {menuOptions.map((option) => (
-                                    <MobileNavItem href={option.href} key={option.title}>{option.title}</MobileNavItem>
+                                    <MobileNavItem key={option.title} {...option}>{option.title}</MobileNavItem>
                                 ))}
                             </ul>
                         </nav>
@@ -261,7 +272,7 @@ function AvatarContainer({ className, ...props }: { className?: string, style?: 
     )
 }
 
-function Avatar({ large = false, className,ishomepage, ...props }: { large?: boolean, className?: string, style?: any, ishomepage?: boolean }) {
+function Avatar({ large = false, className, ishomepage, ...props }: { large?: boolean, className?: string, style?: any, ishomepage?: boolean }) {
     return (
         <Link href="/"
             aria-label="Home"
