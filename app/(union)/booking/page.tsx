@@ -1,12 +1,9 @@
-"use-client"
 import Head from 'next/head'
 
 import { Card, CardTitle, CardEyebrow, CardDescription, CardCta } from '../../../components/Card'
 import { Section } from '../../../components/Section'
 import { SimpleLayout } from '../../../components/SimpleLayout'
 import React from 'react'
-
-import { useRouter } from "next/navigation"
 
 function SpeakingSection({ children, ...props }: { children: React.ReactNode, title: string }) {
     return (
@@ -30,8 +27,6 @@ function Appearance({ title, description, event, cta, href }: { title: string, d
 }
 
 export default function Speaking() {
-    const router = useRouter();
-    router.push("/");
     return (
         <>
             <Head>

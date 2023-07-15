@@ -1,11 +1,9 @@
-"use-client"
+
 // import Head from 'next/head'
 import { Card, CardTitle, CardDescription } from '../../../components/Card'
 import { Section } from '../../../components/Section'
 import { SimpleLayout } from '../../../components/SimpleLayout'
 import React from 'react'
-
-import { useRouter } from "next/navigation"
 
 function ToolsSection({ children, ...props }: { children: React.ReactNode, title: string }) {
     return (
@@ -29,8 +27,7 @@ function Tool({ title, href, children }: { title: string, href?: string, childre
 }
 
 export default function Uses() {
-    const router = useRouter();
-    router.push("/")
+    
     return (
         <>
             {/* <Head>

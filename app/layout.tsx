@@ -1,3 +1,5 @@
+import { Analytics } from '@vercel/analytics/react';
+
 export default function RootLayout({
     children,
 }: {
@@ -18,6 +20,7 @@ export default function RootLayout({
                     <main>
                         {children}
                         {/* <Component previousPathname={previousPathname} {...pageProps} /> */}
+                        <Analytics />
                     </main>
                 </div>
 
