@@ -1,4 +1,3 @@
-"use client"
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
@@ -13,6 +12,8 @@ import {
 } from '../../components/SocialIcons'
 
 import { formatDate } from '../../lib/formatDate'
+import { getPosts } from '../../components/api'
+
 
 function MailIcon(props: any) {
     return (
@@ -49,18 +50,6 @@ function BriefcaseIcon(props: any) {
             />
             <path d="M3 14.25h6.249c.484 0 .952-.002 1.316.319l.777.682a.996.996 0 0 0 1.316 0l.777-.682c.364-.32.832-.319 1.316-.319H21M8.75 6.5V4.75a2 2 0 0 1 2-2h2.5a2 2 0 0 1 2 2V6.5"
                 className="stroke-zinc-400 dark:stroke-zinc-500"
-            />
-        </svg>
-    )
-}
-
-function ArrowDownIcon(props: any) {
-    return (
-        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true" {...props}>
-            <path d="M4.75 8.75 8 12.25m0 0 3.25-3.5M8 12.25v-8.5"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-                strokeLinejoin="round"
             />
         </svg>
     )
@@ -222,14 +211,16 @@ function Photos() {
 
 
 export default async function Home() {
-    const articles = await getArticles();
+    const articles = await getPosts({ isHomePage: true });
+    console.log(articles)
+
     // console.log(props)
     return (
         <>
             <Container className="mt-9">
                 <div className="max-w-2xl">
                     <h1 className="text-4xl font-bold tracking-tight text-zinc-800 dark:text-zinc-100 sm:text-5xl">
-                        國立陽明交通大學<br/>
+                        國立陽明交通大學<br />
                         工業工程與管理學系 系學會
                     </h1>
                     <p className="mt-6 text-base text-zinc-600 dark:text-zinc-400">
@@ -237,7 +228,7 @@ export default async function Home() {
                     </p>
                     <div className="mt-6 flex gap-6">
                         <SocialLink
-                            href="https://twitter.com"
+                            href="https://twitter.com/nycu_iemsa"
                             aria-label="Follow on Twitter"
                             icon={TwitterIcon}
                         />
@@ -247,7 +238,7 @@ export default async function Home() {
                             icon={FacebookIcon}
                         />
                         <SocialLink
-                            href="https://instagram.com"
+                            href="https://www.instagram.com/nycu.iem.sa"
                             aria-label="Follow on Instagram"
                             icon={InstagramIcon}
                         />
@@ -259,8 +250,11 @@ export default async function Home() {
                 <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
                     <div className="flex flex-col gap-16">
                         {articles && articles.map((article) => (
-                            <Article key={article.slug} article={article} />
+                            <Article key={article.description} article={article} />
                         ))}
+                        {articles.length === 0 && <div>
+                            近期無活動
+                        </div>}
                     </div>
                     <div className="space-y-10 lg:pl-16 xl:pl-24">
                         <Newsletter />
@@ -270,64 +264,4 @@ export default async function Home() {
             </Container>
         </>
     )
-}
-
-// export async function generateStaticParams() {
-//     // const posts: any[] = await fetch('https://.../posts').then((res) => res.json())
-
-//     const posts: {
-//         slug: string,
-//         title: string,
-//         date: string,
-//         description: string,
-//     }[] = [
-//         {
-//             slug: "abc",
-//             title: "Hello",
-//             date: "sometime",
-//             description: "Description of hello"
-//         }, {
-//             slug: "cba",
-//             title: "Hola",
-//             date: "sometime",
-//             description: "Description of hola"
-//         }, {
-//             slug: "acb",
-//             title: "こんにちは",
-//             date: "sometime",
-//             description: "Description of こんにちは"
-//         }
-//     ].slice(0, 4);
-
-//     return ;
-// }
-
-
-const getArticles = async () => {
-
-    const posts: {
-        slug: string,
-        title: string,
-        date: string,
-        description: string,
-    }[] = [
-        {
-            slug: "abc",
-            title: "Hello",
-            date: "sometime",
-            description: "Description of hello"
-        }, {
-            slug: "cba",
-            title: "Hola",
-            date: "sometime",
-            description: "Description of hola"
-        }, {
-            slug: "acb",
-            title: "こんにちは",
-            date: "sometime",
-            description: "Description of こんにちは"
-        }
-    ].slice(0, 4);
-
-    return posts;
 }
