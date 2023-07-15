@@ -73,6 +73,10 @@ export const getPost = async (id: string) => {
     const blocks = await block.json();
     // console.log(blocks)
 
+    if (post.object !== 'page') {
+        return undefined
+    }
+    
     let content = [];
     for (let e of blocks.results) {
         let cont = {
@@ -82,9 +86,6 @@ export const getPost = async (id: string) => {
         content.push(cont)
     }
 
-    if (post.object !== 'page') {
-        return undefined
-    }
     return {
         title: post.properties.title.title[0].plain_text,
         description: post.properties.description.rich_text[0].plain_text,
