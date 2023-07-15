@@ -2,6 +2,8 @@ import { Card, CardCta, CardDescription, CardEyebrow, CardTitle } from '../../..
 import { SimpleLayout } from '../../../components/SimpleLayout'
 import { formatDate } from '../../../lib/formatDate'
 
+import { getPosts } from '../../../components/api'
+
 export const metadata = {
     title: '相關文章 | 陽明交大 工工系學會 | NYCU IEM SA',
 }
@@ -36,8 +38,8 @@ function Article({ article }: { article: { slug: string, title: string, date: st
 }
 
 export default async function ArticlesIndex() {
-    const articles = await getArticles();
-
+    const articles = await getPosts({});
+    console.log(articles)
     return (
         <>
             <SimpleLayout
@@ -56,30 +58,30 @@ export default async function ArticlesIndex() {
     )
 }
 
-const getArticles = async () => {
-    const posts: {
-        slug: string,
-        title: string,
-        date: string,
-        description: string,
-    }[] = [
-        {
-            slug: "abc",
-            title: "Hello",
-            date: "sometime",
-            description: "Description of hello"
-        }, {
-            slug: "cba",
-            title: "Hola",
-            date: "sometime",
-            description: "Description of hola"
-        }, {
-            slug: "acb",
-            title: "こんにちは",
-            date: "sometime",
-            description: "Description of こんにちは"
-        }
-    ].slice(0, 4);
+// const getArticles = async () => {
+//     const posts: {
+//         slug: string,
+//         title: string,
+//         date: string,
+//         description: string,
+//     }[] = [
+//         {
+//             slug: "abc",
+//             title: "Hello",
+//             date: "sometime",
+//             description: "Description of hello"
+//         }, {
+//             slug: "cba",
+//             title: "Hola",
+//             date: "sometime",
+//             description: "Description of hola"
+//         }, {
+//             slug: "acb",
+//             title: "こんにちは",
+//             date: "sometime",
+//             description: "Description of こんにちは"
+//         }
+//     ].slice(0, 4);
 
-    return posts;
-}
+//     return posts;
+// }

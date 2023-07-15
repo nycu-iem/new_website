@@ -261,11 +261,11 @@ function AvatarContainer({ className, ...props }: { className?: string, style?: 
     )
 }
 
-function Avatar({ large = false, className, ...props }: { large?: boolean, className?: string, style?: any, isHomePage?: boolean }) {
+function Avatar({ large = false, className,ishomepage, ...props }: { large?: boolean, className?: string, style?: any, ishomepage?: boolean }) {
     return (
         <Link href="/"
             aria-label="Home"
-            className={clsx(className, 'pointer-events-auto', props.isHomePage && "relative")}
+            className={clsx(className, 'pointer-events-auto', ishomepage && "relative")}
             {...props}
             passHref
         >
@@ -418,7 +418,7 @@ export function Header() {
                                     <Avatar large
                                         className="block h-16 w-16 origin-left"
                                         style={{ transform: 'var(--avatar-image-transform)' }}
-                                        isHomePage={isHomePage}
+                                        ishomepage={isHomePage}
                                     />
                                 </div>
                             </div>
