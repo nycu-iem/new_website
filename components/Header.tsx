@@ -276,6 +276,7 @@ function Avatar({ large = false, className, ishomepage, ...props }: { large?: bo
     return (
         <Link href="/"
             aria-label="Home"
+            // TODO: Tiny issue about the position
             className={clsx(className, 'pointer-events-auto', ishomepage && "relative")}
             {...props}
             passHref

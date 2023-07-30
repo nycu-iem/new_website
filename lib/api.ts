@@ -1,5 +1,3 @@
-import { cache } from "react"
-
 export const getPosts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
     const page = "27a55c38f3774cceabedfbce1690347e"
     const res = await fetch(`https://api.notion.com/v1/databases/${page}/query`, {
@@ -42,6 +40,12 @@ const trim = (str: string) => {
     return newStr;
 }
 
+export type ParagraphType = { type: "paragraph", content: any[] }
+export type ImageType = { type: "image", content: string }
+export type QuoteType = { type: "quote", content: any[] }
+
+type ContentType = ParagraphType | ImageType | QuoteType;
+
 export const getPost = async (id: string) => {
     // const post_exist = await getPosts({ verify_post: id });
 
@@ -76,13 +80,39 @@ export const getPost = async (id: string) => {
     if (post.object !== 'page') {
         return undefined
     }
-    
+
     let content = [];
     for (let e of blocks.results) {
-        let cont = {
-            type: e.type,
-            paragraph: e.paragraph.rich_text[0].plain_text
+        console.log(e);
+
+        let cont: ContentType;
+
+        switch (e.type) {
+            case "image":
+                cont = {
+                    type: "image",
+                    content: e.image.file.url
+                }
+                break;
+            case "quote":
+                cont = {
+                    type: "quote",
+                    content: e.quote.rich_text
+                }
+                break;
+            default:
+                // all data type unsupported assume its paragraph
+                cont = {
+                    type: "paragraph",
+                    content: e.paragraph.rich_text
+                }
+                break;
         }
+
+        // let cont = {
+        //     type: e.type,
+        //     paragraph: e.paragraph.rich_text[0].plain_text
+        // }
         content.push(cont)
     }
 
@@ -90,10 +120,15 @@ export const getPost = async (id: string) => {
         title: post.properties.title.title[0].plain_text,
         description: post.properties.description.rich_text[0].plain_text,
         content: content,
+        raw: blocks
     }
-
-    // return post_exist[0];
-    // }
-
-    // return undefined
 }
+
+function getReturnType<R>(f: (...args: any[]) => R): { returnType: R } {
+    return null!;
+}
+
+// dummy variable, used for retrieving toast return type only
+let PostType = getReturnType(getPost);
+
+export type GetPostReturnType = typeof PostType.returnType;
