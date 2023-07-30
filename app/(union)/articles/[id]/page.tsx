@@ -1,11 +1,15 @@
 import { SimpleLayout } from "../../../../components/SimpleLayout";
 import { notFound } from 'next/navigation'
-import { getPost } from "../../../../components/api";
+import { getPost } from "../../../../lib/api";
+import clsx from "clsx";
+import Image from "next/image";
+
+import ClientPage from "./client-page"
 
 export default async function Post({ params }: { params: { id: string } }) {
     const post = await getPost(params.id);
     // console.log(post?.content[0].paragraph);
-    
+
     if (!post) {
         notFound();
     }
@@ -15,16 +19,10 @@ export default async function Post({ params }: { params: { id: string } }) {
             <SimpleLayout
                 title={post.title}
                 intro={post.description}
+                // className="border-b"
+                is_post={true}
             >
-                <div className="space-y-10">
-                    {post.content && post.content.map((block) => (
-                        <p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200"
-                            key={block.paragraph}
-                        >
-                            {block.paragraph}
-                        </p>
-                    ))}
-                </div>
+                <ClientPage post={post} />
             </SimpleLayout>
         </>
     )
