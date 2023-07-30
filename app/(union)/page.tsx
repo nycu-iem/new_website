@@ -12,7 +12,7 @@ import {
 } from '../../components/SocialIcons'
 
 import { formatDate } from '../../lib/formatDate'
-import { getPosts } from '../../components/api'
+import { getPosts } from '../../lib/api'
 
 
 function MailIcon(props: any) {
