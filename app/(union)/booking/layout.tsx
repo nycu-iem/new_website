@@ -1,6 +1,3 @@
-import { SessionProvider } from "next-auth/react"
-import { getServerSession } from "next-auth"
-import { authOptions } from "../../api/auth/[...nextauth]/route"
 
 export const metadata = {
     title: '陽明交大 工工系學會 公共空間租借 | NYCU IEMSA Renting',
@@ -13,6 +10,8 @@ export default function BookingLayout({
     children: React.ReactNode
 }) {
     return (
-        { children }
+        <>
+            {children}
+        </>
     )
 }
