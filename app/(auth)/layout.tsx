@@ -13,10 +13,8 @@ export default function AuthRootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="zh-tw">
-            <body>
-                {children}
-            </body>
-        </html>
+        <body>
+            {children}
+        </body>
     )
 }

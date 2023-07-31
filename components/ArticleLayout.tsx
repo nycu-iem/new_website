@@ -1,4 +1,3 @@
-import Head from 'next/head'
 import { useRouter } from 'next/router'
 
 import { Container } from './Container'
@@ -37,10 +36,10 @@ export function ArticleLayout({
 
     return (
         <>
-            <Head>
+            {/* <Head>
                 <title>{`${meta.title} - Spencer Sharp`}</title>
                 <meta name="description" content={meta.description} />
-            </Head>
+            </Head> */}
             <Container className="mt-16 lg:mt-32">
                 <div className="xl:relative">
                     <div className="mx-auto max-w-2xl">
