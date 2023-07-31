@@ -7,8 +7,12 @@ import clsx from 'clsx'
 
 import { Container } from './Container'
 import { usePathname } from "next/navigation"
+// import dynamic from 'next/dynamic'
 // import { toast } from 'react-toastify';
 import Swal from "sweetalert2"
+// const Swal = dynamic(() => import("sweetalert2"))
+// const Swal = dynamic(() => import('sweetalert2'), {ssr: false});
+
 
 const menuOptions: { title: string, href: string, blocked: boolean, reason?: string }[] = [
     {
