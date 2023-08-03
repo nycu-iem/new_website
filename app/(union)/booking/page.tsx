@@ -1,9 +1,10 @@
-import Head from 'next/head'
-
-import { Card, CardTitle, CardEyebrow, CardDescription, CardCta } from '../../../components/Card'
+"use client"
+import { Switch } from '@headlessui/react'
 import { Section } from '../../../components/Section'
 import { SimpleLayout } from '../../../components/SimpleLayout'
-import React from 'react'
+import React, { Dispatch, SetStateAction, useState } from 'react'
+import clsx from 'clsx'
+import CalendarMonth from '../../../components/calendar/Month'
 
 function SpeakingSection({ children, ...props }: { children: React.ReactNode, title: string }) {
     return (
@@ -13,75 +14,114 @@ function SpeakingSection({ children, ...props }: { children: React.ReactNode, ti
     )
 }
 
-function Appearance({ title, description, event, cta, href }: { title: string, description: string, event: string, cta: string, href: string }) {
+export default function RoomRenting() {
+    const [calendarType, setCalendarType] = useState<boolean>(false);
+    const [loggedIn, setLoggedIn] = useState<boolean>(false);
+
     return (
-        <Card as="article">
-            <CardTitle as="h3" href={href}>
-                {title}
-            </CardTitle>
-            <CardEyebrow decorate>{event}</CardEyebrow>
-            <CardDescription>{description}</CardDescription>
-            <CardCta>{cta}</CardCta>
-        </Card>
+        <SimpleLayout
+            title="公共空間租借"
+            intro="系學會空間出借"
+        >
+            <div className="space-y-8">
+                <SpeakingSection title="MOJO DOJO CASA HOUSE">
+                    <OnOffSwitch
+                        enable={calendarType}
+                        setEnable={setCalendarType}
+                        text={calendarType ? "單周顯示" : "整月顯示"}
+                    />
+                    {calendarType ?
+                        <CalendarDetailedView />
+                        :
+                        <CalendarSeperate />}
+                </SpeakingSection>
+            </div>
+        </SimpleLayout>
     )
 }
 
-export default function Speaking() {
+function CalendarDetailedView() {
     return (
-        <>
-            <Head>
-                <title>Speaking - Spencer Sharp</title>
-                <meta
-                    name="description"
-                    content="I’ve spoken at events all around the world and been interviewed for many podcasts."
-                />
-            </Head>
-            <SimpleLayout
-                title="I’ve spoken at events all around the world and been interviewed for many podcasts."
-                intro="One of my favorite ways to share my ideas is live on stage, where there’s so much more communication bandwidth than there is in writing, and I love podcast interviews because they give me the opportunity to answer questions instead of just present my opinions."
-            >
-                <div className="space-y-20">
-                    <SpeakingSection title="Conferences">
-                        <Appearance
-                            href="#"
-                            title="In space, no one can watch you stream — until now"
-                            description="A technical deep-dive into HelioStream, the real-time streaming library I wrote for transmitting live video back to Earth."
-                            event="SysConf 2021"
-                            cta="Watch video"
-                        />
-                        <Appearance
-                            href="#"
-                            title="Lessons learned from our first product recall"
-                            description="They say that if you’re not embarassed by your first version, you’re doing it wrong. Well when you’re selling DIY space shuttle kits it turns out it’s a bit more complicated."
-                            event="Business of Startups 2020"
-                            cta="Watch video"
-                        />
-                    </SpeakingSection>
-                    <SpeakingSection title="Podcasts">
-                        <Appearance
-                            href="#"
-                            title="Using design as a competitive advantage"
-                            description="How we used world-class visual design to attract a great team, win over customers, and get more press for Planetaria."
-                            event="Encoding Design, July 2022"
-                            cta="Listen to podcast"
-                        />
-                        <Appearance
-                            href="#"
-                            title="Bootstrapping an aerospace company to $17M ARR"
-                            description="The story of how we built one of the most promising space startups in the world without taking any capital from investors."
-                            event="The Escape Velocity Show, March 2022"
-                            cta="Listen to podcast"
-                        />
-                        <Appearance
-                            href="#"
-                            title="Programming your company operating system"
-                            description="On the importance of creating systems and processes for running your business so that everyone on the team knows how to make the right decision no matter the situation."
-                            event="How They Work Radio, September 2021"
-                            cta="Listen to podcast"
-                        />
-                    </SpeakingSection>
-                </div>
-            </SimpleLayout>
-        </>
+        <div>
+            Calendar Detailed View
+        </div>
+    )
+}
+
+function CalendarSeperate() {
+    const today = new Date();
+    const [selectedMonth, setSelectedMonth] = useState(today.getMonth());
+    const [selectedDay, setSelectedDay] = useState<number>(today.getDate());
+    const [hoverDate, setHoverDate] = useState<number>(NaN);
+    const [selectedYear, setSelectedYear] = useState<number>(today.getFullYear());
+    const [daysWithEvent, setDaysWithEvent] = useState([1, 2, 4, 8, 9, 13, 16, 22]);
+    const [reserve, setReserve] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+
+    const toggleMonth = (val: 1 | -1) => {
+        const month = selectedMonth;
+
+        if (month + val > 12) {
+            setSelectedMonth(1);
+            setSelectedYear(e => e + 1);
+        } else if (month + val < 1) {
+            setSelectedMonth(12);
+            setSelectedYear(e => e - 1);
+        } else {
+            setSelectedMonth(month + val);
+        }
+        setSelectedDay(NaN)
+    }
+
+    return (
+        <div className='flex lg:flex-row flex-col lg:justify-between'>
+            <CalendarMonth
+                calendarName="Hello"
+                selectedDay={selectedDay}
+                setSelectedDay={setSelectedDay}
+                hoverDate={hoverDate}
+                setHoverDate={setHoverDate}
+                selectedMonth={selectedMonth + 1}
+                selectedYear={selectedYear}
+                rentedDays={daysWithEvent}
+                loading={loading}
+                toggleMonth={toggleMonth}
+                setReserve={setReserve}
+            />
+            <div className="w-80 mt-8 pl-5">
+                Day: {isNaN(hoverDate) ? selectedDay : hoverDate}
+            </div>
+        </div>
+    )
+}
+
+function OnOffSwitch(
+    {
+        enable,
+        setEnable,
+        text
+    }: {
+        enable: boolean,
+        setEnable: Dispatch<SetStateAction<boolean>>,
+        text?: string
+    }
+) {
+    return (
+        <div className="flex flex-row space-x-5">
+            <Switch
+                className={clsx(
+                    "relative inline-flex h-6 w-11 items-center rounded-full",
+                    enable ? "bg-blue-600" : "bg-green-600"
+                )}
+                checked={enable}
+                onChange={() => { setEnable(e => !e) }}>
+                <span className="sr-only">Enable notifications</span>
+                <span className={clsx(
+                    "inline-block h-4 w-4 transform rounded-full bg-white transition",
+                    enable ? "translate-x-6" : "translate-x-1"
+                )} />
+            </Switch>
+            {text && <h2>{text}</h2>}
+        </div>
     )
 }
