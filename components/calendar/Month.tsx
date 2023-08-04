@@ -51,41 +51,51 @@ export default function CalendarMonth({
     // const [hoverDate, setHoverDate] = useState<number | undefined>(undefined);
     // const [days, setDays] = useState<Array<DayFormat>>([]);
     const today = new Date();
-    let days: Array<DayFormat> = [];
+    // let days: Array<DayFormat> = [];
+    const [days, setDays] = useState<Array<DayFormat>>([]);
 
-    const lastMonthEndedDay = new Date(today.getFullYear(), today.getMonth(), 1).getDay();
-    const daysInMonth = getDays(today.getFullYear(), today.getMonth());
-    let weeks = Math.ceil((daysInMonth + lastMonthEndedDay) / 7);
+    const updateCalendar = () => {
+        let temp_day: Array<DayFormat> = [];
+        const lastMonthEndedDay = new Date(selectedYear, selectedMonth - 1, 1).getDay();
+        const daysInMonth = getDays(selectedYear, selectedMonth);
+        let weeks = Math.ceil((daysInMonth + lastMonthEndedDay) / 7);
 
-    for (let i = 0; i < weeks * 7; ++i) {
-        let padding = 0;
-        let day = i;
-        if (i < lastMonthEndedDay) {
-            padding = -1;
-            day += getDays(today.getFullYear(), today.getMonth()) - 2;
-        } else if (i > lastMonthEndedDay + daysInMonth - 1) {
-            padding = 1;
-            day -= lastMonthEndedDay + daysInMonth;
-        } else {
-            day -= lastMonthEndedDay;
+        for (let i = 0; i < weeks * 7; ++i) {
+            let padding = 0;
+            let day = i;
+            if (i < lastMonthEndedDay) {
+                padding = -1;
+                day += getDays(selectedYear, selectedMonth - 1) - lastMonthEndedDay;
+            } else if (i > lastMonthEndedDay + daysInMonth - 1) {
+                padding = 1;
+                day -= lastMonthEndedDay + daysInMonth;
+            } else {
+                day -= lastMonthEndedDay;
+            }
+
+            temp_day.push({
+                date: {
+                    year: selectedYear,
+                    month: selectedMonth + padding,
+                    day: day + 1,
+                },
+                // `${selectedYear}-${paddingZero(selectedMonth + padding)}-${paddingZero(day + 1)}`
+                isCurrentMonth: padding === 0,
+                isToday: (today.getDate() + (today.getMonth() + 1) * 100) === ((day + 1) + (selectedMonth + padding) * 100),
+                isSelected: !padding && rentedDays.includes(day + 1),
+            })
         }
-
-        days.push({
-            date: {
-                year: selectedYear,
-                month: selectedMonth + padding,
-                day: day + 1,
-            },
-            // `${selectedYear}-${paddingZero(selectedMonth + padding)}-${paddingZero(day + 1)}`
-            isCurrentMonth: padding === 0,
-            isToday: (today.getDate() + (today.getMonth() + 1) * 100) === ((day + 1) + (selectedMonth + padding) * 100),
-            isSelected: !padding && rentedDays.includes(day + 1),
-        })
+        setDays(temp_day);
     }
+
+    useEffect(() => {
+        updateCalendar();
+    }, [rentedDays, selectedMonth])
 
     return (
         <div className="select-none">
             <h2 className="text-base font-semibold leading-6 text-gray-900">{calendarName}</h2>
+
             <div className="">
                 <div className="mt-10 text-center lg:w-80 lg:mt-9">
                     <div className="flex items-center text-gray-900">
@@ -105,6 +115,9 @@ export default function CalendarMonth({
                             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
                         </button>
                     </div>
+                    <div className="linear-activity" hidden={!loading}>
+                        <div className="indeterminate"></div>
+                    </div>
                     <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
                         <div>M</div>
                         <div>T</div>
@@ -120,8 +133,8 @@ export default function CalendarMonth({
                                 type="button"
                                 className={clsx(
                                     'py-1.5 focus:z-10',
-                                    (day.date.day === selectedDay && day.date.month === selectedMonth) ? "bg-gray-400" : "hover:bg-gray-100",
-                                    day.isCurrentMonth ? 'bg-white' : 'bg-gray-50',
+                                    (day.date.day === selectedDay && day.date.month === selectedMonth) ? "bg-gray-300" :
+                                        (day.isCurrentMonth ? "hover:bg-gray-100 bg-white" : "bg-gray-50 hover:bg-gray-100"),
                                     (day.isSelected || day.isToday) && 'font-semibold',
                                     day.isSelected && 'text-white',
                                     !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900',
