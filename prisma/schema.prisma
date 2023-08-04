@@ -11,17 +11,22 @@ datasource db {
 }
 
 model User {
-    id        String   @id @default(uuid()) @map("_id")
+    id        String    @id @default(uuid()) @map("_id")
     name      String
     email     String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime  @default(now())
+    updatedAt DateTime  @updatedAt
+    reserves  Reserve[]
 }
 
-model Reserves {
+model Reserve {
     id        String   @id @default(uuid()) @map("_id")
+    purpose   String
     startedAt DateTime
+    endedAt   DateTime
     interval  Int
+    user      User     @relation(fields: [userId], references: [id])
+    userId    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 }

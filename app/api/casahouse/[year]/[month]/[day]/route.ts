@@ -5,7 +5,7 @@ export async function GET(request: Request, { params }: { params: { year: string
     const startTimeOfTheMonth = new Date(parseInt(params.year), parseInt(params.month) - 1, parseInt(params.day) - 1);
     const endTimeOfTheMonth = new Date(parseInt(params.year), parseInt(params.month), parseInt(params.day));
 
-    const days = await prisma.reserves.findMany({
+    const days = await prisma.reserve.findMany({
         where: {
             startedAt: {
                 gte: startTimeOfTheMonth,
