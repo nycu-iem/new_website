@@ -5,7 +5,10 @@ import { SimpleLayout } from '../../../components/SimpleLayout'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import CalendarMonth from '../../../components/calendar/Month'
-import { prisma } from "../../../lib/prisma"
+import DayView from '../../../components/calendar/DayView'
+import { Reserve, User } from '@prisma/client'
+
+type EventType = Reserve & { user: User }
 
 interface DateTime {
     year?: number,
@@ -27,6 +30,7 @@ export default function RoomRenting() {
     const [dateSelected, setDateSelected] = useState<DateTime>({});
     const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
+
     return (
         <SimpleLayout
             title="公共空間租借"
@@ -34,11 +38,11 @@ export default function RoomRenting() {
         >
             <div className="space-y-8">
                 <SpeakingSection title={["MOJO DOJO", "CASA HOUSE"]}>
-                    <OnOffSwitch
+                    {/* <OnOffSwitch
                         enable={calendarType}
                         setEnable={setCalendarType}
                         text={calendarType ? "單周顯示" : "整月顯示"}
-                    />
+                    /> */}
                     {calendarType ?
                         <CalendarDetailedView />
                         :
@@ -96,13 +100,13 @@ function CalendarSeperate({
     setDateSelected: Dispatch<SetStateAction<DateTime>>,
 }) {
     const today = new Date();
-    const [selectedMonth, setSelectedMonth] = useState(today.getMonth());
+    const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
     const [selectedDay, setSelectedDay] = useState<number>(today.getDate());
     const [hoverDate, setHoverDate] = useState<number>(NaN);
     const [selectedYear, setSelectedYear] = useState<number>(today.getFullYear());
     const [daysWithEvent, setDaysWithEvent] = useState<Array<number>>([]);
-    // const [reserve, setReserve] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(true);
+    const [events, setEvents] = useState<Array<EventType>>([]);
 
     const fetchAPI = async () => {
         setLoading(true)
@@ -110,13 +114,17 @@ function CalendarSeperate({
             const res = await fetch(`/api/casahouse/${selectedYear}/${selectedMonth}`, {
                 method: "GET"
             })
-            const result = await res.json();
+            const result: Array<EventType> = await res.json();
             console.log(result);
-
-            // setDaysWithEvent([])
-            // setTimeout(() => {
-            //     setDaysWithEvent([1, 2, 4, 8, 9, 13, 16, 21]);
-            // }, 1000)
+            setEvents(result);
+            let days: Set<number> = new Set();
+            result.map(e => {
+                const a = new Date(e.startedAt).getDate();
+                const b = new Date(e.endedAt).getDate();
+                days.add(a);
+                days.add(b);
+            })
+            setDaysWithEvent(Array.from(days.values()));
         } catch (err) {
             console.log(err)
         }
@@ -151,22 +159,28 @@ function CalendarSeperate({
     }
 
     return (
-        <div className='flex lg:flex-row flex-col lg:justify-between'>
+        <div className='flex lg:flex-row flex-col lg:justify-between lg:py-10'>
             <CalendarMonth
                 calendarName="Hello"
                 selectedDay={selectedDay}
                 setSelectedDay={setSelectedDay}
                 hoverDate={hoverDate}
                 setHoverDate={setHoverDate}
-                selectedMonth={selectedMonth + 1}
+                selectedMonth={selectedMonth}
                 selectedYear={selectedYear}
                 rentedDays={daysWithEvent}
                 loading={loading}
                 toggleMonth={toggleMonth}
                 setReserve={setReserve}
             />
-            <div className="w-80 mt-8 pl-5">
-                Day: {isNaN(hoverDate) ? selectedDay : hoverDate}
+            <div className="mt-8 pl-5 flex flex-row justify-center md:w-80">
+                <DayView date={{
+                    year: selectedYear,
+                    month: selectedMonth,
+                    day: isNaN(hoverDate) ? selectedDay : hoverDate,
+                }}
+                    events={events}
+                />
             </div>
         </div>
     )

@@ -47,11 +47,7 @@ export default function CalendarMonth({
     setReserve: Dispatch<SetStateAction<boolean>>,
     toggleMonth: (val: 1 | -1) => void
 }) {
-    // today, selected days
-    // const [hoverDate, setHoverDate] = useState<number | undefined>(undefined);
-    // const [days, setDays] = useState<Array<DayFormat>>([]);
     const today = new Date();
-    // let days: Array<DayFormat> = [];
     const [days, setDays] = useState<Array<DayFormat>>([]);
 
     const updateCalendar = () => {
@@ -85,6 +81,7 @@ export default function CalendarMonth({
                 isSelected: !padding && rentedDays.includes(day + 1),
             })
         }
+        console.log(temp_day)
         setDays(temp_day);
     }
 
@@ -119,12 +116,12 @@ export default function CalendarMonth({
                         <div className="indeterminate"></div>
                     </div>
                     <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
+                        <div>S</div>
                         <div>M</div>
                         <div>T</div>
                         <div>W</div>
                         <div>T</div>
                         <div>F</div>
-                        <div>S</div>
                         <div>S</div>
                     </div>
                     <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
