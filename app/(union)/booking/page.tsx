@@ -5,6 +5,7 @@ import { SimpleLayout } from '../../../components/SimpleLayout'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import clsx from 'clsx'
 import CalendarMonth from '../../../components/calendar/Month'
+import { prisma } from "../../../lib/prisma"
 
 interface DateTime {
     year?: number,
@@ -105,11 +106,21 @@ function CalendarSeperate({
 
     const fetchAPI = async () => {
         setLoading(true)
-        setDaysWithEvent([])
-        setTimeout(() => {
-            setDaysWithEvent([1, 2, 4, 8, 9, 13, 16, 21]);
-            setLoading(false)
-        }, 1000)
+        try {
+            const res = await fetch(`/api/casahouse/${selectedYear}/${selectedMonth}`, {
+                method: "GET"
+            })
+            const result = await res.json();
+            console.log(result);
+
+            // setDaysWithEvent([])
+            // setTimeout(() => {
+            //     setDaysWithEvent([1, 2, 4, 8, 9, 13, 16, 21]);
+            // }, 1000)
+        } catch (err) {
+            console.log(err)
+        }
+        setLoading(false)
     }
 
     useEffect(() => {
