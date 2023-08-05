@@ -1,7 +1,6 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
-
 import { Button } from '../../components/Button'
 import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from '../../components/Card'
 import { Container } from '../../components/Container'
@@ -208,7 +207,6 @@ function Photos() {
         </div>
     )
 }
-
 
 export default async function Home() {
     const articles = await getPosts({ isHomePage: true });

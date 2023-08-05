@@ -30,3 +30,13 @@
 [成大工資管](https://im.ncku.edu.tw/p/412-1138-19455.php?Lang=zh-tw)
 [台科大材料](https://mse.ntust.edu.tw/p/412-1019-266.php?Lang=zh-tw)
 [台大資工](https://www.csie.ntu.edu.tw/~b88x003/council.html)
+
+## Deploy
+
+### ENV
+openssl rand -base64 32
+
+1. Set the DATABASE_URL in the .env file to point to your existing database. If your database has no tables yet, read https://pris.ly/d/getting-started
+2. Set the provider of the datasource block in schema.prisma to match your database: postgresql, mysql, sqlite, sqlserver, mongodb or cockroachdb.
+3. Run prisma db pull to turn your database schema into a Prisma schema.
+4. Run prisma generate to generate the Prisma Client. You can then start querying your database
