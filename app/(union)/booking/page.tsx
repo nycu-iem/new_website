@@ -10,10 +10,8 @@ import { Reserve, User } from '@prisma/client'
 
 import { SessionProvider, useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-// import { timePicker } from "@mui/material"
 
 type EventType = Reserve & { user: User }
-type SessionType = ReturnType<typeof useSession>;
 
 interface DateTime {
     year?: number,
@@ -80,7 +78,6 @@ function CalendarDetailedView() {
 function CalendarSeperate({
     reserve,
     setReserve,
-    dateSelected,
     setDateSelected,
 }: {
     reserve: boolean,
@@ -104,7 +101,7 @@ function CalendarSeperate({
                 method: "GET"
             })
             const result: Array<EventType> = await res.json();
-            console.log(result);
+            // console.log(result);
             setEvents(result);
             let days: Set<number> = new Set();
             result.map(e => {
@@ -122,7 +119,7 @@ function CalendarSeperate({
 
     useEffect(() => {
         fetchAPI();
-    }, [selectedMonth, selectedYear,reserve])
+    }, [selectedMonth, selectedYear, reserve])
 
     useEffect(() => {
         setDateSelected({
@@ -294,6 +291,7 @@ function ReservePrompt({
                             <input value={purpose} type="text"
                                 onChange={(e) => { setPurpose(e.target.value) }}
                                 className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+                                required
                             />
                         </div>
                         <div className='flex flex-col justify-center'>
@@ -333,7 +331,7 @@ function ReservePrompt({
                         if (!loading) {
                             reserve();
                         }
-                    }}>
+                    }} type="submit">
                         預約
                     </Button>
                 </div>

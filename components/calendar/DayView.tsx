@@ -30,6 +30,7 @@ export default function DayView({
     }, [date])
 
     const updateList = async () => {
+        console.log(events)
         const event_today = events.filter((event) => {
             const start = new Date(event.startedAt).getDate();
             const end = new Date(event.endedAt).getDate();
@@ -61,7 +62,7 @@ export default function DayView({
                     {eventsToday.map((event) => (
                         <li className="relative mt-px flex w-full" key={`${event.startedAt} ${event.purpose}`}>
                             <div className={clsx("flex flex-col rounded-lg p-2 text-xs w-full", event.bgColor, `hover:${event.hoverColor}`)}>
-                                <p className={clsx("order-1 font-semibold", event.timeColor)}>{event.user.name}</p>
+                                <p className={clsx("order-1 font-semibold", event.timeColor)}>{event.user.name === "anonymous" ? event.user.student_id : event.user.name}</p>
                                 <p className={clsx("order-1 font-semibold", event.textColor)}>{event.purpose}</p>
                                 <div className={clsx("flex flex-row justify-between", event.timeColor, `group-hover:${event.groupHoverTextColor}`)}>
                                     <time dateTime="2022-01-12T06:00">{formatTimeOutput(event.startedAt)}</time>

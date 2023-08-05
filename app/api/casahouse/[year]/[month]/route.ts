@@ -11,11 +11,19 @@ export async function GET(request: Request, { params }: { params: { year: string
                 gte: startTimeOfTheMonth,
                 lte: endTimeOfTheMonth,
             }
-        }, include: {
-            user: true
+        }, select: {
+            startedAt: true,
+            endedAt: true,
+            purpose: true,
+            user: {
+                select: {
+                    student_id: true,
+                    name: true,
+                }
+            }
         }
     })
-    console.log(days)
+    // console.log(days)
 
     return NextResponse.json(days)
 }

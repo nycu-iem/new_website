@@ -51,6 +51,7 @@ export const authOptions: AuthOptions = {
                 return {
                     id: profile.username,
                     // username: profile.username,
+                    student_id: profile.username,
                     email: profile.email,
                     name: "anonymous"
                 }
