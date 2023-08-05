@@ -7,8 +7,11 @@ import clsx from 'clsx'
 
 import { Container } from './Container'
 import { usePathname } from "next/navigation"
-// import { toast } from 'react-toastify';
 import Swal from "sweetalert2"
+
+import { ToastContainer } from 'react-toastify';
+import Toaster from "./Toast"
+import 'react-toastify/dist/ReactToastify.css';
 
 const menuOptions: { title: string, href: string, blocked: boolean, reason?: string }[] = [
     {
@@ -30,8 +33,8 @@ const menuOptions: { title: string, href: string, blocked: boolean, reason?: str
     }, {
         title: "系窩租借",
         href: "/booking",
-        blocked: true,
-        reason: "Not Yet Implemented"
+        blocked: false,
+        // reason: "Not Yet Implemented"
     }, {
         title: "歷屆考古題",
         href: "/exams",
@@ -287,13 +290,14 @@ function Avatar({ large = false, className, ishomepage, ...props }: { large?: bo
                 sizes={large ? '4rem' : '2.25rem'}
                 className={clsx(
                     'rounded-full bg-zinc-100 object-cover',
-                    large ? 'h-16 h-16' : 'h-9 w-9'
+                    large ? 'h-16 w-16' : 'h-9 w-9'
                 )}
                 priority
             />
         </Link>
     )
 }
+
 
 export function Header() {
     let isHomePage = usePathname() === '/'
@@ -468,6 +472,8 @@ export function Header() {
                 </div>
             </header>
             {isHomePage && <div style={{ height: 'var(--content-offset)' }} />}
+            <ToastContainer />
+            <Toaster />
         </>
     )
 }

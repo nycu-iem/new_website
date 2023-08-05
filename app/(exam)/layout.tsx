@@ -1,11 +1,11 @@
 import "../globals.css"
-import { Inter } from "next/font/google"
+// import { Inter } from "next/font/google"
+// import { SessionProvider } from "next-auth/react"
 
-
-const inter = Inter({ subsets: ['latin'] });
+// const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-    title: '陽明交大 工工系學會 | NYCU IEM SA',
+    title: '陽明交大 工工系學會 考古題 | NYCU IEMSA EXAM',
     description: '國立陽明交通大學工業工程與管理學系 官方網站',
 }
 
@@ -15,10 +15,8 @@ export default function RootLayout({
     children: React.ReactNode
 }) {
     return (
-        <html lang="zh-tw">
-            <body>
-                {children}
-            </body>
-        </html>
+        <body>
+            {children}
+        </body>
     )
 }

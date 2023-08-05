@@ -3,7 +3,6 @@ import clsx from "clsx"
 import Image from "next/image"
 import {
     GetPostReturnType,
-    ImageType
 } from "../../../../lib/api"
 import Link from "next/link"
 
@@ -21,16 +20,16 @@ export default function ClientRenderedPage({ post }: { post: PostsType }) {
                         )
                     case "quote":
                         return (
-                            <p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200 pl-8"
-                                key={clsx(block.content)}>
+                            <div className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200 pl-8"
+                                key={`${clsx(block.content[0].text.content)}z`}>
                                 <ParagraphRenderer content={block.content} />
                                 <div className="h-full w-2 absolute bg-stone-700 left-0 dark:bg-slate-400" />
-                            </p>
+                            </div>
                         )
                     default:
                         // regard as paragraph
                         return (
-                            <div key={clsx(block.content)}>
+                            <div key={`${clsx(block.content[0].text.content)}z`}>
                                 <ParagraphRenderer content={block.content} />
                             </div>
                         )
@@ -81,7 +80,6 @@ function PlainTextParser({ content, link }: { content: string, link?: boolean })
             "relative z-10 flex text-sm font-medium ",
             link ? "text-zinc-700 transition hover:text-teal-300 dark:text-zinc-300 underline" : "text-zinc-400 transition dark:text-zinc-200"
         )}
-            // key={para.text.content}
             dangerouslySetInnerHTML={{ __html: lineBreaker(content) }}
         />
     )

@@ -57,31 +57,3 @@ export default async function ArticlesIndex() {
         </>
     )
 }
-
-// const getArticles = async () => {
-//     const posts: {
-//         slug: string,
-//         title: string,
-//         date: string,
-//         description: string,
-//     }[] = [
-//         {
-//             slug: "abc",
-//             title: "Hello",
-//             date: "sometime",
-//             description: "Description of hello"
-//         }, {
-//             slug: "cba",
-//             title: "Hola",
-//             date: "sometime",
-//             description: "Description of hola"
-//         }, {
-//             slug: "acb",
-//             title: "こんにちは",
-//             date: "sometime",
-//             description: "Description of こんにちは"
-//         }
-//     ].slice(0, 4);
-
-//     return posts;
-// }
