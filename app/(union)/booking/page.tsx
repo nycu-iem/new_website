@@ -218,6 +218,10 @@ function ReservePrompt({
 }) {
     const session = useSession();
     const router = useRouter()
+    const [timeStarted, setTimeStarted] = useState<Date>(new Date(2023, 0, 0, 0, 0));
+    const [timeEnded, setTimeEnded] = useState<Date>(new Date(2023, 0, 0, 0, 0));
+    const [purpose, setPurpose] = useState<string>("");
+    const [loading, setLoading] = useState<boolean>(false);
 
     if (session.status === "unauthenticated") {
         router.push(`/login?${new URLSearchParams({
@@ -226,10 +230,6 @@ function ReservePrompt({
         })}`)
         return <></>
     }
-    const [timeStarted, setTimeStarted] = useState<Date>(new Date(2023, 0, 0, 0, 0));
-    const [timeEnded, setTimeEnded] = useState<Date>(new Date(2023, 0, 0, 0, 0));
-    const [purpose, setPurpose] = useState<string>("");
-    const [loading, setLoading] = useState<boolean>(false);
 
     const reserve = async () => {
         setLoading(true)
