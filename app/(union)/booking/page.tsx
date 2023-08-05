@@ -8,7 +8,11 @@ import CalendarMonth from '../../../components/calendar/Month'
 import DayView from '../../../components/calendar/DayView'
 import { Reserve, User } from '@prisma/client'
 
+import { SessionProvider, useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+
 type EventType = Reserve & { user: User }
+type SessionType = ReturnType<typeof useSession>;
 
 interface DateTime {
     year?: number,
@@ -28,55 +32,38 @@ export default function RoomRenting() {
     const [calendarType, setCalendarType] = useState<boolean>(false);
     const [reserve, setReserve] = useState<boolean>(false);
     const [dateSelected, setDateSelected] = useState<DateTime>({});
-    const [loggedIn, setLoggedIn] = useState<boolean>(false);
-
+    // const [loggedIn, setLoggedIn] = useState<boolean>(false);
 
     return (
-        <SimpleLayout
-            title="公共空間租借"
-            intro="系學會空間出借"
-        >
-            <div className="space-y-8">
-                <SpeakingSection title={["MOJO DOJO", "CASA HOUSE"]}>
-                    {/* <OnOffSwitch
+        <SessionProvider>
+
+            <SimpleLayout
+                title="公共空間租借"
+                intro="系學會空間出借"
+            >
+                <div className="space-y-8">
+                    <SpeakingSection title={["MOJO DOJO", "CASA HOUSE"]}>
+                        {/* <OnOffSwitch
                         enable={calendarType}
                         setEnable={setCalendarType}
                         text={calendarType ? "單周顯示" : "整月顯示"}
                     /> */}
-                    {calendarType ?
-                        <CalendarDetailedView />
-                        :
-                        <CalendarSeperate
-                            dateSelected={dateSelected}
-                            setDateSelected={setDateSelected}
-                            reserve={reserve}
-                            setReserve={setReserve}
-                        />}
-                </SpeakingSection>
-            </div>
-            {reserve && <div
-                className='w-screen h-screen z-50 bg-black fixed top-0 left-0 bg-opacity-70 flex flex-row justify-center items-center '
-                onClick={() => { setReserve(false) }}
-            >
-                <div className="bg-white rounded-lg max-w-3xl w-full z-50 px-5 py-3"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}>
-                    <div>
-
-                    </div>
-                    <div>
-                        選擇日期
-                    </div>
-                    <div>
-                        選擇開始時間
-                    </div>
-                    <div>
-                        預計租借時長
-                    </div>
+                        {calendarType ?
+                            <CalendarDetailedView />
+                            :
+                            <CalendarSeperate
+                                dateSelected={dateSelected}
+                                setDateSelected={setDateSelected}
+                                reserve={reserve}
+                                setReserve={setReserve}
+                            />}
+                    </SpeakingSection>
                 </div>
-            </div>}
-        </SimpleLayout>
+                {reserve && <ReservePrompt
+                    setReserve={setReserve}
+                />}
+            </SimpleLayout>
+        </SessionProvider>
     )
 }
 
@@ -214,6 +201,45 @@ function OnOffSwitch(
                 )} />
             </Switch>
             {text && <h2>{text}</h2>}
+        </div>
+    )
+}
+
+function ReservePrompt({
+    setReserve,
+}: {
+    setReserve: Dispatch<SetStateAction<boolean>>
+}) {
+    const session = useSession();
+    if (session.status === "unauthenticated") {
+        const router = useRouter()
+        router.push(`/login?${new URLSearchParams({
+            text: "請先登入",
+            type: "info"
+        })}`)
+        return <></>
+    }
+    return (
+        <div className='w-screen h-screen z-50 bg-black fixed top-0 left-0 bg-opacity-70 flex flex-row justify-center items-center '
+            onClick={() => { setReserve(false) }}
+        >
+            <div className="bg-white rounded-lg max-w-3xl w-full z-50 px-5 py-3"
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}>
+                <div>
+
+                </div>
+                <div>
+                    選擇日期
+                </div>
+                <div>
+                    選擇開始時間
+                </div>
+                <div>
+                    預計租借時長
+                </div>
+            </div>
         </div>
     )
 }

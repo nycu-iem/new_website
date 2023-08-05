@@ -9,7 +9,10 @@ export default async function LoginPage() {
     const session = await getServerSession(authOptions);
 
     if (session) {
-        redirect("/")
+        redirect("/?" + new URLSearchParams({
+            text: "登入成功",
+            type: "success"
+        }),)
     }
 
     const providers = await getProviders() ?? [];
