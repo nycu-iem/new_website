@@ -3,13 +3,13 @@ import { getProviders } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import Client from "./page_client";
-
+import { redirect } from "next/navigation";
 
 export default async function LoginPage() {
     const session = await getServerSession(authOptions);
 
     if (session) {
-        return { redirect: { destination: "/" } };
+        redirect("/")
     }
 
     const providers = await getProviders() ?? [];

@@ -1,6 +1,6 @@
 import NextAuth, { AuthOptions } from "next-auth"
-// import GithubProvider from "next-auth/providers/github"
-// import Providers from "next-auth/providers"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { prisma } from "../../../../lib/prisma"
 
 export const authOptions: AuthOptions = {
     // Configure one or more authentication providers
@@ -9,18 +9,51 @@ export const authOptions: AuthOptions = {
             id: "nycu",
             name: "nycu",
             authorization: {
-                url: "",
+                url: "https://id.nycu.edu.tw/o/authorize/",
                 params: {
-                    scope: "email"
+                    response_type: "code",
+                    client_id: process.env.NYCU_ID,
+                    redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/nycu`,
+                    scope: `profile`,
                 },
             },
             token: {
-                url: "",
-                params: {}
+                // url: "https://id.nycu.edu.tw/o/token/",
+                async request(context) {
+                    // context contains useful properties to help you make the request.
+                    const formData = new URLSearchParams({
+                        grant_type: "authorization_code",
+                        code: context.params.code as string,
+                        client_id: process.env.NYCU_ID as string,
+                        client_secret: process.env.NYCU_SECRET as string,
+                        redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/nycu`,
+                    })
+                    // console.log(formData)
+                    const res = await fetch(`https://id.nycu.edu.tw/o/token/`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded",
+                            "Accept": "application/json"
+                        },
+                        body: formData
+                    })
+                    const tokens = await res.json();
+                    // console.log(tokens)
+                    return { tokens }
+                }
             },
             userinfo: {
-                url: "",
-                params: {}
+                url: "https://id.nycu.edu.tw/api/profile/"
+            },
+            profile(profile) {
+                // console.log("profile");
+                // console.log(profile);
+                return {
+                    id: profile.username,
+                    // username: profile.username,
+                    email: profile.email,
+                    name: "anonymous"
+                }
             },
             type: "oauth",
             version: "2.0",
@@ -37,22 +70,9 @@ export const authOptions: AuthOptions = {
                 text: "NYCU Oauth Signin",
                 textDark: "NYCU Oauth Signin"
             },
-            profile(profile) {
-                return {
-                    id: profile.id,
-                    name: profile.name,
-                    email: profile.email,
-                    image: profile.image
-                }
-            },
+            checks: [],
         }
     ],
-    session: {
-        strategy: "jwt"
-    },
-    jwt: {
-        maxAge: 60 * 60 * 24 * 30,
-    },
     pages: {
         signIn: '/login',
         signOut: '/logout',
@@ -62,6 +82,7 @@ export const authOptions: AuthOptions = {
     },
     debug: process.env.NODE_ENV === "development",
     useSecureCookies: process.env.NODE_ENV === "production",
+    adapter: PrismaAdapter(prisma),
 }
 
 const handler = NextAuth(authOptions);
