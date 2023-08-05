@@ -30,7 +30,7 @@ export default function DayView({
     }, [date])
 
     const updateList = async () => {
-        console.log(events)
+        // console.log(events)
         const event_today = events.filter((event) => {
             const start = new Date(event.startedAt).getDate();
             const end = new Date(event.endedAt).getDate();
