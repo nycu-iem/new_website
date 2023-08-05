@@ -27,6 +27,10 @@ export async function POST(
         return NextResponse.json({ error: "start_time can not be gte end_time" }, { status: 422 })
     }
 
+    if (data.purpose === "") {
+        return NextResponse.json({ error: "Purpose cannot be empty" }, { status: 422 })
+    }
+
     const result = await prisma.reserve.findMany({
         where: {
             OR: [
