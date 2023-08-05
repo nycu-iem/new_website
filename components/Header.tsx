@@ -9,6 +9,10 @@ import { Container } from './Container'
 import { usePathname } from "next/navigation"
 import Swal from "sweetalert2"
 
+import { ToastContainer } from 'react-toastify';
+import Toaster from "./Toast"
+import 'react-toastify/dist/ReactToastify.css';
+
 const menuOptions: { title: string, href: string, blocked: boolean, reason?: string }[] = [
     {
         title: "關於系學會",
@@ -294,6 +298,7 @@ function Avatar({ large = false, className, ishomepage, ...props }: { large?: bo
     )
 }
 
+
 export function Header() {
     let isHomePage = usePathname() === '/'
 
@@ -467,6 +472,8 @@ export function Header() {
                 </div>
             </header>
             {isHomePage && <div style={{ height: 'var(--content-offset)' }} />}
+            <ToastContainer />
+            <Toaster />
         </>
     )
 }
