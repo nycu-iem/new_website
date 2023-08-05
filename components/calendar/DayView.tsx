@@ -47,7 +47,7 @@ export default function DayView({
 
     const updateWeekDay = () => {
         const day = new Date(date.year, date.month - 1, date.day);
-        console.log(date.year, date.month - 1, date.day)
+        // console.log(date.year, date.month - 1, date.day)
         setWeekDay(day.getDay());
     }
 
@@ -59,7 +59,7 @@ export default function DayView({
             <div className="mt-10">
                 <ol className="w-full space-y-5 select-none">
                     {eventsToday.map((event) => (
-                        <li className="relative mt-px flex w-full" key={event.purpose}>
+                        <li className="relative mt-px flex w-full" key={`${event.startedAt} ${event.purpose}`}>
                             <div className={clsx("flex flex-col rounded-lg p-2 text-xs w-full", event.bgColor, `hover:${event.hoverColor}`)}>
                                 <p className={clsx("order-1 font-semibold", event.timeColor)}>{event.user.name}</p>
                                 <p className={clsx("order-1 font-semibold", event.textColor)}>{event.purpose}</p>
