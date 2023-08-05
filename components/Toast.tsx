@@ -11,7 +11,7 @@ export default function Client() {
 
     useEffect(() => {
         showAlert();
-    }, [])
+    }, [searchParams,pathname])
 
     const showAlert = () => {
         const type = searchParams.get('type');
@@ -19,7 +19,7 @@ export default function Client() {
         if (type === "success") {
             toast.success(text, {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -29,7 +29,7 @@ export default function Client() {
         } else if (type === "error") {
             toast.error(text, {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,
@@ -39,7 +39,7 @@ export default function Client() {
         } else if (type === "info") {
             toast.info(text, {
                 position: "top-right",
-                autoClose: 5000,
+                autoClose: 2000,
                 hideProgressBar: false,
                 closeOnClick: true,
                 pauseOnHover: true,

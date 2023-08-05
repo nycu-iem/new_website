@@ -81,7 +81,7 @@ export default function CalendarMonth({
                 isSelected: !padding && rentedDays.includes(day + 1),
             })
         }
-        console.log(temp_day)
+        // console.log(temp_day)
         setDays(temp_day);
     }
 
