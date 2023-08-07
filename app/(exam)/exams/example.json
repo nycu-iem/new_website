@@ -1,0 +1,260 @@
+{
+    "/": [
+        {
+            "title": "Guides",
+            "id": "guides"
+        },
+        {
+            "title": "Resources",
+            "id": "resources"
+        }
+    ],
+    "/attachments": [
+        {
+            "title": "The attachment model",
+            "id": "the-attachment-model"
+        },
+        {
+            "title": "List all attachments",
+            "id": "list-all-attachments",
+            "tag": "GET",
+            "label": "/v1/attachments"
+        },
+        {
+            "title": "Create an attachment",
+            "id": "create-an-attachment",
+            "tag": "POST",
+            "label": "/v1/attachments"
+        },
+        {
+            "title": "Retrieve an attachment",
+            "id": "retrieve-an-attachment",
+            "tag": "GET",
+            "label": "/v1/attachments/:id"
+        },
+        {
+            "title": "Update an attachment",
+            "id": "update-an-attachment",
+            "tag": "PUT",
+            "label": "/v1/attachments/:id"
+        },
+        {
+            "title": "Delete an attachment",
+            "id": "delete-an-attachment",
+            "tag": "DELETE",
+            "label": "/v1/attachments/:id"
+        }
+    ],
+    "/authentication": [
+        {
+            "title": "Basic authentication",
+            "id": "basic-authentication"
+        },
+        {
+            "title": "OAuth2 with bearer token",
+            "id": "o-auth2-with-bearer-token"
+        },
+        {
+            "title": "Using an SDK",
+            "id": "using-an-sdk"
+        }
+    ],
+    "/contacts": [
+        {
+            "title": "The contact model",
+            "id": "the-contact-model"
+        },
+        {
+            "title": "List all contacts",
+            "id": "list-all-contacts",
+            "tag": "GET",
+            "label": "/v1/contacts"
+        },
+        {
+            "title": "Create a contact",
+            "id": "create-a-contact",
+            "tag": "POST",
+            "label": "/v1/contacts"
+        },
+        {
+            "title": "Retrieve a contact",
+            "id": "retrieve-a-contact",
+            "tag": "GET",
+            "label": "/v1/contacts/:id"
+        },
+        {
+            "title": "Update a contact",
+            "id": "update-a-contact",
+            "tag": "PUT",
+            "label": "/v1/contacts/:id"
+        },
+        {
+            "title": "Delete a contact",
+            "id": "delete-a-contact",
+            "tag": "DELETE",
+            "label": "/v1/contacts/:id"
+        }
+    ],
+    "/conversations": [
+        {
+            "title": "The conversation model",
+            "id": "the-conversation-model"
+        },
+        {
+            "title": "List all conversations",
+            "id": "list-all-conversations",
+            "tag": "GET",
+            "label": "/v1/conversations"
+        },
+        {
+            "title": "Create a conversation",
+            "id": "create-a-conversation",
+            "tag": "POST",
+            "label": "/v1/conversations"
+        },
+        {
+            "title": "Retrieve a conversation",
+            "id": "retrieve-a-conversation",
+            "tag": "GET",
+            "label": "/v1/conversations/:id"
+        },
+        {
+            "title": "Update a conversation",
+            "id": "update-a-conversation",
+            "tag": "PUT",
+            "label": "/v1/conversations/:id"
+        },
+        {
+            "title": "Delete a conversation",
+            "id": "delete-a-conversation",
+            "tag": "DELETE",
+            "label": "/v1/conversations/:id"
+        }
+    ],
+    "/errors": [
+        {
+            "title": "Status codes",
+            "id": "status-codes"
+        },
+        {
+            "title": "Error types",
+            "id": "error-types"
+        }
+    ],
+    "/groups": [
+        {
+            "title": "The group model",
+            "id": "the-group-model"
+        },
+        {
+            "title": "List all groups",
+            "id": "list-all-groups",
+            "tag": "GET",
+            "label": "/v1/groups"
+        },
+        {
+            "title": "Create a group",
+            "id": "create-a-group",
+            "tag": "POST",
+            "label": "/v1/groups"
+        },
+        {
+            "title": "Retrieve a group",
+            "id": "retrieve-a-group",
+            "tag": "GET",
+            "label": "/v1/groups/:id"
+        },
+        {
+            "title": "Update a group",
+            "id": "update-a-group",
+            "tag": "PUT",
+            "label": "/v1/groups/:id"
+        },
+        {
+            "title": "Delete a group",
+            "id": "delete-a-group",
+            "tag": "DELETE",
+            "label": "/v1/groups/:id"
+        }
+    ],
+    "/messages": [
+        {
+            "title": "The message model",
+            "id": "the-message-model"
+        },
+        {
+            "title": "List all messages",
+            "id": "list-all-messages",
+            "tag": "GET",
+            "label": "/v1/messages"
+        },
+        {
+            "title": "Send a message",
+            "id": "send-a-message",
+            "tag": "POST",
+            "label": "/v1/messages"
+        },
+        {
+            "title": "Retrieve a message",
+            "id": "retrieve-a-message",
+            "tag": "GET",
+            "label": "/v1/messages/:id"
+        },
+        {
+            "title": "Update a message",
+            "id": "update-a-message",
+            "tag": "PUT",
+            "label": "/v1/messages/:id"
+        },
+        {
+            "title": "Delete a message",
+            "id": "delete-a-message",
+            "tag": "DELETE",
+            "label": "/v1/messages/:id"
+        }
+    ],
+    "/pagination": [
+        {
+            "title": "Example using cursors",
+            "id": "example-using-cursors"
+        }
+    ],
+    "/quickstart": [
+        {
+            "title": "Choose your client",
+            "id": "choose-your-client"
+        },
+        {
+            "title": "Making your first API request",
+            "id": "making-your-first-api-request"
+        },
+        {
+            "title": "What's next?",
+            "id": "whats-next"
+        }
+    ],
+    "/sdks": [
+        {
+            "title": "Official libraries",
+            "id": "official-libraries"
+        }
+    ],
+    "/webhooks": [
+        {
+            "title": "Registering webhooks",
+            "id": "registering-webhooks"
+        },
+        {
+            "title": "Consuming webhooks",
+            "id": "consuming-webhooks"
+        },
+        {
+            "title": "Event types",
+            "id": "event-types"
+        },
+        {
+            "title": "Security",
+            "id": "security"
+        }
+    ]
+}

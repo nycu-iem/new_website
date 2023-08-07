@@ -38,8 +38,8 @@ const menuOptions: { title: string, href: string, blocked: boolean, reason?: str
     }, {
         title: "歷屆考古題",
         href: "/exams",
-        blocked: true,
-        reason: "Not Yet Implemented"
+        blocked: false,
+        // reason: "Not Yet Implemented"
     }
 ]
 
