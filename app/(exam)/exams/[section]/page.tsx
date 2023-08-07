@@ -1,4 +1,4 @@
-export default function ExamPage() {
+export default function SectionPage() {
     return (
         <>
         </>

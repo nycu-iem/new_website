@@ -8,7 +8,7 @@ import {
     InstagramIcon,
     TwitterIcon,
     FacebookIcon
-} from '../../components/SocialIcons'
+} from '../../components/Icon'
 
 import { formatDate } from '../../lib/formatDate'
 import { getPosts } from '../../lib/api'
