@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
@@ -8,15 +8,9 @@ import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
 
 import { Button } from './Button'
 import { useIsInsideMobileNavigation } from './MobileNavigation'
-// import { useSectionStore } from './SectionProvider'
 import { Tag } from './Tag'
 import { remToPx } from '../../../lib/remToPx'
 import { FirstLayerOfPost } from '../notion_api'
-
-// function useInitialValue(value, condition = true) {
-//     let initialValue = useRef(value).current
-//     return condition ? initialValue : value
-// }
 
 function TopLevelNavItem({
     href,
@@ -41,7 +35,7 @@ function NavLink({
     tag,
     active = false,
     isAnchorLink = false,
-    children
+    children,
 }: {
     href: string,
     tag?: string,
@@ -49,6 +43,13 @@ function NavLink({
     isAnchorLink?: boolean,
     children: React.ReactNode,
 }) {
+    const pushEvent = () => {
+        // const eventEmit = document.createEvent('HTMLEvents')
+        // eventEmit.initEvent('link-clicked')
+        const event = new Event("link-clicked", { "bubbles": true, "cancelable": false });
+        document.dispatchEvent(event);
+    }
+
     return (
         <Link href={href}
             aria-current={active ? 'page' : undefined}
@@ -59,6 +60,7 @@ function NavLink({
                     ? 'text-zinc-900 dark:text-white'
                     : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
             )}
+            onClick={() => { pushEvent() }}
         >
             <span className="truncate">{children}</span>
             {tag && (
@@ -79,32 +81,50 @@ function VisibleSectionHighlight({
     pathname: string,
     sections: Array<FirstLayerOfPost>
 }) {
-    // let [sections, visibleSections] = useInitialValue(
-    //     [
-    //         useSectionStore((s) => s.sections),
-    //         useSectionStore((s) => s.visibleSections),
-    //     ],
-    //     useIsInsideMobileNavigation()
-    // )
-
-    const visibleSections = sections.map((section) => ({
-        ...section,
-    }))
+    const visibleSections = sections.filter((section) => (
+        pathname.includes(section.link)
+    ))
 
     const isPresent = useIsPresent()
-    const firstVisibleSectionIndex = Math.max(
-        0,
-        [{ title: '_top' }, ...sections].findIndex(
-            (section) => section.title === visibleSections[0].title
-        )
-    )
+    // console.log(isPresent)
+
     const itemHeight = remToPx(2)
-    const height = isPresent
-        ? Math.max(1, visibleSections.length) * itemHeight
-        : itemHeight
-    const top =
-        group.classes.findIndex((course) => `${group.link}/${course.link}` === pathname) * itemHeight +
-        firstVisibleSectionIndex * itemHeight
+    const [height, setHeight] = useState<number>(0);
+    const [top, setTop] = useState<number>(0);
+    // const [hash, setHash] = useState<string>("");
+
+    const hashChangedHandler = useCallback(() => {
+        setTimeout(()=>{
+            // console.log(document.location.hash)
+            const courses = visibleSections[0].classes;
+            const classIndex = courses.findIndex(c => (encodeURI(`${visibleSections[0].link}/${c.link}`) === pathname))
+            
+            const firstVisibleSectionIndex = Math.max(
+                0,
+                [{ title: '_top', text: 'text' }, ...courses[classIndex].sections].findIndex(
+                    (section) => encodeURI(`#${section.title}${section.text}`) === document.location.hash
+                )
+            )
+            console.log('first visible section index:',firstVisibleSectionIndex)
+            setHeight(isPresent
+                ? Math.max(1, visibleSections.length) * itemHeight
+                : itemHeight)
+    
+            setTop(group.classes.findIndex((course) => encodeURI(`${group.link}/${course.link}`) === pathname) * itemHeight +
+                firstVisibleSectionIndex * itemHeight)
+    
+            console.log("height", height)
+            console.log("top", top)
+        },200)
+    }, [])
+
+    useEffect(() => {
+        hashChangedHandler();
+        window.addEventListener('link-clicked', hashChangedHandler)
+        return () => {
+            window.removeEventListener('link-clicked', hashChangedHandler)
+        }
+    }, [])
 
     return (
         <motion.div
@@ -112,7 +132,7 @@ function VisibleSectionHighlight({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.2 } }}
             exit={{ opacity: 0 }}
-            className="absolute inset-x-0 top-0 bg-zinc-800/2.5 will-change-transform dark:bg-white/2.5"
+            className="absolute inset-x-0 top-0 bg-zinc-800 will-change-transform dark:bg-white bg-opacity-40"
             style={{ borderRadius: 8, height, top }}
         />
     )
@@ -166,8 +186,7 @@ function NavigationGroup({
 
     return (
         <li className={clsx('relative mt-6', className)}>
-            <motion.h2
-                layout="position"
+            <motion.h2 layout="position"
                 className="text-xs font-semibold text-zinc-900 dark:text-white"
             >
                 {group.title}
@@ -194,7 +213,7 @@ function NavigationGroup({
                                 {course.title}
                             </NavLink>
                             <AnimatePresence mode="popLayout" initial={false}>
-                                {`${group.link}/${course.link}` === pathname && group.classes.length > 0 && (
+                                {encodeURI(`${group.link}/${course.link}`) === pathname && group.classes.length > 0 && (
                                     <motion.ul
                                         role="list"
                                         initial={{ opacity: 0 }}
@@ -208,12 +227,12 @@ function NavigationGroup({
                                         }}
                                     >
                                         {course.sections.map((section) => (
-                                            <li key={section}>
-                                                <NavLink href={`${group.link}/${course.link}#${section}`}
-                                                    tag={section}
+                                            <li key={`${section.title}${section.text}`}>
+                                                <NavLink href={`${group.link}/${course.link}#${section.title}${section.text}`}
+                                                    tag={section.text}
                                                     isAnchorLink
                                                 >
-                                                    {section}
+                                                    {section.title}
                                                 </NavLink>
                                             </li>
                                         ))}

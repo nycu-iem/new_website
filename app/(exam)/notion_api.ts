@@ -22,8 +22,16 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
                     title: "會計一-蔡碧輝",
                     link: "課號1",
                     sections: [
-                        "考古一:2022期中",
-                        "考古一:2022期末",
+                        {
+                            title: "考古題",
+                            text: "2022期中"
+                        }, {
+                            title: "考古題",
+                            text: "2022期末"
+                        }, {
+                            title: "考古題",
+                            text: "2022大會考"
+                        }
                     ]
                 }
             ]
@@ -35,8 +43,13 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
                     title: "會計二-蔡碧輝",
                     link: "課號2",
                     sections: [
-                        "考古二:2022期中",
-                        "考古二:2022期末",
+                        {
+                            title: "考古",
+                            text: "2023期中"
+                        }, {
+                            title: "考古",
+                            text: "2023期末"
+                        }
                     ]
                 }
             ]
@@ -53,7 +66,7 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
             link: "/exams/grade-4",
             classes: []
         }, {
-            title: "工工系選修",
+            title: "其他選修課",
             link: "/exams/others",
             classes: []
         }
@@ -69,5 +82,8 @@ export interface FirstLayerOfPost {
 export interface Course {
     title: string,
     link: string,
-    sections: Array<string>
+    sections: Array<{
+        title: string,
+        text: string
+    }>
 }
