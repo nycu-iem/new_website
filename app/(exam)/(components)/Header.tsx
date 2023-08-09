@@ -12,6 +12,7 @@ import {
 import { useMobileNavigationStore } from './MobileNavigation'
 import { MobileSearch, Search } from './Search'
 import { ThemeToggle } from './ThemeToggle'
+import { FirstLayerOfPost } from '../notion_api'
 
 function TopLevelNavItem({
     href,
@@ -22,8 +23,7 @@ function TopLevelNavItem({
 }) {
     return (
         <li>
-            <Link
-                href={href}
+            <Link href={href}
                 className="text-sm leading-5 text-zinc-600 transition hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white"
             >
                 {children}
@@ -33,8 +33,10 @@ function TopLevelNavItem({
 }
 
 export const Header = forwardRef(function Header({
-    className
+    className,
+    sections,
 }: {
+    sections: Array<FirstLayerOfPost>
     className?: string
 }, ref: React.ForwardedRef<HTMLDivElement>) {
     const { isOpen: mobileNavIsOpen } = useMobileNavigationStore()
@@ -71,7 +73,7 @@ export const Header = forwardRef(function Header({
             />
             <Search />
             <div className="flex items-center gap-5 lg:hidden">
-                <MobileNavigation />
+                <MobileNavigation sections={sections} />
                 <Link href="/" aria-label="Home">
                     <Logo className="h-6" />
                 </Link>
@@ -79,9 +81,9 @@ export const Header = forwardRef(function Header({
             <div className="flex items-center gap-5">
                 <nav className="hidden md:block">
                     <ul role="list" className="flex items-center gap-8">
-                        <TopLevelNavItem href="/">API</TopLevelNavItem>
-                        <TopLevelNavItem href="#">Documentation</TopLevelNavItem>
-                        <TopLevelNavItem href="#">Support</TopLevelNavItem>
+                        <TopLevelNavItem href="/articles">所有文章</TopLevelNavItem>
+                        <TopLevelNavItem href="/activities">活動</TopLevelNavItem>
+                        <TopLevelNavItem href="/booking">系窩租借</TopLevelNavItem>
                     </ul>
                 </nav>
                 <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15" />

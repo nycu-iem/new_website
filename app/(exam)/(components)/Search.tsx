@@ -20,7 +20,7 @@ import {
     SearchIcon
 } from "../../../components/Icon"
 
-import { navigation } from './Navigation'
+// import { navigation } from './Navigation'
 
 
 // TODO: Auto Complete function is not completed
@@ -122,19 +122,18 @@ function SearchResult({
     collection,
     query,
 }) {
-    let id = useId()
+    const id = useId()
 
-    let sectionTitle = navigation.find((section) =>
+    const sectionTitle = navigation.find((section) =>
         section.links.find((link) => link.href === result.url.split('#')[0])
     )?.title
     let hierarchy = [sectionTitle, result.pageTitle].filter(Boolean)
 
     return (
-        <li
-            className={clsx(
-                'group block cursor-default px-4 py-3 aria-selected:bg-zinc-50 dark:aria-selected:bg-zinc-800/50',
-                resultIndex > 0 && 'border-t border-zinc-100 dark:border-zinc-800'
-            )}
+        <li className={clsx(
+            'group block cursor-default px-4 py-3 aria-selected:bg-zinc-50 dark:aria-selected:bg-zinc-800/50',
+            resultIndex > 0 && 'border-t border-zinc-100 dark:border-zinc-800'
+        )}
             aria-labelledby={`${id}-hierarchy ${id}-title`}
             {...autocomplete.getItemProps({
                 item: result,
@@ -174,7 +173,15 @@ function SearchResult({
     )
 }
 
-function SearchResults({ autocomplete, query, collection }) {
+function SearchResults({
+    autocomplete,
+    query,
+    collection
+}: {
+    autocomplete: any,
+    query: any,
+    collection: any,
+}) {
     if (collection.items.length === 0) {
         return (
             <div className="p-6 text-center">

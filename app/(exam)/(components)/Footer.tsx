@@ -4,14 +4,16 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 import { Button } from './Button'
-import { navigation } from './Navigation'
+// import { navigation } from './Navigation'
 import React from 'react'
 
 import {
     DiscordIcon,
-    TwitterIcon2,
-    GitHubIcon2
+    TwitterIcon,
+    GitHubIcon
 } from "../../../components/Icon"
+
+import { FirstLayerOfPost } from '../notion_api'
 
 function PageLink({
     label,
@@ -43,10 +45,31 @@ function PageLink({
     )
 }
 
-function PageNavigation() {
+const decompressArray = (sections: Array<FirstLayerOfPost>, pathPrefix?: string) => {
+    let subsets: Array<FirstLayerOfPost> = [];
+
+    sections.map((section) => {
+        subsets = [
+            ...subsets,
+            {
+                title: section.title,
+                id: section.id
+            },
+            ...decompressArray(section.children ?? [], pathPrefix = `/${section.id}`)
+        ]
+    })
+    return subsets;
+}
+
+function PageNavigation({
+    sections
+}: {
+    sections: Array<FirstLayerOfPost>
+}) {
     const pathname = usePathname()
-    const allPages = navigation.flatMap((group) => group.links)
-    const currentPageIndex = allPages.findIndex((page) => page.href === pathname)
+    const allPages = decompressArray(sections);
+    const allLinks = allPages.flatMap((group) => group.id);
+    const currentPageIndex = allLinks.findIndex((page) => page === pathname)
 
     if (currentPageIndex === -1) {
         return null
@@ -101,11 +124,11 @@ function SmallPrint() {
             <div className="flex gap-4">
                 <Link href="#" className="group">
                     <span className="sr-only">Follow us on twitter</span>
-                    <TwitterIcon2 className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
+                    <TwitterIcon className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
                 </Link>
                 <Link href="href" className='group'>
                     <span className='sr-only'>Follow us on Github</span>
-                    <GitHubIcon2 className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
+                    <GitHubIcon className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
                 </Link>
                 <Link href="href" className='group'>
                     <span className='sr-only'>Join our Discord server</span>
@@ -116,10 +139,14 @@ function SmallPrint() {
     )
 }
 
-export function Footer() {
+export function Footer({
+    sections = []
+}: {
+    sections: Array<FirstLayerOfPost>
+}) {
     return (
         <footer className="mx-auto w-full max-w-2xl space-y-10 pb-16 lg:max-w-5xl">
-            <PageNavigation />
+            <PageNavigation sections={sections} />
             <SmallPrint />
         </footer>
     )
