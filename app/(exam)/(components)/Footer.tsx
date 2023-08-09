@@ -45,38 +45,24 @@ function PageLink({
     )
 }
 
-const decompressArray = (sections: Array<FirstLayerOfPost>, pathPrefix?: string) => {
-    let subsets: Array<FirstLayerOfPost> = [];
-
-    sections.map((section) => {
-        subsets = [
-            ...subsets,
-            {
-                title: section.title,
-                id: section.id
-            },
-            ...decompressArray(section.children ?? [], pathPrefix = `/${section.id}`)
-        ]
-    })
-    return subsets;
-}
-
 function PageNavigation({
     sections
 }: {
     sections: Array<FirstLayerOfPost>
 }) {
     const pathname = usePathname()
-    const allPages = decompressArray(sections);
-    const allLinks = allPages.flatMap((group) => group.id);
+    const allLinks = sections.map(section => (section.classes.map(course => (`${section.link}/${course.link}`)))).flat();
+    // console.log(allClasses)
+    // const allPages = decompressArray(sections);
+    // const allLinks = allPages.flatMap((group) => group.id);
     const currentPageIndex = allLinks.findIndex((page) => page === pathname)
 
     if (currentPageIndex === -1) {
         return null
     }
 
-    const previousPage = allPages[currentPageIndex - 1]
-    const nextPage = allPages[currentPageIndex + 1]
+    const previousPage = allLinks[currentPageIndex - 1]
+    const nextPage = allLinks[currentPageIndex + 1]
 
     if (!previousPage && !nextPage) {
         return null
