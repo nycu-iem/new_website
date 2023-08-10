@@ -1,3 +1,39 @@
+export const getNotionPost = async ({
+    pageId,
+}: {
+    pageId: string,
+}) => {
+    const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
+        method: 'GET',
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
+            "Notion-Version": "2022-06-28"
+        }, next: {
+            revalidate: 10
+        }
+    })
+    return await res.json();
+}
+
+export const getNotionDatabase = async ({
+    pageId
+}: {
+    pageId: string,
+}) => {
+    const res = await fetch(`https://api.notion.com/v1/databases/${pageId}/query`, {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
+            "Notion-Version": "2022-06-28"
+        }, next: {
+            revalidate: 10
+        }
+    })
+    return await res.json();
+}
+
 export const getPosts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
     const page = "27a55c38f3774cceabedfbce1690347e"
     const res = await fetch(`https://api.notion.com/v1/databases/${page}/query`, {

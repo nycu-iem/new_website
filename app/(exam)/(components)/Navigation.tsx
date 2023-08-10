@@ -94,28 +94,28 @@ function VisibleSectionHighlight({
     // const [hash, setHash] = useState<string>("");
 
     const hashChangedHandler = useCallback(() => {
-        setTimeout(()=>{
+        setTimeout(() => {
             // console.log(document.location.hash)
             const courses = visibleSections[0].classes;
             const classIndex = courses.findIndex(c => (encodeURI(`${visibleSections[0].link}/${c.link}`) === pathname))
-            
+
             const firstVisibleSectionIndex = Math.max(
                 0,
                 [{ title: '_top', text: 'text' }, ...courses[classIndex].sections].findIndex(
                     (section) => encodeURI(`#${section.title}${section.text}`) === document.location.hash
                 )
             )
-            console.log('first visible section index:',firstVisibleSectionIndex)
+            console.log('first visible section index:', firstVisibleSectionIndex)
             setHeight(isPresent
                 ? Math.max(1, visibleSections.length) * itemHeight
                 : itemHeight)
-    
+
             setTop(group.classes.findIndex((course) => encodeURI(`${group.link}/${course.link}`) === pathname) * itemHeight +
                 firstVisibleSectionIndex * itemHeight)
-    
+
             console.log("height", height)
             console.log("top", top)
-        },200)
+        }, 200)
     }, [])
 
     useEffect(() => {
@@ -132,7 +132,7 @@ function VisibleSectionHighlight({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.2 } }}
             exit={{ opacity: 0 }}
-            className="absolute inset-x-0 top-0 bg-zinc-800 will-change-transform dark:bg-white bg-opacity-40"
+            className="absolute inset-x-0 top-0 bg-zinc-300 will-change-transform dark:bg-zinc-200"
             style={{ borderRadius: 8, height, top }}
         />
     )
@@ -145,10 +145,25 @@ function ActivePageMarker({
     pathname: string,
     group: FirstLayerOfPost,
 }) {
+    const [top, setTop] = useState<number>(0);
     const itemHeight = remToPx(2)
     const offset = remToPx(0.25)
-    const activePageIndex = group.classes.findIndex((course) => `${group.link}/${course.link}` === pathname)
-    const top = offset + activePageIndex * itemHeight
+
+    const hashChangedHandler = useCallback(() => {
+        setTimeout(() => {
+            const activePageIndex = group.classes.findIndex((course) => encodeURI(`${group.link}/${course.link}`) === pathname)
+            setTop(offset + activePageIndex * itemHeight)
+
+        }, 200)
+    }, [])
+
+    useEffect(() => {
+        hashChangedHandler();
+        window.addEventListener('link-clicked', hashChangedHandler)
+        return () => {
+            window.removeEventListener('link-clicked', hashChangedHandler)
+        }
+    }, [])
 
     return (
         <motion.div layout
