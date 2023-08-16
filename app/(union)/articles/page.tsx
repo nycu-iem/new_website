@@ -1,8 +1,8 @@
-import { Card, CardCta, CardDescription, CardEyebrow, CardTitle } from '../../../components/Card'
-import { SimpleLayout } from '../../../components/SimpleLayout'
-import { formatDate } from '../../../lib/formatDate'
+import { Card, CardCta, CardDescription, CardEyebrow, CardTitle } from 'components/Card'
+import { SimpleLayout } from 'components/SimpleLayout'
+import { formatDate } from 'lib/formatDate'
 
-import { getPosts } from '../../../lib/api'
+import { getPosts } from 'lib/api'
 
 export const metadata = {
     title: '相關文章 | 陽明交大 工工系學會 | NYCU IEM SA',

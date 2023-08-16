@@ -1,56 +1,12 @@
-export const getNotionPost = async ({
-    pageId,
-}: {
-    pageId: string,
-}) => {
-    const res = await fetch(`https://api.notion.com/v1/pages/${pageId}`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
-            "Notion-Version": "2022-06-28"
-        }, next: {
-            revalidate: 10
-        }
-    })
-    return await res.json();
-}
-
-export const getNotionDatabase = async ({
-    pageId
-}: {
-    pageId: string,
-}) => {
-    const res = await fetch(`https://api.notion.com/v1/databases/${pageId}/query`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
-            "Notion-Version": "2022-06-28"
-        }, next: {
-            revalidate: 10
-        }
-    })
-    return await res.json();
-}
+import { notion } from "lib/notion";
 
 export const getPosts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
     const page = "27a55c38f3774cceabedfbce1690347e"
-    const res = await fetch(`https://api.notion.com/v1/databases/${page}/query`, {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
-            "Notion-Version": "2022-06-28"
-        }, next: {
-            revalidate: 10
-        }
-    })
 
-    const json = await res.json();
-    // console.log(json.results[0]);
+    const json = await notion.getDatabase({
+        pageId: page
+    });
 
-    // let posts: { slug: string, title: string, date: string, description: string }[] = [];
     let posts = [];
 
     for (let e of json.results) {
@@ -83,35 +39,19 @@ export type QuoteType = { type: "quote", content: any[] }
 type ContentType = ParagraphType | ImageType | QuoteType;
 
 export const getPost = async (id: string) => {
-    // const post_exist = await getPosts({ verify_post: id });
 
-    // if (post_exist.length) {
-    // get post detail
-
-    const res = await fetch(`https://api.notion.com/v1/pages/${id}`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
-            "Notion-Version": "2022-06-28"
-        }, next: {
-            revalidate: 10
-        }
+    const post = await notion.getPage({
+        pageId: id
     })
-    const post = await res.json();
 
-    const block = await fetch(`https://api.notion.com/v1/blocks/${id}/children?page_size=100`, {
-        method: 'GET',
-        headers: {
-            "Content-Type": "application/json",
-            "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
-            "Notion-Version": "2022-06-28"
-        }, next: {
-            revalidate: 10
-        }
+    console.log(post)
+
+    const blocks = await notion.getBlocks({
+        pageId: id
     })
-    const blocks = await block.json();
-    // console.log(blocks)
+    
+    console.log(blocks)
+
 
     if (post.object !== 'page') {
         return undefined
@@ -144,11 +84,6 @@ export const getPost = async (id: string) => {
                 }
                 break;
         }
-
-        // let cont = {
-        //     type: e.type,
-        //     paragraph: e.paragraph.rich_text[0].plain_text
-        // }
         content.push(cont)
     }
 

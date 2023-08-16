@@ -3,7 +3,7 @@ import clsx from "clsx"
 import Image from "next/image"
 import {
     GetPostReturnType,
-} from "../../../../lib/api"
+} from "lib/api"
 import Link from "next/link"
 
 type PostsType = NonNullable<Awaited<GetPostReturnType>>

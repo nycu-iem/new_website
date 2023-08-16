@@ -1,10 +1,11 @@
-import { getNotionDatabase } from "lib/api"
+import { notion } from "lib/notion"
 
 export const getExams = async ({
     title,
     link,
 }: Course) => {
     // TODO: connect to notion api
+    
 }
 
 interface PostsWithKeys {
@@ -24,7 +25,7 @@ interface PostsWithKeys {
 }
 
 export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async () => {
-    const result = await getNotionDatabase({
+    const result = await notion.getDatabase({
         pageId: "4967854be961410f8c64e7db9e524440"
     })
     console.log(result.results)
@@ -38,7 +39,7 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
     }
 
     result.results.map((data: any) => {
-        // console.log(data)
+        console.log(data)
         const permanent_course_id = data.properties["永久課號"].rich_text[0].plain_text;
         const type = data.properties["類別"].select.name;
         const teacher = data.properties["教授"].select.name;
@@ -163,10 +164,10 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
                 })
                 const common_things = posts_with_keys[grade][course_id]["共同"];
                 const gradeIndex = gradeInNumber * 2 + (posts_with_keys[grade][course_id][teacher_array[0]].semester === '上學期' ? 0 : 1)
-                for (let i = first_array_index; i < post[gradeIndex].classes.length; ++i){
+                for (let i = first_array_index; i < post[gradeIndex].classes.length; ++i) {
                     post[gradeIndex].classes[i].sections = [
                         ...post[gradeIndex].classes[i].sections,
-                        ...common_things.children.map((element)=>({
+                        ...common_things.children.map((element) => ({
                             title: element.type,
                             text: element.title
                         }))

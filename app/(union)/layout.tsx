@@ -1,7 +1,7 @@
 import 'react-toastify/dist/ReactToastify.css';
 
-import { Footer } from "../../components/Footer"
-import { Header } from "../../components/Header"
+import { Footer } from "components/Footer"
+import { Header } from "components/Header"
 
 export const metadata = {
     title: '陽明交大 工工系學會 | NYCU IEM SA',
@@ -13,8 +13,6 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
-    // const router = useRouter();
-    // const previousPathname = usePrevious(router.pathname);
 
     return (
         <div className="flex h-full flex-col bg-zinc-50 w-full">

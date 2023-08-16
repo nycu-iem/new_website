@@ -1,9 +1,9 @@
 import Image from 'next/image'
 
-import { Card, CardLink, CardDescription } from '../../../components/Card'
-import { SimpleLayout } from '../../../components/SimpleLayout'
-import logoHelioStream from '../../../public/images/logos/helio-stream.svg'
-import logoPlanetaria from '../../../public/images/logos/planetaria.svg'
+import { Card, CardLink, CardDescription } from 'components/Card'
+import { SimpleLayout } from 'components/SimpleLayout'
+import logoHelioStream from 'public/images/logos/helio-stream.svg'
+import logoPlanetaria from 'public/images/logos/planetaria.svg'
 
 export const metadata = {
     title: '相關活動 | 陽明交大 工工系學會 | NYCU IEM SA',
