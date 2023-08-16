@@ -1,10 +1,10 @@
 'use client'
 
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import clsx from 'clsx'
-import { AnimatePresence, motion, useIsPresent } from 'framer-motion'
+import { AnimatePresence, motion, useIsPresent, useMotionValue, useDragControls } from 'framer-motion'
 
 import { Button } from './Button'
 import { useIsInsideMobileNavigation } from './MobileNavigation'
@@ -269,12 +269,25 @@ export function Navigation({
     className?: string,
     sections: Array<FirstLayerOfPost>
 }) {
+    // TODO: set semester according to date
+    const [semester, setSemester] = useState<"first" | "second" | "summer">("first");
+    const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
+
+    const updateSemesterSelection = () => {
+
+    }
+
+    useEffect(() => {
+        updateSemesterSelection();
+    }, [])
+
     return (
         <nav {...props}>
             <ul role="list" className='relative'>
                 <TopLevelNavItem href="/articles">文章</TopLevelNavItem>
                 <TopLevelNavItem href="/activities">活動</TopLevelNavItem>
                 <TopLevelNavItem href="/booking">系窩租借</TopLevelNavItem>
+                <Selection semster={semester} setSemester={setSemester} />
                 {sections.map((group, groupIndex) => (
                     <NavigationGroup
                         key={group.title}
@@ -290,5 +303,107 @@ export function Navigation({
                 </li>
             </ul>
         </nav>
+    )
+}
+
+export function Selection({
+    className,
+    semster,
+    setSemester,
+}: {
+    className?: string,
+    semster: "first" | "second" | "summer"
+    setSemester: Dispatch<SetStateAction<"first" | "second" | "summer">>
+}) {
+    const firstRef = useRef<HTMLDivElement>(null);
+    const secondRef = useRef<HTMLDivElement>(null);
+    const summerRef = useRef<HTMLDivElement>(null);
+    const motherBoxRef = useRef<HTMLDivElement>(null);
+    const motionRef = useRef<HTMLDivElement>(null);
+    const [translateX, setTranslateX] = useState<number>(0);
+    // const [customStyle, setCustomStyle] = useState<any>({});
+    const x = useMotionValue(0);
+    const controls = useDragControls()
+
+    const setSelection = (option: "first" | "second" | "summer") => {
+        switch (option) {
+            case "first":
+                setTranslateX(0);
+                break;
+            case "second":
+                setTranslateX(firstRef.current?.offsetWidth ?? 0)
+                break;
+            case "summer":
+                setTranslateX((firstRef.current?.offsetWidth ?? 0) * 2)
+                break;
+        }
+    }
+
+    const stopDrag = () => {
+        // console.log('dragging off')
+        setTimeout(() => {
+
+            const re = /translateX\(([0-9.]*)px\)/
+            const transform = motionRef.current?.style.transform ?? ""
+            console.log(transform)
+            console.log(transform.match(re))
+            const result = transform.match(re);
+
+            if (!result) {
+                return setTranslateX(0);
+            }
+
+            if (result.length > 1) {
+                const block_width = firstRef.current?.offsetWidth;
+                const pos = parseFloat(result[1])
+                if (!block_width) {
+                    return;
+                } else if (pos > block_width * 1.5) {
+                    setTranslateX(block_width * 2)
+                } else if (pos > block_width * 0.5) {
+                    setTranslateX(block_width)
+                } else {
+                    setTranslateX(0)
+                }
+            }
+        }, 100)
+    }
+
+    return (
+        <div className={clsx(
+            "grid grid-cols-3 items-center my-2 py-1 px-3 w-full bg-slate-100 select-none rounded-md",
+            className,
+        )} ref={motherBoxRef}>
+            <div className='text-center cursor-pointer' ref={firstRef} onClick={() => {
+                setSelection("first")
+            }}>
+                上學期
+            </div>
+            <div className='text-center cursor-pointer' ref={secondRef} onClick={() => {
+                setSelection("second")
+            }}>
+                下學期
+            </div>
+            <div className="text-center cursor-pointer" ref={summerRef} onClick={() => {
+                setSelection("summer")
+            }}>
+                暑假
+            </div>
+            <motion.div
+                className='bg-blue-400 h-2 absolute opacity-30 rounded-lg'
+                drag="x"
+                dragConstraints={{ left: 0, right: (firstRef.current?.offsetWidth ?? 0) * 2 }}
+                style={{
+                    width: firstRef.current?.offsetWidth,
+                    height: firstRef.current?.offsetHeight,
+                    touchAction: "none",
+                }}
+                animate={{ x: translateX }}
+                transition={{ delay: 0.1 }}
+                layout
+                onPointerUp={() => { stopDrag() }}
+                dragControls={controls}
+                ref={motionRef} />
+        </div >
     )
 }

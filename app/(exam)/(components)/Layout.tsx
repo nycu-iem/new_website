@@ -1,5 +1,4 @@
-'use client'
-
+"use client"
 import Link from 'next/link'
 import { motion } from 'framer-motion'
 
@@ -7,7 +6,6 @@ import { Footer } from './Footer'
 import { Header } from './Header'
 import { Logo } from './Logo'
 import { Navigation } from './Navigation'
-import { SectionProvider } from './SectionProvider'
 import React from 'react'
 
 import { FirstLayerOfPost } from "../notion_api"
@@ -31,7 +29,7 @@ export function Layout({
                             <Logo className="md:w-12 w-8" />
                         </Link>
                     </div>
-                    <Header sections={allSections}/>
+                    <Header sections={allSections} />
                     <Navigation
                         className="hidden lg:mt-10 lg:block"
                         sections={allSections} />
@@ -44,3 +42,5 @@ export function Layout({
         </div>
     )
 }
+
+
