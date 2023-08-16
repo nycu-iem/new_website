@@ -1,6 +1,6 @@
 "use client"
 
-import { SimpleLayout } from "../../components/SimpleLayout"
+import { SimpleLayout } from "components/SimpleLayout"
 
 export default function ErrorPage() {
     return (

@@ -1,17 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { Button } from '../../components/Button'
-import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from '../../components/Card'
-import { Container } from '../../components/Container'
+import { Button } from 'components/Button'
+import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from 'components/Card'
+import { Container } from 'components/Container'
 import {
     InstagramIcon,
     TwitterIcon,
     FacebookIcon
-} from '../../components/Icon'
+} from 'components/Icon'
 
-import { formatDate } from '../../lib/formatDate'
-import { getPosts } from '../../lib/api'
+import { formatDate } from 'lib/formatDate'
+import { getPosts } from 'lib/api'
 
 
 function MailIcon(props: any) {

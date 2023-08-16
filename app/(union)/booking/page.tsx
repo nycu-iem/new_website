@@ -1,11 +1,11 @@
 "use client"
 import { Switch } from '@headlessui/react'
-import { Section } from '../../../components/Section'
-import { SimpleLayout } from '../../../components/SimpleLayout'
+import { Section } from 'components/Section'
+import { SimpleLayout } from 'components/SimpleLayout'
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react'
 import clsx from 'clsx'
-import CalendarMonth from '../../../components/calendar/Month'
-import DayView from '../../../components/calendar/DayView'
+import CalendarMonth from 'components/calendar/Month'
+import DayView from 'components/calendar/DayView'
 import { Reserve, User } from '@prisma/client'
 
 import { SessionProvider, useSession } from 'next-auth/react'
