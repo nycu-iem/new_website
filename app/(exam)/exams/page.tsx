@@ -5,7 +5,8 @@ export const metadata = {
 
 export default function ExamPage() {
     return (
-        <>
-        </>
+        <div className="py-[36vh]">
+            請點選左側課程以顯示資訊
+        </div>
     )
 }

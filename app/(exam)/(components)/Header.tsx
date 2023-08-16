@@ -1,3 +1,5 @@
+"use client"
+
 import React, { forwardRef } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
@@ -13,6 +15,7 @@ import { useMobileNavigationStore } from './MobileNavigation'
 import { MobileSearch, Search } from './Search'
 import { ThemeToggle } from './ThemeToggle'
 import { FirstLayerOfPost } from '../notion_api'
+// import { Selection } from './Layout'
 
 function TopLevelNavItem({
     href,
@@ -64,8 +67,7 @@ export const Header = forwardRef(function Header({
                 '--bg-opacity-dark': bgOpacityDark,
             }}
         >
-            <div
-                className={clsx(
+            <div className={clsx(
                     'absolute inset-x-0 top-full h-px transition',
                     (isInsideMobileNavigation || !mobileNavIsOpen) &&
                     'bg-zinc-900/7.5 dark:bg-white/7.5'
@@ -74,6 +76,7 @@ export const Header = forwardRef(function Header({
             <Search />
             <div className="flex items-center gap-5 lg:hidden">
                 <MobileNavigation sections={sections} />
+                
                 <Link href="/" aria-label="Home">
                     <Logo className="md:w-12 w-8" />
                 </Link>
