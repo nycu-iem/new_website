@@ -81,12 +81,17 @@ function VisibleSectionHighlight({
     pathname: string,
     sections: Array<FirstLayerOfPost>
 }) {
-    const visibleSections = sections.filter((section) => (
-        pathname.includes(section.link)
-    ))
+
+    const visibleSections = sections.filter((section) => {
+        for (let course of section.classes) {
+            if (pathname === `/exams/${course.page_id}`) {
+                return true
+            }
+        }
+        return false
+    })
 
     const isPresent = useIsPresent()
-    // console.log(isPresent)
 
     const itemHeight = remToPx(2)
     const [height, setHeight] = useState<number>(0);
@@ -95,26 +100,25 @@ function VisibleSectionHighlight({
 
     const hashChangedHandler = useCallback(() => {
         setTimeout(() => {
-            // console.log(document.location.hash)
             const courses = visibleSections[0].classes;
-            const classIndex = courses.findIndex(c => (encodeURI(`${visibleSections[0].link}/${c.link}`) === pathname))
+            const classIndex = courses.findIndex(c => (encodeURI(`/exams/${c.page_id}`) === pathname))
 
             const firstVisibleSectionIndex = Math.max(
                 0,
                 [{ title: '_top', text: 'text' }, ...courses[classIndex].sections].findIndex(
-                    (section) => encodeURI(`#${section.title}${section.text}`) === document.location.hash
+                    (section) => encodeURI(`#${section}`) === document.location.hash
                 )
             )
-            console.log('first visible section index:', firstVisibleSectionIndex)
+            // console.log('first visible section index:', firstVisibleSectionIndex)
             setHeight(isPresent
                 ? Math.max(1, visibleSections.length) * itemHeight
                 : itemHeight)
 
-            setTop(group.classes.findIndex((course) => encodeURI(`${group.link}/${course.link}`) === pathname) * itemHeight +
+            setTop(group.classes.findIndex((course) => encodeURI(`/exams/${course.page_id}`) === pathname) * itemHeight +
                 firstVisibleSectionIndex * itemHeight)
 
-            console.log("height", height)
-            console.log("top", top)
+            // console.log("height", height)
+            // console.log("top", top)
         }, 200)
     }, [])
 
@@ -151,9 +155,8 @@ function ActivePageMarker({
 
     const hashChangedHandler = useCallback(() => {
         setTimeout(() => {
-            const activePageIndex = group.classes.findIndex((course) => encodeURI(`${group.link}/${course.link}`) === pathname)
+            const activePageIndex = group.classes.findIndex((course) => encodeURI(`/exams/${course.page_id}`) === pathname)
             setTop(offset + activePageIndex * itemHeight)
-
         }, 200)
     }, [])
 
@@ -185,18 +188,11 @@ function NavigationGroup({
     group: FirstLayerOfPost,
     sections: Array<FirstLayerOfPost>
 }) {
-    // If this is the mobile navigation then we always render the initial
-    // state, so that the state does not change during the close animation.
-    // The state will still update when we re-open (re-render) the navigation.
     const isInsideMobileNavigation = useIsInsideMobileNavigation()
-    // let [pathname, sections] = useInitialValue(
-    //     [usePathname(), useSectionStore((s) => s.sections)],
-    //     isInsideMobileNavigation
-    // )
 
     const pathname = usePathname()
     // console.log(`${group.link}/${group.classes[0]?.link}`, pathname)
-    const isActiveGroup = group.classes.findIndex((post) => encodeURI(`${group.link}/${post.link}`) === pathname) !== -1
+    const isActiveGroup = group.classes.findIndex((post) => encodeURI(`/exams/${post.page_id}`) === pathname) !== -1
     // console.log(isActiveGroup)
 
     return (
@@ -223,12 +219,12 @@ function NavigationGroup({
 
                 <ul role="list" className="border-l border-transparent">
                     {group.classes.map((course) => (
-                        <motion.li key={course.link} layout="position" className="relative">
-                            <NavLink href={`${group.link}/${course.link}`} active={`${group.link}/${course.link}` === pathname}>
+                        <motion.li key={course.page_id} layout="position" className="relative">
+                            <NavLink href={`/exams/${course.page_id}`} active={`/exams/${course.page_id}` === pathname}>
                                 {course.title}
                             </NavLink>
                             <AnimatePresence mode="popLayout" initial={false}>
-                                {encodeURI(`${group.link}/${course.link}`) === pathname && group.classes.length > 0 && (
+                                {encodeURI(`/exams/${course.page_id}`) === pathname && group.classes.length > 0 && (
                                     <motion.ul
                                         role="list"
                                         initial={{ opacity: 0 }}
@@ -242,12 +238,12 @@ function NavigationGroup({
                                         }}
                                     >
                                         {course.sections.map((section) => (
-                                            <li key={`${section.title}${section.text}`}>
-                                                <NavLink href={`${group.link}/${course.link}#${section.title}${section.text}`}
-                                                    tag={section.text}
+                                            <li key={`${section}`}>
+                                                <NavLink href={`/exams/${course.page_id}#${section}`}
+                                                    tag={section}
                                                     isAnchorLink
                                                 >
-                                                    {section.title}
+                                                    {section}
                                                 </NavLink>
                                             </li>
                                         ))}
@@ -274,12 +270,31 @@ export function Navigation({
     const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
 
     const updateSemesterSelection = () => {
+        // console.log(sections);
+        const semesterInChinese = semester === 'first' ? "上學期" : (semester === 'second' ? "下學期" : "暑假")
 
+        let sectionsToBeSelected: FirstLayerOfPost[] = [];
+
+        sections.map(s => {
+            const temp = s.classes.filter(course => {
+                if (course.semester === semesterInChinese)
+                    return true
+                return false
+            })
+            if (temp.length !== 0) {
+                sectionsToBeSelected.push({
+                    title: s.title,
+                    classes: temp
+                })
+            }
+        })
+
+        setSectionSelected(sectionsToBeSelected);
     }
 
     useEffect(() => {
         updateSemesterSelection();
-    }, [])
+    }, [semester])
 
     return (
         <nav {...props}>
@@ -288,11 +303,11 @@ export function Navigation({
                 <TopLevelNavItem href="/activities">活動</TopLevelNavItem>
                 <TopLevelNavItem href="/booking">系窩租借</TopLevelNavItem>
                 <Selection semester={semester} setSemester={setSemester} />
-                {sections.map((group, groupIndex) => (
+                {sectionSelected.map((group, groupIndex) => (
                     <NavigationGroup
                         key={group.title}
                         group={group}
-                        sections={sections}
+                        sections={sectionSelected}
                         className={groupIndex === 0 && 'md:mt-0'}
                     />
                 ))}
@@ -352,8 +367,8 @@ export function Selection({
 
             const re = /translateX\(([0-9.]*)px\)/
             const transform = motionRef.current?.style.transform ?? ""
-            console.log(transform)
-            console.log(transform.match(re))
+            // console.log(transform)
+            // console.log(transform.match(re))
             const result = transform.match(re);
 
             if (!result) {
@@ -376,10 +391,18 @@ export function Selection({
         }, 100)
     }
 
-    useEffect(() => {
+    const updateWidth = () => {
         setTranslateX(semester === 'first' ? 0 : (semester === 'second' ? (firstRef.current?.offsetWidth ?? 0) : (firstRef.current?.offsetWidth ?? 0) * 2))
         setWidth(firstRef.current?.offsetWidth ?? 0);
         setHeight(firstRef.current?.offsetHeight ?? 0);
+    }
+
+    useEffect(() => {
+        updateWidth();
+        window.addEventListener('resize', updateWidth);
+        return () => {
+            window.removeEventListener('resize', updateWidth);
+        }
     }, [pathname])
 
     return (
