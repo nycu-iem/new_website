@@ -1,22 +1,26 @@
 "use client"
 import clsx from "clsx"
-import Image from "next/image"
 import {
     GetPostReturnType,
 } from "lib/api"
 import Link from "next/link"
+import NotionImage from "../../../../components/NotionImage"
 
 type PostsType = NonNullable<Awaited<GetPostReturnType>>
 
 export default function ClientRenderedPage({ post }: { post: PostsType }) {
-    // console.log(post)
+
     return (
         <div className="space-y-5 w-full">
             {post.content && post.content.map((block) => {
                 switch (block.type) {
                     case "image":
                         return (
-                            <ImageRenderer content={block.content} key={block.content} />
+                            <ImageRenderer
+                                content={block.content}
+                                blockId={block.id}
+                                key={block.content}
+                            />
                         )
                     case "quote":
                         return (
@@ -43,15 +47,16 @@ function lineBreaker(text: string) {
     return text.replace(/\n/g, "<br />")
 }
 
-function ImageRenderer({ content }: { content: string }) {
+function ImageRenderer({ content, blockId }: { content: string, blockId: string }) {
     if (typeof content === "string") {
         return (
             <div className="h-80 relative w-full">
-                <Image
+                <NotionImage
                     src={content}
-                    fill
                     alt="image"
                     className="object-contain"
+                    blockId={blockId}
+                    fill
                 />
             </div>
         )
@@ -78,7 +83,7 @@ function PlainTextParser({ content, link }: { content: string, link?: boolean })
     return (
         <p className={clsx(
             "relative z-10 flex text-sm font-medium ",
-            link ? "text-zinc-700 transition hover:text-teal-300 dark:text-zinc-300 underline" : "text-zinc-400 transition dark:text-zinc-200"
+            link ? "text-zinc-900 transition dark:text-zinc-400 hover:text-teal-300 dark:hover:text-teal-600 underline" : "text-zinc-800 transition dark:text-zinc-200"
         )}
             dangerouslySetInnerHTML={{ __html: lineBreaker(content) }}
         />
