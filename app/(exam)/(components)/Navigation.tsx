@@ -2,7 +2,7 @@
 
 import React, { Dispatch, SetStateAction, useCallback, useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import clsx from 'clsx'
 import { AnimatePresence, motion, useIsPresent, useMotionValue, useDragControls } from 'framer-motion'
 
@@ -287,7 +287,7 @@ export function Navigation({
                 <TopLevelNavItem href="/articles">文章</TopLevelNavItem>
                 <TopLevelNavItem href="/activities">活動</TopLevelNavItem>
                 <TopLevelNavItem href="/booking">系窩租借</TopLevelNavItem>
-                <Selection semster={semester} setSemester={setSemester} />
+                <Selection semester={semester} setSemester={setSemester} />
                 {sections.map((group, groupIndex) => (
                     <NavigationGroup
                         key={group.title}
@@ -308,33 +308,40 @@ export function Navigation({
 
 export function Selection({
     className,
-    semster,
+    semester,
     setSemester,
 }: {
     className?: string,
-    semster: "first" | "second" | "summer"
+    semester: "first" | "second" | "summer"
     setSemester: Dispatch<SetStateAction<"first" | "second" | "summer">>
 }) {
+    // const router = useRouter();
+    const pathname = usePathname()
     const firstRef = useRef<HTMLDivElement>(null);
     const secondRef = useRef<HTMLDivElement>(null);
     const summerRef = useRef<HTMLDivElement>(null);
     const motherBoxRef = useRef<HTMLDivElement>(null);
     const motionRef = useRef<HTMLDivElement>(null);
+    // const initialPos = semester === 'first' ? 0 : (semester === 'second' ? )
     const [translateX, setTranslateX] = useState<number>(0);
+    const [width, setWidth] = useState<number>(0);
+    const [height, setHeight] = useState<number>(0);
     // const [customStyle, setCustomStyle] = useState<any>({});
-    const x = useMotionValue(0);
     const controls = useDragControls()
 
     const setSelection = (option: "first" | "second" | "summer") => {
         switch (option) {
             case "first":
                 setTranslateX(0);
+                setSemester("first");
                 break;
             case "second":
-                setTranslateX(firstRef.current?.offsetWidth ?? 0)
+                setTranslateX(firstRef.current?.offsetWidth ?? 0);
+                setSemester("second")
                 break;
             case "summer":
-                setTranslateX((firstRef.current?.offsetWidth ?? 0) * 2)
+                setTranslateX((firstRef.current?.offsetWidth ?? 0) * 2);
+                setSemester("summer")
                 break;
         }
     }
@@ -369,6 +376,12 @@ export function Selection({
         }, 100)
     }
 
+    useEffect(() => {
+        setTranslateX(semester === 'first' ? 0 : (semester === 'second' ? (firstRef.current?.offsetWidth ?? 0) : (firstRef.current?.offsetWidth ?? 0) * 2))
+        setWidth(firstRef.current?.offsetWidth ?? 0);
+        setHeight(firstRef.current?.offsetHeight ?? 0);
+    }, [pathname])
+
     return (
         <div className={clsx(
             "grid grid-cols-3 items-center my-2 py-1 px-3 w-full bg-slate-100 select-none rounded-md",
@@ -392,10 +405,10 @@ export function Selection({
             <motion.div
                 className='bg-blue-400 h-2 absolute opacity-30 rounded-lg'
                 drag="x"
-                dragConstraints={{ left: 0, right: (firstRef.current?.offsetWidth ?? 0) * 2 }}
+                dragConstraints={{ left: 0, right: (width) * 2 }}
                 style={{
-                    width: firstRef.current?.offsetWidth,
-                    height: firstRef.current?.offsetHeight,
+                    width,
+                    height,
                     touchAction: "none",
                 }}
                 animate={{ x: translateX }}
