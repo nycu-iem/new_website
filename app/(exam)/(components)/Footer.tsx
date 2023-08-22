@@ -51,7 +51,7 @@ function PageNavigation({
     sections: Array<FirstLayerOfPost>
 }) {
     const pathname = usePathname()
-    const allLinks = sections.map(section => (section.classes.map(course => (`${section.link}/${course.link}`)))).flat();
+    const allLinks = sections.map(section => (section.classes.map(course => (`/exams/${course.page_id}`)))).flat();
     // console.log(allClasses)
     // const allPages = decompressArray(sections);
     // const allLinks = allPages.flatMap((group) => group.id);

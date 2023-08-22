@@ -18,7 +18,7 @@ export const getChangeLogImageSrc = async (blockId: string) => {
     return image.file.url
 }
 
-export const getPosts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
+export const Posts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
     const page = "27a55c38f3774cceabedfbce1690347e"
 
     const json = await notion.getDatabase({
@@ -67,11 +67,6 @@ export const getPost = async (id: string) => {
     const blocks = await notion.getBlocks({
         pageId: id
     })
-<<<<<<< HEAD
-=======
-
-    console.log(blocks)
->>>>>>> 1fd71a3c39b3bf44cc81a95f84a458eafac26900
 
     console.log(blocks)
 
@@ -90,12 +85,8 @@ export const getPost = async (id: string) => {
             case "image":
                 cont = {
                     type: "image",
-<<<<<<< HEAD
-                    content: e.image.type === 'external' ? e.image.external.url : e.image.file.url
-=======
-                    content: e.image.file.url,
+                    content: e.image.type === 'external' ? e.image.external.url : e.image.file.url,
                     id: e.id
->>>>>>> 1fd71a3c39b3bf44cc81a95f84a458eafac26900
                 }
                 break;
             case "quote":
