@@ -49,9 +49,8 @@ export const getPost = async (id: string) => {
     const blocks = await notion.getBlocks({
         pageId: id
     })
-    
-    console.log(blocks)
 
+    console.log(blocks)
 
     if (post.object !== 'page') {
         return undefined
@@ -64,10 +63,11 @@ export const getPost = async (id: string) => {
         let cont: ContentType;
 
         switch (e.type) {
+
             case "image":
                 cont = {
                     type: "image",
-                    content: e.image.file.url
+                    content: e.image.type === 'external' ? e.image.external.url : e.image.file.url
                 }
                 break;
             case "quote":

@@ -9,7 +9,7 @@ import Link from "next/link"
 type PostsType = NonNullable<Awaited<GetPostReturnType>>
 
 export default function ClientRenderedPage({ post }: { post: PostsType }) {
-    // console.log(post)
+
     return (
         <div className="space-y-5 w-full">
             {post.content && post.content.map((block) => {
@@ -40,7 +40,7 @@ export default function ClientRenderedPage({ post }: { post: PostsType }) {
 }
 
 function lineBreaker(text: string) {
-    return text.replace(/\n/g, "<br />")
+    return text.replaceAll(/\n/g, "<br />")
 }
 
 function ImageRenderer({ content }: { content: string }) {
@@ -64,9 +64,9 @@ function ParagraphRenderer({ content }: { content: any[] }) {
         content.map(para => {
             if (para.text.link) {
                 return (
-                    <Link href={para.text.link.url} key={para.text.content}>
+                    <a href={para.text.link.url} key={para.text.content} target="_blank" rel="noopener noreferrer">
                         <PlainTextParser content={para.text.content} link />
-                    </Link>
+                    </a>
                 )
             }
             return <PlainTextParser content={para.text.content} key={para.text.content} />
