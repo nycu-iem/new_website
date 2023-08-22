@@ -25,6 +25,7 @@ export default function NotionImage({
             onError={async () => {
                 fetch(`/api/image/${blockId}`)
                     .then(res => {
+                        // console.log(res)
                         return res.json();
                     }).then(res => {
                         setImageSrc(res.imageSrc);
