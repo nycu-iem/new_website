@@ -1,5 +1,23 @@
 import { notion } from "lib/notion";
 
+export const getChangeLogImageSrc = async (blockId: string) => {
+    const supportedBlockType = "image";
+
+    const block = await notion.getBlock({ blockId });
+
+    if (block.type !== supportedBlockType) {
+        throw new Error(`blockId: ${blockId} is not a image`);
+    }
+
+    const image = block[supportedBlockType];
+
+    if (image.type === "external") {
+        return image.external.url
+    }
+
+    return image.file.url
+}
+
 export const getPosts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
     const page = "27a55c38f3774cceabedfbce1690347e"
 
@@ -33,7 +51,7 @@ const trim = (str: string) => {
 }
 
 export type ParagraphType = { type: "paragraph", content: any[] }
-export type ImageType = { type: "image", content: string }
+export type ImageType = { type: "image", content: string, id: string }
 export type QuoteType = { type: "quote", content: any[] }
 
 type ContentType = ParagraphType | ImageType | QuoteType;
@@ -49,6 +67,11 @@ export const getPost = async (id: string) => {
     const blocks = await notion.getBlocks({
         pageId: id
     })
+<<<<<<< HEAD
+=======
+
+    console.log(blocks)
+>>>>>>> 1fd71a3c39b3bf44cc81a95f84a458eafac26900
 
     console.log(blocks)
 
@@ -67,7 +90,12 @@ export const getPost = async (id: string) => {
             case "image":
                 cont = {
                     type: "image",
+<<<<<<< HEAD
                     content: e.image.type === 'external' ? e.image.external.url : e.image.file.url
+=======
+                    content: e.image.file.url,
+                    id: e.id
+>>>>>>> 1fd71a3c39b3bf44cc81a95f84a458eafac26900
                 }
                 break;
             case "quote":

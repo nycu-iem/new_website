@@ -80,6 +80,21 @@ class NotionClient {
 
         return this.queue[id].json();
     }
+
+    getBlock = async ({ blockId }: { blockId: string }) => {
+        const id = this.queue.length;
+
+        this.queue.push(await fetch(`https://api.notion.com/v1/blocks/${blockId}`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${process.env.NOTION_SECRET}`,
+                "Notion-Version": "2022-06-28"
+            }
+        }))
+
+        return this.queue[id].json();
+    }
 }
 
 const globalForNotionAPI = globalThis as unknown as {
