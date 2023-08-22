@@ -1,5 +1,23 @@
 import { notion } from "lib/notion";
 
+export const getChangeLogImageSrc = async (blockId: string) => {
+    const supportedBlockType = "image";
+
+    const block = await notion.getBlock({ blockId });
+
+    if (block.type !== supportedBlockType) {
+        throw new Error(`blockId: ${blockId} is not a image`);
+    }
+
+    const image = block[supportedBlockType];
+
+    if (image.type === "external") {
+        return image.external.url
+    }
+
+    return image.file.url
+}
+
 export const getPosts = async ({ isHomePage = false, verify_post }: { isHomePage?: boolean, verify_post?: string }) => {
     const page = "27a55c38f3774cceabedfbce1690347e"
 
@@ -33,7 +51,7 @@ const trim = (str: string) => {
 }
 
 export type ParagraphType = { type: "paragraph", content: any[] }
-export type ImageType = { type: "image", content: string }
+export type ImageType = { type: "image", content: string, id: string }
 export type QuoteType = { type: "quote", content: any[] }
 
 type ContentType = ParagraphType | ImageType | QuoteType;
@@ -49,7 +67,7 @@ export const getPost = async (id: string) => {
     const blocks = await notion.getBlocks({
         pageId: id
     })
-    
+
     console.log(blocks)
 
 
@@ -67,7 +85,8 @@ export const getPost = async (id: string) => {
             case "image":
                 cont = {
                     type: "image",
-                    content: e.image.file.url
+                    content: e.image.file.url,
+                    id: e.id
                 }
                 break;
             case "quote":
