@@ -33,8 +33,7 @@ function PageLink({
             >
                 {label}
             </Button>
-            <Link
-                href={page.href}
+            <Link href={page.href}
                 tabIndex={-1}
                 aria-hidden="true"
                 className="text-base font-semibold text-zinc-900 transition hover:text-zinc-600 dark:text-white dark:hover:text-zinc-300"
@@ -51,11 +50,11 @@ function PageNavigation({
     sections: Array<FirstLayerOfPost>
 }) {
     const pathname = usePathname()
+    console.log(sections)
     const allLinks = sections.map(section => (section.classes.map(course => (`/exams/${course.page_id}`)))).flat();
-    // console.log(allClasses)
-    // const allPages = decompressArray(sections);
-    // const allLinks = allPages.flatMap((group) => group.id);
+    console.log(allLinks)
     const currentPageIndex = allLinks.findIndex((page) => page === pathname)
+    console.log(currentPageIndex)
 
     if (currentPageIndex === -1) {
         return null

@@ -260,14 +260,22 @@ function NavigationGroup({
 
 export function Navigation({
     sections,
+    semester,
+    setSemester,
+    sectionSelected,
+    setSectionSelected,
     ...props
 }: {
     className?: string,
-    sections: Array<FirstLayerOfPost>
+    sections: Array<FirstLayerOfPost>,
+    semester: "first" | "second" | "summer",
+    setSemester: Dispatch<SetStateAction<"first" | "second" | "summer">>,
+    sectionSelected: Array<FirstLayerOfPost>,
+    setSectionSelected: Dispatch<SetStateAction<Array<FirstLayerOfPost>>>
 }) {
     // TODO: set semester according to date
-    const [semester, setSemester] = useState<"first" | "second" | "summer">("first");
-    const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
+    // const [semester, setSemester] = useState<"first" | "second" | "summer">("first");
+    // const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
 
     const updateSemesterSelection = () => {
         // console.log(sections);
