@@ -1,7 +1,7 @@
 "use client"
 import Link from 'next/link'
 import { motion } from 'framer-motion'
-
+import { useState } from "react"
 import { Footer } from './Footer'
 import { Header } from './Header'
 import { Logo } from './Logo'
@@ -18,6 +18,9 @@ export function Layout({
     allSections: Array<FirstLayerOfPost>
 }) {
 
+    const [semester, setSemester] = useState<"first" | "second" | "summer">("first");
+    const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
+
     return (
         <div className="h-full lg:ml-72 xl:ml-80">
             <motion.header layoutScroll
@@ -32,12 +35,17 @@ export function Layout({
                     <Header sections={allSections} />
                     <Navigation
                         className="hidden lg:mt-10 lg:block"
-                        sections={allSections} />
+                        sections={allSections}
+                        semester={semester}
+                        setSemester={setSemester}
+                        sectionSelected={sectionSelected}
+                        setSectionSelected={setSectionSelected}
+                    />
                 </div>
             </motion.header>
             <div className="relative flex h-full flex-col px-4 pt-14 sm:px-6 lg:px-8">
                 <main className="flex-auto">{children}</main>
-                <Footer sections={allSections} />
+                <Footer sections={sectionSelected} />
             </div>
         </div>
     )

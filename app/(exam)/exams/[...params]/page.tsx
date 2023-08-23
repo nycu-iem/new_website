@@ -1,3 +1,4 @@
+import { notFound } from "next/navigation";
 import { getExams } from "../../notion_api"
 
 export default async function SectionPage({
@@ -7,9 +8,20 @@ export default async function SectionPage({
     params: { params: Array<string> },
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
-    const blocks = await getExams({ pageId: params.params[0] });
+
+    let blocks;
+    try {
+        blocks = await getExams({ pageId: params.params[0] });
+        if(blocks.object === 'error'){
+            throw new Error("page not found")
+        }
+    } catch (err) {
+        return notFound();
+    }
 
     // console.log(blocks)
+
+    // return <></>
 
     return (
         <div>
