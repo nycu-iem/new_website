@@ -311,7 +311,7 @@ export function Navigation({
                 <TopLevelNavItem href="/activities">活動</TopLevelNavItem>
                 <TopLevelNavItem href="/booking">系窩租借</TopLevelNavItem>
                 <Selection semester={semester} setSemester={setSemester} />
-                {sectionSelected.map((group, groupIndex) => (
+                {sectionSelected && sectionSelected.map((group, groupIndex) => (
                     <NavigationGroup
                         key={group.title}
                         group={group}

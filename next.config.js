@@ -10,7 +10,17 @@ const nextConfig = {
                 hostname: "**"
             }
         ]
+    },
+    // config.module.rules.push()
+    webpack: (config) => {
+        config.module.rules.push({
+            test: /\.node/,
+            use: 'raw-loader',
+        });
+
+        return config;
     }
+    // webpack: (config) => { config.externals.push({ sharp: 'commonjs sharp', canvas: 'commonjs canvas' }) return config }
 }
 
 module.exports = nextConfig
