@@ -9,6 +9,7 @@ import { create } from 'zustand'
 import { Header } from './Header'
 import { Navigation } from './Navigation'
 import { FirstLayerOfPost } from '../notion_api'
+import { Dispatch, SetStateAction } from 'react'
 
 function MenuIcon({
     ...props
@@ -64,8 +65,16 @@ export const useMobileNavigationStore = create<{
 
 export function MobileNavigation({
     sections,
+    semester,
+    setSemester,
+    sectionSelected,
+    setSectionSelected,
 }: {
-    sections: Array<FirstLayerOfPost>
+    sections: Array<FirstLayerOfPost>,
+    semester: "first" | "second" | "summer",
+    setSemester: Dispatch<SetStateAction<"first" | "second" | "summer">>,
+    sectionSelected: Array<FirstLayerOfPost>,
+    setSectionSelected: Dispatch<SetStateAction<Array<FirstLayerOfPost>>>,
 }) {
     let isInsideMobileNavigation = useIsInsideMobileNavigation()
     let { isOpen, toggle, close } = useMobileNavigationStore()
@@ -124,7 +133,12 @@ export function MobileNavigation({
                                 leaveFrom="opacity-100"
                                 leaveTo="opacity-0"
                             >
-                                <Header sections={[]} />
+                                <Header
+                                    sections={[]}
+                                    semester={semester}
+                                    setSemester={setSemester}
+                                    sectionSelected={sectionSelected}
+                                    setSectionSelected={setSectionSelected} />
                             </Transition.Child>
 
                             <Transition.Child
@@ -140,7 +154,13 @@ export function MobileNavigation({
                                     layoutScroll
                                     className="fixed bottom-0 left-0 top-14 w-full overflow-y-auto bg-white px-4 pb-4 pt-6 shadow-lg shadow-zinc-900/10 ring-1 ring-zinc-900/7.5 dark:bg-zinc-900 dark:ring-zinc-800 min-[416px]:max-w-sm sm:px-6 sm:pb-10"
                                 >
-                                    <Navigation sections={sections} />
+                                    <Navigation
+                                        sections={sections}
+                                        sectionSelected={sectionSelected}
+                                        setSectionSelected={setSectionSelected}
+                                        semester={semester}
+                                        setSemester={setSemester}
+                                    />
                                 </motion.div>
                             </Transition.Child>
                         </Dialog.Panel>

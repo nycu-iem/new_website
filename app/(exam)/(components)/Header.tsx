@@ -1,6 +1,6 @@
 "use client"
 
-import React, { forwardRef } from 'react'
+import React, { forwardRef, Dispatch, SetStateAction } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
@@ -15,7 +15,6 @@ import { useMobileNavigationStore } from './MobileNavigation'
 import { MobileSearch, Search } from './Search'
 import { ThemeToggle } from './ThemeToggle'
 import { FirstLayerOfPost } from '../notion_api'
-// import { Selection } from './Layout'
 
 function TopLevelNavItem({
     href,
@@ -38,9 +37,17 @@ function TopLevelNavItem({
 export const Header = forwardRef(function Header({
     className,
     sections,
+    semester,
+    setSemester,
+    sectionSelected,
+    setSectionSelected,
 }: {
     sections: Array<FirstLayerOfPost>
     className?: string
+    semester: "first" | "second" | "summer",
+    setSemester: Dispatch<SetStateAction<"first" | "second" | "summer">>,
+    sectionSelected: Array<FirstLayerOfPost>,
+    setSectionSelected: Dispatch<SetStateAction<Array<FirstLayerOfPost>>>,
 }, ref: React.ForwardedRef<HTMLDivElement>) {
     const { isOpen: mobileNavIsOpen } = useMobileNavigationStore()
     const isInsideMobileNavigation = useIsInsideMobileNavigation()
@@ -68,15 +75,20 @@ export const Header = forwardRef(function Header({
             }}
         >
             <div className={clsx(
-                    'absolute inset-x-0 top-full h-px transition',
-                    (isInsideMobileNavigation || !mobileNavIsOpen) &&
-                    'bg-zinc-900/7.5 dark:bg-white/7.5'
-                )}
+                'absolute inset-x-0 top-full h-px transition',
+                (isInsideMobileNavigation || !mobileNavIsOpen) &&
+                'bg-zinc-900/7.5 dark:bg-white/7.5'
+            )}
             />
             <Search />
             <div className="flex items-center gap-5 lg:hidden">
-                <MobileNavigation sections={sections} />
-                
+                <MobileNavigation
+                    sections={sections}
+                    semester={semester}
+                    setSemester={setSemester}
+                    sectionSelected={sectionSelected}
+                    setSectionSelected={setSectionSelected} />
+
                 <Link href="/" aria-label="Home">
                     <Logo className="md:w-12 w-8" />
                 </Link>

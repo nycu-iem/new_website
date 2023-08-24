@@ -1,6 +1,9 @@
 import { Layout } from "./(components)/Layout"
 import { getNavigationLinks } from "./notion_api"
 
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
+
 export default async function RootLayout({
     children,
 }: {

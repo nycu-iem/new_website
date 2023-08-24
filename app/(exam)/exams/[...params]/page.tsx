@@ -1,5 +1,8 @@
 import { notFound } from "next/navigation";
 import { getExams } from "../../notion_api"
+import { notion } from "lib/notion";
+
+import NotionPdf from "components/NotionFile";
 
 export default async function SectionPage({
     params,
@@ -10,21 +13,24 @@ export default async function SectionPage({
 }) {
 
     let blocks;
+    let page;
     try {
         blocks = await getExams({ pageId: params.params[0] });
-        if(blocks.object === 'error'){
+        page = await notion.getPage({ pageId: params.params[0] });
+        console.log(blocks)
+        if (blocks.object === 'error') {
             throw new Error("page not found")
         }
     } catch (err) {
         return notFound();
     }
 
-    // console.log(blocks)
-
-    // return <></>
-
     return (
         <div>
+            <div className='py-5 font-bold text-2xl'>
+                {page.properties['標題'].title[0].plain_text}
+            </div>
+
             {blocks.results.map((block: any) => {
                 // console.log(block)
                 switch (block.type) {
@@ -34,7 +40,7 @@ export default async function SectionPage({
                         if (result) {
                             // header
                             return (
-                                <div key={block.paragraph.rich_text[0].plain_text}
+                                <div key={block.id}
                                     id={result ?? undefined}
                                     className="text-xl py-3 font-bold ">
                                     {result}
@@ -43,9 +49,17 @@ export default async function SectionPage({
                         }
                         // normal text
                         return (
-                            <div key={block.paragraph.rich_text[0].plain_text}>
+                            <div key={block.id}>
                                 {block.paragraph.rich_text[0].plain_text}
                             </div>
+                        )
+                    case "file":
+                        return (
+                            <NotionPdf
+                                key={block.id}
+                                blockId={block.id}
+                                fileSrc={block.file.file.url}
+                            />
                         )
                     // TODO:add other file types
                     default:

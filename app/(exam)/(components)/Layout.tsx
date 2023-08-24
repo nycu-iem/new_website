@@ -17,7 +17,7 @@ export function Layout({
     children: React.ReactNode,
     allSections: Array<FirstLayerOfPost>
 }) {
-
+    // TODO: set semester according to date
     const [semester, setSemester] = useState<"first" | "second" | "summer">("first");
     const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
 
@@ -32,7 +32,11 @@ export function Layout({
                             <Logo className="md:w-12 w-8" />
                         </Link>
                     </div>
-                    <Header sections={allSections} />
+                    <Header sections={allSections}
+                        semester={semester}
+                        setSemester={setSemester}
+                        sectionSelected={sectionSelected}
+                        setSectionSelected={setSectionSelected} />
                     <Navigation
                         className="hidden lg:mt-10 lg:block"
                         sections={allSections}
