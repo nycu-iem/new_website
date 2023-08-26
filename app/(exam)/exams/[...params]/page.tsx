@@ -3,6 +3,7 @@ import { getExams } from "../../notion_api"
 import { notion } from "lib/notion";
 
 import NotionPdf from "components/NotionFile";
+import NotionImage from "components/NotionImage";
 
 export default async function SectionPage({
     params,
@@ -59,6 +60,14 @@ export default async function SectionPage({
                                 key={block.id}
                                 blockId={block.id}
                                 fileSrc={block.file.file.url}
+                            />
+                        )
+                    case "image":
+                        return (
+                            <NotionImage
+                                src={block.image.type === "external" ? block.image.external.url : block.image.file.url}
+                                alt={"notion Image"}
+                                blockId={block.id}
                             />
                         )
                     // TODO:add other file types
