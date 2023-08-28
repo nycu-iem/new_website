@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { getExams } from "../../notion_api"
 import { notion } from "lib/notion";
 
-import NotionPdf from "components/NotionFile";
+import NotionPdf from "components/PdfRenderer";
 import NotionImage from "components/NotionImage";
 
 export default async function SectionPage({
@@ -44,13 +44,13 @@ export default async function SectionPage({
                                 <div key={block.id}
                                     id={result ?? undefined}
                                     className="text-xl py-3 font-bold ">
-                                    {result}
+                                    {getTitle(result)}
                                 </div>
                             )
                         }
                         // normal text
                         return (
-                            <div key={block.id}>
+                            <div key={block.id} className="select-none">
                                 {block.paragraph.rich_text[0].plain_text}
                             </div>
                         )
@@ -78,4 +78,13 @@ export default async function SectionPage({
             })}
         </div>
     )
+}
+
+const getTitle = (input: string) => {
+    const regex = /(.*)\|(.*)/.exec(input);
+
+    if(regex){
+        return `${regex[2]} - ${regex[1]}`
+    }
+    return input
 }

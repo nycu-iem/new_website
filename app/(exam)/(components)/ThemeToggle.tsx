@@ -4,7 +4,7 @@ import { useTheme } from 'next-themes'
 import {
     SunIcon,
     MoonIcon
-} from "../../../components/Icon"
+} from "components/Icon"
 
 export function ThemeToggle() {
     let { resolvedTheme, setTheme } = useTheme()

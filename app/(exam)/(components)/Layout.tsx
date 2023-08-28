@@ -36,7 +36,8 @@ export function Layout({
                         semester={semester}
                         setSemester={setSemester}
                         sectionSelected={sectionSelected}
-                        setSectionSelected={setSectionSelected} />
+                        setSectionSelected={setSectionSelected}
+                    />
                     <Navigation
                         className="hidden lg:mt-10 lg:block"
                         sections={allSections}
