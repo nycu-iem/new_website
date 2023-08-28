@@ -240,10 +240,10 @@ function NavigationGroup({
                                         {course.sections.map((section) => (
                                             <li key={`${section}`}>
                                                 <NavLink href={`/exams/${course.page_id}#${section}`}
-                                                    tag={section}
+                                                    tag={getSectionText(section)}
                                                     isAnchorLink
                                                 >
-                                                    {section}
+                                                    {getSectionTitle(section)}
                                                 </NavLink>
                                             </li>
                                         ))}
@@ -257,6 +257,23 @@ function NavigationGroup({
         </li>
     )
 }
+
+const getSectionTitle = (input: string) => {
+    const regex = /(.*)\|(.*)/.exec(input);
+    if(regex){
+        return regex[1]
+    }
+    return input
+}
+
+const getSectionText = (input: string) => {
+    const regex = /(.*)\|(.*)/.exec(input);
+    if(regex){
+        return regex[2];
+    }
+    return ''
+}
+
 
 export function Navigation({
     sections,
@@ -320,7 +337,7 @@ export function Navigation({
                     />
                 ))}
                 <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-                    <Button href="#" variant="filled" className="w-full">
+                    <Button href="/login" variant="filled" className="w-full">
                         Sign in
                     </Button>
                 </li>

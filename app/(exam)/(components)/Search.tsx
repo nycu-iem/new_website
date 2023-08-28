@@ -18,7 +18,7 @@ import clsx from 'clsx'
 import {
     NoResultsIcon,
     SearchIcon
-} from "../../../components/Icon"
+} from "components/Icon"
 
 // import { navigation } from './Navigation'
 
