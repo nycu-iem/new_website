@@ -1,10 +1,10 @@
 "use client"
 
-import React, { forwardRef, Dispatch, SetStateAction } from 'react'
+import React, { forwardRef, Dispatch, SetStateAction, useState, useRef } from 'react'
 import Link from 'next/link'
 import clsx from 'clsx'
 import { motion, useScroll, useTransform } from 'framer-motion'
-
+import { useEffect } from 'react'
 import { Button } from './Button'
 import { Logo } from './Logo'
 import {
@@ -15,6 +15,7 @@ import { useMobileNavigationStore } from './MobileNavigation'
 import { MobileSearch, Search } from './Search'
 import { ThemeToggle } from './ThemeToggle'
 import { FirstLayerOfPost } from '../notion_api'
+import { useSession } from 'next-auth/react'
 
 function TopLevelNavItem({
     href,
@@ -55,6 +56,41 @@ export const Header = forwardRef(function Header({
     const { scrollY } = useScroll()
     const bgOpacityLight = useTransform(scrollY, [0, 72], [0.5, 0.9])
     const bgOpacityDark = useTransform(scrollY, [0, 72], [0.2, 0.8])
+    const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+    const settingsRef = useRef<HTMLDivElement>(null);
+
+    const { data: session, status } = useSession()
+    // console.log(session)
+    type ExtendedSession = typeof session & {
+        user: {
+            student_id: string
+        }
+    }
+
+    const setSettings = () => {
+        // console.log(document.activeElement)
+        // console.log(settingsRef.current)
+        // console.log(document.activeElement)
+        switch (document.activeElement?.id) {
+            case 'nav_btn':
+                // console.log('button')
+                setSettingsOpen(p => !p);
+                return;
+            case 'child':
+            case 'settings':
+                // console.log('settings')
+                return;
+            default:
+                setSettingsOpen(false);
+        }
+    }
+
+    useEffect(() => {
+        window.addEventListener('click', setSettings);
+        return () => {
+            window.removeEventListener('click', setSettings);
+        }
+    }, [])
 
     return (
         <motion.div
@@ -80,7 +116,7 @@ export const Header = forwardRef(function Header({
                 'bg-zinc-900/7.5 dark:bg-white/7.5'
             )}
             />
-            <Search />
+            <Search sections={sections} />
             <div className="flex items-center gap-5 lg:hidden">
                 <MobileNavigation
                     sections={sections}
@@ -103,13 +139,41 @@ export const Header = forwardRef(function Header({
                 </nav>
                 <div className="hidden md:block md:h-5 md:w-px md:bg-zinc-900/10 md:dark:bg-white/15" />
                 <div className="flex gap-4">
-                    <MobileSearch />
+                    <MobileSearch sections={sections} />
                     <ThemeToggle />
                 </div>
-                <div className="hidden min-[416px]:contents">
-                    <Button href="#">Sign in</Button>
+                <div className="hidden min-[416px]:contents relative">
+                    {status === "authenticated" ?
+                        <Button onClick={(event) => {
+                            if (settingsRef.current) {
+                                settingsRef.current.focus();
+                            }
+                        }} id="nav_btn">
+                            {session.user?.name === 'anonymous' ? (session as ExtendedSession).user.student_id : session.user?.name}
+                        </Button> :
+                        <Button href="/login">Sign in</Button>
+                    }
+                    <motion.div
+                        className={clsx(
+                            'absolute -bottom-10 right-10 bg-slate-300 dark:bg-slate-700 w-20 rounded-lg px-3 py-2 flex flex-col',
+                            settingsOpen || 'hidden'
+                        )}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        ref={settingsRef}
+                        id="settings"
+                    >
+                        <Button href='/logout'
+                            variant='text'
+                            className='w-full'
+                            id="child"
+                        >
+                            登出
+                        </Button>
+                    </motion.div>
                 </div>
             </div>
-        </motion.div>
+        </motion.div >
     )
 })

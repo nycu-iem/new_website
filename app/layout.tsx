@@ -1,6 +1,8 @@
 "use client"
 
 import './globals.css'
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
     ThemeProvider,
     useTheme

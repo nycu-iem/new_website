@@ -50,11 +50,11 @@ function PageNavigation({
     sections: Array<FirstLayerOfPost>
 }) {
     const pathname = usePathname()
-    console.log(sections)
+    // console.log(sections)
     const allLinks = sections.map(section => (section.classes.map(course => (`/exams/${course.page_id}`)))).flat();
-    console.log(allLinks)
+    // console.log(allLinks)
     const currentPageIndex = allLinks.findIndex((page) => page === pathname)
-    console.log(currentPageIndex)
+    // console.log(currentPageIndex)
 
     if (currentPageIndex === -1) {
         return null

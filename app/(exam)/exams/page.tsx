@@ -1,11 +1,21 @@
-import NotionPdf from "../../../components/PdfRenderer"
+import { getServerSession } from "next-auth/next"
+import { authOptions } from "../../api/auth/[...nextauth]/route"
 
 export const metadata = {
     title: '陽明交大 工工系學會 考古題網站 | NYCU IEMSA EXAM',
     description: '國立陽明交通大學工業工程與管理學系 官方網站',
 }
 
-export default function ExamPage() {
+export default async function ExamPage() {
+    const session = await getServerSession(authOptions);
+    if (!session) {
+        return (
+            <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
+                登入以查看內容
+            </div>
+        )
+    }
+
     return (
         <div className="py-[36vh]">
             請點選左側課程以顯示資訊

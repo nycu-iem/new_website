@@ -10,73 +10,89 @@ import {
     useState,
 } from 'react'
 import Highlighter from 'react-highlight-words'
-import { usePathname, useRouter, useSearchParams } from 'next/navigation'
 import { createAutocomplete } from '@algolia/autocomplete-core'
-import { Dialog, Transition } from '@headlessui/react'
+import {
+    usePathname,
+    useRouter,
+    useSearchParams
+} from 'next/navigation'
+import {
+    Dialog,
+    Transition
+} from '@headlessui/react'
 import clsx from 'clsx'
 
 import {
     NoResultsIcon,
     SearchIcon
 } from "components/Icon"
+import { FirstLayerOfPost } from '../notion_api'
 
-// import { navigation } from './Navigation'
 
+function useAutocomplete({
+    close,
+    sections
+}: {
+    close: () => void,
+    sections: Array<FirstLayerOfPost>
+}) {
+    const id = useId()
+    const router = useRouter()
+    const [autocompleteState, setAutocompleteState] = useState({})
 
-// TODO: Auto Complete function is not completed
-// function useAutocomplete({ close }) {
-//     let id = useId()
-//     let router = useRouter()
-//     let [autocompleteState, setAutocompleteState] = useState({})
+    function navigate({
+        itemUrl
+    }: {
+        itemUrl: string
+    }) {
+        router.push(itemUrl)
 
-//     function navigate({ itemUrl }) {
-//         router.push(itemUrl)
+        if (itemUrl === `${window.location.pathname}${window.location.search}${window.location.hash}`) {
+            close()
+        }
+    }
 
-//         if (
-//             itemUrl ===
-//             window.location.pathname + window.location.search + window.location.hash
-//         ) {
-//             close()
-//         }
-//     }
+    const autocomplete = createAutocomplete({
+        id,
+        placeholder: 'Find something...',
+        defaultActiveItemId: 0,
+        onStateChange({ state }) {
+            setAutocompleteState(state)
+        },
+        shouldPanelOpen({ state }) {
+            return state.query !== ''
+        },
+        navigator: {
+            navigate,
+        },
+        getSources({ query }) {
+            // return import('@/mdx/search.mjs').then(({ search }) => {
+            //     return [
+            //         {
+            //             sourceId: 'documentation',
+            //             getItems() {
+            //                 return search(query, { limit: 5 })
+            //             },
+            //             getItemUrl({ item }) {
+            //                 return item.url
+            //             },
+            //             onSelect: navigate,
+            //         },
+            //     ]
+            // })
+            // TODO: Awaiting searchable lists
+            return []
+        },
+    })
 
-//     let [autocomplete] = useState(() =>
-//         createAutocomplete({
-//             id,
-//             placeholder: 'Find something...',
-//             defaultActiveItemId: 0,
-//             onStateChange({ state }) {
-//                 setAutocompleteState(state)
-//             },
-//             shouldPanelOpen({ state }) {
-//                 return state.query !== ''
-//             },
-//             navigator: {
-//                 navigate,
-//             },
-//             getSources({ query }) {
-//                 return import('@/mdx/search.mjs').then(({ search }) => {
-//                     return [
-//                         {
-//                             sourceId: 'documentation',
-//                             getItems() {
-//                                 return search(query, { limit: 5 })
-//                             },
-//                             getItemUrl({ item }) {
-//                                 return item.url
-//                             },
-//                             onSelect: navigate,
-//                         },
-//                     ]
-//                 })
-//             },
-//         })
-//     )
+    return { autocomplete, autocompleteState }
+}
 
-//     return { autocomplete, autocompleteState }
-// }
-
-function LoadingIcon(props) {
+function LoadingIcon({
+    ...props
+}: {
+    className?: string
+}) {
     let id = useId()
 
     return (
@@ -104,7 +120,13 @@ function LoadingIcon(props) {
     )
 }
 
-function HighlightQuery({ text, query }) {
+function HighlightQuery({
+    text,
+    query
+}: {
+    text: string,
+    query: string,
+}) {
     return (
         <Highlighter
             highlightClassName="underline bg-transparent text-emerald-500"
@@ -121,12 +143,22 @@ function SearchResult({
     autocomplete,
     collection,
     query,
+}: {
+    result: string
+    resultIndex: number
+    autocomplete: string
+    collection: {
+        items: any[]
+    }
+    query: string
 }) {
+
     const id = useId()
 
     const sectionTitle = navigation.find((section) =>
         section.links.find((link) => link.href === result.url.split('#')[0])
     )?.title
+
     let hierarchy = [sectionTitle, result.pageTitle].filter(Boolean)
 
     return (
@@ -180,7 +212,9 @@ function SearchResults({
 }: {
     autocomplete: any,
     query: any,
-    collection: any,
+    collection: {
+        items: Array<any>
+    },
 }) {
     if (collection.items.length === 0) {
         return (
@@ -214,7 +248,11 @@ function SearchResults({
 }
 
 const SearchInput = forwardRef(function SearchInput(
-    { autocomplete, autocompleteState, onClose },
+    { autocomplete, autocompleteState, onClose }: {
+        autocomplete: any
+        autocompleteState: any,
+        onClose: any
+    },
     inputRef
 ) {
     let inputProps = autocomplete.getInputProps({})
@@ -235,9 +273,12 @@ const SearchInput = forwardRef(function SearchInput(
                         !autocompleteState.isOpen &&
                         autocompleteState.query === ''
                     ) {
-                        // In Safari, closing the dialog with the escape key can sometimes cause the scroll position to jump to the
-                        // bottom of the page. This is a workaround for that until we can figure out a proper fix in Headless UI.
-                        document.activeElement?.blur()
+                        if(document.activeElement){
+                            // In Safari, closing the dialog with the escape key can sometimes cause the scroll position to jump to the
+                            // bottom of the page. This is a workaround for that until we can figure out a proper fix in Headless UI.
+                            // @ts-ignore comment
+                            document.activeElement.blur()
+                        }
 
                         onClose()
                     } else {
@@ -254,17 +295,26 @@ const SearchInput = forwardRef(function SearchInput(
     )
 })
 
-function SearchDialog({ open, setOpen, className }) {
-    const formRef = useRef()
-    const panelRef = useRef()
-    const inputRef = useRef()
-    // let { autocomplete, autocompleteState } = useAutocomplete({
-    //     close() {
-    //         setOpen(false)
-    //     },
-    // })
-    const autocomplete = () => { }
-    const autocompleteState = false;
+function SearchDialog({
+    open,
+    setOpen,
+    className,
+    sections
+}: {
+    open: boolean,
+    setOpen: (open: boolean) => void
+    className: string,
+    sections: Array<FirstLayerOfPost>
+}) {
+    const formRef = useRef<HTMLFormElement>(null)
+    const panelRef = useRef<HTMLDivElement>(null)
+    const inputRef = useRef<HTMLInputElement>(null)
+    const { autocomplete, autocompleteState } = useAutocomplete({
+        close() {
+            setOpen(false)
+        },
+        sections,
+    })
     const pathname = usePathname()
     const searchParams = useSearchParams()
 
@@ -324,10 +374,8 @@ function SearchDialog({ open, setOpen, className }) {
                         leaveTo="opacity-0 scale-95"
                     >
                         <Dialog.Panel className="mx-auto transform-gpu overflow-hidden rounded-lg bg-zinc-50 shadow-xl ring-1 ring-zinc-900/7.5 dark:bg-zinc-900 dark:ring-zinc-800 sm:max-w-xl">
-                            {/* TODO: autocomplete disabled */}
-                            {/* <div {...autocomplete.getRootProps({})}>
-                                <form
-                                    ref={formRef}
+                            <div {...autocomplete.getRootProps({})}>
+                                <form ref={formRef}
                                     {...autocomplete.getFormProps({
                                         inputElement: inputRef.current,
                                     })}
@@ -338,8 +386,7 @@ function SearchDialog({ open, setOpen, className }) {
                                         autocompleteState={autocompleteState}
                                         onClose={() => setOpen(false)}
                                     />
-                                    <div
-                                        ref={panelRef}
+                                    <div ref={panelRef}
                                         className="border-t border-zinc-200 bg-white empty:hidden dark:border-zinc-100/5 dark:bg-white/2.5"
                                         {...autocomplete.getPanelProps({})}
                                     >
@@ -352,7 +399,7 @@ function SearchDialog({ open, setOpen, className }) {
                                         )}
                                     </div>
                                 </form>
-                            </div> */}
+                            </div>
                         </Dialog.Panel>
                     </Transition.Child>
                 </div>
@@ -362,7 +409,7 @@ function SearchDialog({ open, setOpen, className }) {
 }
 
 function useSearchProps() {
-    let buttonRef = useRef()
+    let buttonRef = useRef<HTMLButtonElement>(null)
     let [open, setOpen] = useState(false)
 
     return {
@@ -374,17 +421,13 @@ function useSearchProps() {
         },
         dialogProps: {
             open,
-            // setOpen(open) {
-            //   let { width, height } = buttonRef.current.getBoundingClientRect()
-            //   if (!open || (width !== 0 && height !== 0)) {
-            //     setOpen(open)
-            //   }
-            // },
             setOpen: useCallback(
-                (open) => {
-                    let { width, height } = buttonRef.current.getBoundingClientRect()
-                    if (!open || (width !== 0 && height !== 0)) {
-                        setOpen(open)
+                (open: boolean) => {
+                    if (buttonRef.current) {
+                        const { width, height } = buttonRef.current.getBoundingClientRect()
+                        if (!open || (width !== 0 && height !== 0)) {
+                            setOpen(open)
+                        }
                     }
                 },
                 [setOpen]
@@ -393,13 +436,23 @@ function useSearchProps() {
     }
 }
 
-export function Search() {
-    let [modifierKey, setModifierKey] = useState()
-    let { buttonProps, dialogProps } = useSearchProps()
+export function Search({
+    sections
+}: {
+    sections: Array<FirstLayerOfPost>
+}) {
+    const [modifierKey, setModifierKey] = useState<string>('Ctrl ');
+    const { buttonProps, dialogProps } = useSearchProps()
+    // const [trayOpen, setTrayOpen] = useState<boolean>(false);
+
+    const buttonRef = useRef<HTMLButtonElement>(null);
 
     useEffect(() => {
         setModifierKey(
-            /(Mac|iPhone|iPod|iPad)/i.test(navigator.platform) ? '⌘' : 'Ctrl '
+            navigator.userAgent!.match(
+                /Mac|iPhone|iPod|iPad/i
+            ) ? "⌘" : "Ctrl "
+            // /(Mac|iPhone|iPod|iPad)/i.test(navigator.userAgentData) ? '⌘' : 'Ctrl '
         )
     }, [])
 
@@ -408,22 +461,32 @@ export function Search() {
             <button
                 type="button"
                 className="hidden h-8 w-full items-center gap-2 rounded-full bg-white pl-2 pr-3 text-sm text-zinc-500 ring-1 ring-zinc-900/10 transition hover:ring-zinc-900/20 ui-not-focus-visible:outline-none dark:bg-white/5 dark:text-zinc-400 dark:ring-inset dark:ring-white/10 dark:hover:ring-white/20 lg:flex"
+                // // open={trayOpen}
+                // onClick={()=>{setTrayOpen(true)}}
                 {...buttonProps}
             >
                 <SearchIcon className="h-5 w-5 stroke-current" />
                 Find something...
-                <kbd className="ml-auto text-2xs text-zinc-400 dark:text-zinc-500">
+                <div className="ml-auto text-2xs text-zinc-400 dark:text-zinc-500">
                     <kbd className="font-sans">{modifierKey}</kbd>
                     <kbd className="font-sans">K</kbd>
-                </kbd>
+                </div>
             </button>
-            <SearchDialog className="hidden lg:block" {...dialogProps} />
+            <SearchDialog
+                className="hidden lg:block"
+                sections={sections}
+                {...dialogProps}
+            />
         </div>
     )
 }
 
-export function MobileSearch() {
-    let { buttonProps, dialogProps } = useSearchProps()
+export function MobileSearch({
+    sections
+}: {
+    sections: Array<FirstLayerOfPost>
+}) {
+    const { buttonProps, dialogProps } = useSearchProps()
 
     return (
         <div className="contents lg:hidden">
@@ -435,7 +498,11 @@ export function MobileSearch() {
             >
                 <SearchIcon className="h-5 w-5 stroke-zinc-900 dark:stroke-white" />
             </button>
-            <SearchDialog className="lg:hidden" {...dialogProps} />
+            <SearchDialog
+                className="lg:hidden"
+                sections={sections}
+                {...dialogProps}
+            />
         </div>
     )
 }

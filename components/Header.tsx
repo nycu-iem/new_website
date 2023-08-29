@@ -11,7 +11,6 @@ import Swal from "sweetalert2"
 
 import { ToastContainer } from 'react-toastify';
 import Toaster from "./Toast"
-import 'react-toastify/dist/ReactToastify.css';
 
 const menuOptions: { title: string, href: string, blocked: boolean, reason?: string }[] = [
     {

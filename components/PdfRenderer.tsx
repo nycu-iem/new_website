@@ -5,6 +5,8 @@ pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/b
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDownTrayIcon, ChevronLeftIcon, ChevronRightIcon, ForwardIcon } from "@heroicons/react/20/solid";
 import { clsx } from "clsx"
+import { useSession } from "next-auth/react";
+import { toast } from "react-toastify";
 
 export default function NotionPdf({
     blockId,
@@ -20,6 +22,8 @@ export default function NotionPdf({
     const [documentName, setDocumentName] = useState<string>("PDF_file");
     const currentPageRef = useRef<HTMLInputElement>(null);
 
+    const { data: session, status } = useSession();
+
     useEffect(() => {
         window.addEventListener('resize', () => {
             setWidth(window.innerWidth);
@@ -34,6 +38,19 @@ export default function NotionPdf({
 
     const download = async () => {
         // TODO: downloads need permission
+        console.log(session)
+        if (!(session?.user.union_fee ?? false)) {
+            toast.error('繳交系學會費以解鎖下載功能', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                progress: undefined,
+                theme: "light",
+            })
+            return
+        }
         console.log("prepare to download file")
 
         const link = document.createElement('a');
@@ -73,7 +90,7 @@ export default function NotionPdf({
                 </div>
                 <div className="flex flex-row">
                     {totalPage && <>
-                        <input className="w-8 md:w-12 mr-2 px-1 rounded-md"
+                        <input className="w-16 mr-2 px-1 rounded-md"
                             ref={currentPageRef}
                             onChange={() => {
                                 if (currentPageRef.current) {
@@ -132,22 +149,23 @@ export default function NotionPdf({
                     onLoadError={() => {
                         // TODO: Update loading error
                     }}
-                    loading={<PDFLoading />}>
+                    loading={<PDFLoading />}
+                    className="md:h-[600px] h-[400px]">
                     <Page pageNumber={page}
-                        scale={width > 786 ? 1 : 0.6}
+                        // scale={width > 786 ? 1 : 0.6}
+                        height={width > 768 ? 600 : 400}
                         className="cursor-default"
                     />
                 </Document>
             </div>
         </div>
-
     )
 }
 
 const PDFLoading = () => {
     return (
-        <div className='h-full w-full flex flex-row justify-center'>
-            <div className='self-center'>
+        <div className='h-full w-full flex flex-row justify-center items-center'>
+            <div className=''>
                 載入中
             </div>
         </div>
