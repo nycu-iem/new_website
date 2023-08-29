@@ -2,12 +2,12 @@ import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
 
-import { Container } from '../../../components/Container'
+import { Container } from 'components/Container'
 import {
     FacebookIcon,
     InstagramIcon,
     TwitterIcon,
-} from '../../../components/SocialIcons'
+} from 'components/Icon'
 
 export const metadata = {
     title: '系學會組成介紹 | 陽明交大 工工系學會 | NYCU IEM SA'

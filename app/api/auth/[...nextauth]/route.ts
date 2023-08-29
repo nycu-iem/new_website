@@ -1,6 +1,6 @@
 import NextAuth, { AuthOptions } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
-import { prisma } from "../../../../lib/prisma"
+import { prisma } from "lib/prisma"
 
 export const authOptions: AuthOptions = {
     // Configure one or more authentication providers
@@ -18,7 +18,6 @@ export const authOptions: AuthOptions = {
                 },
             },
             token: {
-                // url: "https://id.nycu.edu.tw/o/token/",
                 async request(context) {
                     // context contains useful properties to help you make the request.
                     const formData = new URLSearchParams({
@@ -35,7 +34,7 @@ export const authOptions: AuthOptions = {
                             "Content-Type": "application/x-www-form-urlencoded",
                             "Accept": "application/json"
                         },
-                        body: formData
+                        body: formData,
                     })
                     const tokens = await res.json();
                     // console.log(tokens)
@@ -46,14 +45,14 @@ export const authOptions: AuthOptions = {
                 url: "https://id.nycu.edu.tw/api/profile/"
             },
             profile(profile) {
-                // console.log("profile");
-                // console.log(profile);
+                console.log("profile");
+                console.log(profile);
                 return {
                     id: profile.username,
-                    // username: profile.username,
                     student_id: profile.username,
                     email: profile.email,
-                    name: "anonymous"
+                    union_fee: false,
+                    name: 'anonymous'
                 }
             },
             type: "oauth",
@@ -84,6 +83,14 @@ export const authOptions: AuthOptions = {
     debug: process.env.NODE_ENV === "development",
     useSecureCookies: process.env.NODE_ENV === "production",
     adapter: PrismaAdapter(prisma),
+    callbacks: {
+        async session({ session, token, user }) {
+            session.user.student_id = user.student_id;
+            session.user.union_fee = user.union_fee;
+
+            return session
+        }
+    }
 }
 
 const handler = NextAuth(authOptions);

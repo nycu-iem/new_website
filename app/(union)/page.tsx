@@ -1,17 +1,17 @@
 import Image from 'next/image'
 import Link from 'next/link'
 import clsx from 'clsx'
-import { Button } from '../../components/Button'
-import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from '../../components/Card'
-import { Container } from '../../components/Container'
+import { Button } from 'components/Button'
+import { Card, CardTitle, CardCta, CardDescription, CardEyebrow } from 'components/Card'
+import { Container } from 'components/Container'
 import {
     InstagramIcon,
     TwitterIcon,
     FacebookIcon
-} from '../../components/SocialIcons'
+} from 'components/Icon'
 
-import { formatDate } from '../../lib/formatDate'
-import { getPosts } from '../../lib/api'
+import { formatDate } from 'lib/formatDate'
+import { notion } from 'lib/notion'
 
 
 function MailIcon(props: any) {
@@ -54,16 +54,38 @@ function BriefcaseIcon(props: any) {
     )
 }
 
-function Article({ article }: { article: { title: string, slug: string, date: string, description: string } }) {
+function Article({ article }: {
+    article: {
+        properties: {
+            highlight: { checkbox: boolean },
+            description: {
+                rich_text: Array<{
+                    plain_text: string
+                }>
+            },
+            title: {
+                title: Array<{
+                    plain_text: string
+                }>
+            }
+        },
+        id: string,
+        last_edited_time: string
+    }
+}) {
+    const properties = article.properties;
+    console.log(article)
+    // console.log(properties.description)
+    // console.log(properties.title)
     return (
         <Card as="article">
-            <CardTitle href={`/articles/${article.slug}`}>
-                {article.title}
+            <CardTitle href={`/articles/${article.id}`}>
+                {clsx(properties.title.title.map(t => (t.plain_text)))}
             </CardTitle>
-            <CardEyebrow as="time" dateTime={article.date} decorate>
-                {formatDate(article.date)}
+            <CardEyebrow as="time" dateTime={article.last_edited_time} decorate>
+                {formatDate(article.last_edited_time)}
             </CardEyebrow>
-            <CardDescription>{article.description}</CardDescription>
+            <CardDescription>{clsx(properties.description.rich_text.map(t => (t.plain_text)))}</CardDescription>
             <CardCta>Read article</CardCta>
         </Card>
     )
@@ -209,7 +231,10 @@ function Photos() {
 }
 
 export default async function Home() {
-    const articles = await getPosts({ isHomePage: true });
+    const articles = (await notion.getDatabase({ pageId: "27a55c38f3774cceabedfbce1690347e" })).results.filter((arti: any) => {
+        // console.log(arti.properties.highlight)
+        return arti.properties.highlight.checkbox
+    });
     console.log(articles)
 
     // console.log(props)
@@ -247,8 +272,8 @@ export default async function Home() {
             <Container className="mt-24 md:mt-28">
                 <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
                     <div className="flex flex-col gap-16">
-                        {articles && articles.map((article) => (
-                            <Article key={article.description} article={article} />
+                        {articles && articles.map((article: any) => (
+                            <Article key={article.id} article={article} />
                         ))}
                         {articles.length === 0 && <div>
                             近期無活動
