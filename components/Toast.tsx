@@ -47,7 +47,6 @@ export default function Client() {
                 theme: "light",
             })
         }
-        // router.replace(pathname, { shallow: false });
         window.history.replaceState({}, document.title, pathname);
     }
 

@@ -1,22 +1,23 @@
-import "../globals.css"
-// import { Inter } from "next/font/google"
-// import { SessionProvider } from "next-auth/react"
+import { Layout } from "./(components)/Layout"
+import { getNavigationLinks } from "./notion_api"
+import { SessionProvider } from "next-auth/react";
 
-// const inter = Inter({ subsets: ['latin'] });
+import 'react-pdf/dist/Page/AnnotationLayer.css';
+import 'react-pdf/dist/Page/TextLayer.css';
 
-export const metadata = {
-    title: '陽明交大 工工系學會 考古題 | NYCU IEMSA EXAM',
-    description: '國立陽明交通大學工業工程與管理學系 官方網站',
-}
-
-export default function RootLayout({
+export default async function RootLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
+    const posts = await getNavigationLinks();
+
     return (
-        <body>
-            {children}
-        </body>
+        <div className="flex min-h-full bg-white antialiased dark:bg-zinc-900 w-full">
+            <Layout allSections={posts}>
+                {children}
+            </Layout>
+        </div>
     )
 }
+

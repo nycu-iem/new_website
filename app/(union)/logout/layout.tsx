@@ -1,4 +1,4 @@
-import { SimpleLayout } from "../../../components/SimpleLayout"
+import { SimpleLayout } from "components/SimpleLayout"
 
 export const metadata = {
     title: '陽明交大 工工系學會 認證系統 登出 | NYCU IEMSA AUTH Logout',

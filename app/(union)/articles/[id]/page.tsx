@@ -1,8 +1,6 @@
-import { SimpleLayout } from "../../../../components/SimpleLayout";
+import { SimpleLayout } from "components/SimpleLayout";
 import { notFound } from 'next/navigation'
-import { getPost } from "../../../../lib/api";
-import clsx from "clsx";
-import Image from "next/image";
+import { getPost } from "lib/api";
 
 import ClientPage from "./client-page"
 
