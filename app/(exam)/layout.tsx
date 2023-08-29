@@ -1,5 +1,6 @@
 import { Layout } from "./(components)/Layout"
 import { getNavigationLinks } from "./notion_api"
+import { SessionProvider } from "next-auth/react";
 
 import 'react-pdf/dist/Page/AnnotationLayer.css';
 import 'react-pdf/dist/Page/TextLayer.css';

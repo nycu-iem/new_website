@@ -35,7 +35,6 @@ export default function RoomRenting() {
 
     return (
         <SessionProvider>
-
             <SimpleLayout
                 title="公共空間租借"
                 intro="系學會空間出借"

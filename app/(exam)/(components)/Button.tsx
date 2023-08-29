@@ -37,6 +37,7 @@ export function Button({
     children,
     arrow,
     href,
+    onClick,
     ...props
 }: {
     variant?: 'primary' | 'text' | 'secondary' | 'outline' | 'filled',
@@ -44,6 +45,8 @@ export function Button({
     children: React.ReactNode,
     arrow?: 'left' | 'right',
     href?: string,
+    id?: string,
+    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }) {
     // const Component = props.href ? Link : 'button'
 
@@ -74,7 +77,7 @@ export function Button({
         )
     } else {
         return (
-            <button className={className} {...props}>
+            <button className={className} onClick={onClick} {...props}>
                 {arrow === 'left' && arrowIcon
                 }
                 {children}

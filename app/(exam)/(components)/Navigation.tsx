@@ -103,10 +103,13 @@ function VisibleSectionHighlight({
             const courses = visibleSections[0].classes;
             const classIndex = courses.findIndex(c => (encodeURI(`/exams/${c.page_id}`) === pathname))
 
+            // console.log('hello')
+            // console.log(courses[classIndex].sections)
+
             const firstVisibleSectionIndex = Math.max(
                 0,
                 [{ title: '_top', text: 'text' }, ...courses[classIndex].sections].findIndex(
-                    (section) => encodeURI(`#${section}`) === document.location.hash
+                    (section) => (encodeURI(`#${section}`) === encodeURI(decodeURI(document.location.hash)))
                 )
             )
             // console.log('first visible section index:', firstVisibleSectionIndex)
@@ -116,13 +119,11 @@ function VisibleSectionHighlight({
 
             setTop(group.classes.findIndex((course) => encodeURI(`/exams/${course.page_id}`) === pathname) * itemHeight +
                 firstVisibleSectionIndex * itemHeight)
-
-            // console.log("height", height)
-            // console.log("top", top)
         }, 200)
     }, [])
 
     useEffect(() => {
+        // console.log(courses[classIndex].sections)
         hashChangedHandler();
         window.addEventListener('link-clicked', hashChangedHandler)
         return () => {
@@ -136,7 +137,7 @@ function VisibleSectionHighlight({
             initial={{ opacity: 0 }}
             animate={{ opacity: 1, transition: { delay: 0.2 } }}
             exit={{ opacity: 0 }}
-            className="absolute inset-x-0 top-0 bg-zinc-300 will-change-transform dark:bg-zinc-200"
+            className="absolute inset-x-0 top-0 bg-zinc-300 will-change-transform dark:bg-zinc-700"
             style={{ borderRadius: 8, height, top }}
         />
     )
@@ -260,7 +261,7 @@ function NavigationGroup({
 
 const getSectionTitle = (input: string) => {
     const regex = /(.*)\|(.*)/.exec(input);
-    if(regex){
+    if (regex) {
         return regex[1]
     }
     return input
@@ -268,12 +269,13 @@ const getSectionTitle = (input: string) => {
 
 const getSectionText = (input: string) => {
     const regex = /(.*)\|(.*)/.exec(input);
-    if(regex){
+    if (regex) {
         return regex[2];
     }
     return ''
 }
 
+import { useSession } from "next-auth/react"
 
 export function Navigation({
     sections,
@@ -290,9 +292,7 @@ export function Navigation({
     sectionSelected: Array<FirstLayerOfPost>,
     setSectionSelected: Dispatch<SetStateAction<Array<FirstLayerOfPost>>>
 }) {
-    // TODO: set semester according to date
-    // const [semester, setSemester] = useState<"first" | "second" | "summer">("first");
-    // const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
+    const { data: session, status } = useSession()
 
     const updateSemesterSelection = () => {
         // console.log(sections);
@@ -337,9 +337,15 @@ export function Navigation({
                     />
                 ))}
                 <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-                    <Button href="/login" variant="filled" className="w-full">
-                        Sign in
-                    </Button>
+                    {status === "authenticated" ?
+                        <Button  href='#' variant='filled' className='w-full'>
+                            已登入
+                        </Button>
+                        :
+                        <Button href="/login" variant="filled" className="w-full">
+                            Sign in
+                        </Button>
+                    }
                 </li>
             </ul>
         </nav>
@@ -432,7 +438,7 @@ export function Selection({
 
     return (
         <div className={clsx(
-            "grid grid-cols-3 items-center my-2 py-1 px-3 w-full bg-slate-100 select-none rounded-md",
+            "grid grid-cols-3 items-center my-2 py-1 px-3 w-full bg-slate-100 select-none rounded-md dark:bg-slate-700",
             className,
         )} ref={motherBoxRef}>
             <div className='text-center cursor-pointer' ref={firstRef} onClick={() => {
