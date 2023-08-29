@@ -116,7 +116,9 @@ export const Header = forwardRef(function Header({
                 'bg-zinc-900/7.5 dark:bg-white/7.5'
             )}
             />
-            <Search sections={sections} />
+            {/* TODO: search disabled */}
+            <div className='flex-grow'/>
+            {/* <Search sections={sections} /> */}
             <div className="flex items-center gap-5 lg:hidden">
                 <MobileNavigation
                     sections={sections}

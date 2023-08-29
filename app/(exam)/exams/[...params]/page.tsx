@@ -38,7 +38,7 @@ export default async function SectionPage({
         return notFound();
     }
 
-    let block_blocks = true;
+    let block_blocks = false;
 
     return (
         <div className="w-full flex flex-col">
