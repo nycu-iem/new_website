@@ -53,14 +53,14 @@ export default function DayView({
     }
 
     return (
-        <div className="w-full">
-            <div className="text-center">
+        <div className="w-full bg-white dark:bg-slate-800 rounded-lg pt-5">
+            <div className="text-center text-black dark:text-white">
                 {weekInEng(weekDay)} {date.day}
             </div>
             <div className="mt-10">
                 <ol className="w-full space-y-5 select-none">
                     {eventsToday.map((event) => (
-                        <li className="relative mt-px flex w-full" key={`${event.startedAt} ${event.purpose}`}>
+                        <li className="relative mt-px flex w-full text-black dark:text-white" key={`${event.startedAt} ${event.purpose}`}>
                             <div className={clsx("flex flex-col rounded-lg p-2 text-xs w-full", event.bgColor, `hover:${event.hoverColor}`)}>
                                 <p className={clsx("order-1 font-semibold", event.timeColor)}>{event.user.name === "anonymous" ? event.user.student_id : event.user.name}</p>
                                 <p className={clsx("order-1 font-semibold", event.textColor)}>{event.purpose}</p>
@@ -71,7 +71,7 @@ export default function DayView({
                             </div>
                         </li>
                     ))}
-                    {eventsToday.length === 0 && <li className="text-center">無預約</li>}
+                    {eventsToday.length === 0 && <li className="text-center text-black dark:text-white">無預約</li>}
                 </ol>
             </div>
         </div >
