@@ -1,10 +1,10 @@
 import { notFound } from "next/navigation";
 import { getExams } from "../../notion_api"
 import { notion } from "lib/notion";
-
+import React from 'react'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../../api/auth/[...nextauth]/route"
-
+import Head from 'next/head'
 import NotionPdf from "components/PdfRenderer";
 import NotionImage from "components/NotionImage";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
@@ -17,13 +17,6 @@ export default async function SectionPage({
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
     const session = await getServerSession(authOptions);
-    if (!session) {
-        return (
-            <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
-                登入以查看內容
-            </div>
-        )
-    }
 
     let blocks;
     let page;
@@ -37,11 +30,26 @@ export default async function SectionPage({
     } catch (err) {
         return notFound();
     }
+    if (!session) {
+        return (
+            <React.Fragment>
+                <Head>
+                    <title>{`${page.properties['標題'].title[0].plain_text}|工工系學會考古題網站`}</title>
+                </Head>
+                <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
+                    登入以查看內容
+                </div>
+            </React.Fragment>
+        )
+    }
 
     let block_blocks = false;
 
     return (
         <div className="w-full flex flex-col">
+            <Head>
+                <title>{`${page.properties['標題'].title[0].plain_text}|工工系學會考古題網站`}</title>
+            </Head>
             <div className='py-5 font-bold text-2xl'>
                 {page.properties['標題'].title[0].plain_text}
             </div>
@@ -73,7 +81,7 @@ export default async function SectionPage({
                         }
                         // normal text
                         if (block_blocks) {
-                            return <LockClosedIcon className="w-20 self-center"/>
+                            return <LockClosedIcon className="w-20 self-center" />
                         }
                         return (
                             <div key={block.id} className="select-none">
@@ -95,7 +103,7 @@ export default async function SectionPage({
                         )
                     case "image":
                         if (block_blocks) {
-                            return <LockClosedIcon className="w-20 self-center"/>
+                            return <LockClosedIcon className="w-20 self-center" />
                         }
                         return (
                             <NotionImage

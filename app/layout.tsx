@@ -10,8 +10,8 @@ import {
 
 import { Analytics } from '@vercel/analytics/react';
 import { useEffect } from 'react';
-
-import { Inter } from 'next/font/google' 
+import { SessionProvider } from 'next-auth/react'
+import { Inter } from 'next/font/google'
 import clsx from 'clsx';
 const inter = Inter({ subsets: ['latin'] })
 
@@ -26,11 +26,13 @@ export default function RootLayout({
                 'flex min-h-full bg-white antialiased dark:bg-zinc-900',
                 inter.className
             )}>
-                <ThemeProvider disableTransitionOnChange defaultTheme='system' attribute='class'> 
-                    {/* attribute="className" disableTransitionOnChange */}
-                    <ThemeWatcher />
-                    {children}
-                </ThemeProvider>
+                <SessionProvider>
+                    <ThemeProvider disableTransitionOnChange defaultTheme='system' attribute='class'>
+                        {/* attribute="className" disableTransitionOnChange */}
+                        <ThemeWatcher />
+                        {children}
+                    </ThemeProvider>
+                </SessionProvider>
                 <Analytics />
             </body>
         </html>

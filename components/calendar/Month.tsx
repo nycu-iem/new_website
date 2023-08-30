@@ -1,12 +1,9 @@
 "use client"
-import { Dispatch, Fragment, SetStateAction, useEffect, useState } from "react"
-import { Menu, Transition } from '@headlessui/react'
+import { Dispatch, SetStateAction, useEffect, useState } from "react"
+// import { Menu, Transition } from '@headlessui/react'
 import {
-    CalendarIcon,
     ChevronLeftIcon,
     ChevronRightIcon,
-    EllipsisHorizontalIcon,
-    MapPinIcon,
 } from '@heroicons/react/20/solid'
 
 import { clsx } from "clsx"
@@ -91,31 +88,31 @@ export default function CalendarMonth({
 
     return (
         <div className="select-none">
-            <h2 className="text-base font-semibold leading-6 text-gray-900">{calendarName}</h2>
+            {/* <h2 className="text-base font-semibold leading-6 text-gray-900">{calendarName}</h2> */}
 
             <div className="">
-                <div className="mt-10 text-center lg:w-80 lg:mt-9">
+                <div className="mt-10 text-center lg:w-80 lg:mt-9 bg-slate-50 py-3 rounded-md px-3 dark:bg-slate-800">
                     <div className="flex items-center text-gray-900">
                         <button type="button"
-                            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-50"
                             onClick={() => { toggleMonth(-1) }}
                         >
                             <span className="sr-only">Previous month</span>
                             <ChevronLeftIcon className="h-5 w-5" aria-hidden="true" />
                         </button>
-                        <div className="flex-auto text-sm font-semibold">{MonthInEng(selectedMonth)}</div>
+                        <div className="flex-auto text-sm font-semibold text-black dark:text-white">{MonthInEng(selectedMonth)}</div>
                         <button type="button"
-                            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500"
+                            className="-m-1.5 flex flex-none items-center justify-center p-1.5 text-gray-400 hover:text-gray-500 dark:text-gray-200 dark:hover:text-gray-50"
                             onClick={() => { toggleMonth(1) }}
                         >
                             <span className="sr-only">Next month</span>
                             <ChevronRightIcon className="h-5 w-5" aria-hidden="true" />
                         </button>
                     </div>
-                    <div className="linear-activity" hidden={!loading}>
+                    <div className={clsx('linear-activity',loading || 'invisible')}>
                         <div className="indeterminate"></div>
                     </div>
-                    <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500">
+                    <div className="mt-6 grid grid-cols-7 text-xs leading-6 text-gray-500 dark:text-gray-300">
                         <div>S</div>
                         <div>M</div>
                         <div>T</div>
@@ -124,14 +121,14 @@ export default function CalendarMonth({
                         <div>F</div>
                         <div>S</div>
                     </div>
-                    <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 text-sm shadow ring-1 ring-gray-200">
+                    <div className="isolate mt-2 grid grid-cols-7 gap-px rounded-lg bg-gray-200 dark:bg-gray-700 text-sm shadow ring-1 ring-gray-200 dark:ring-gray-700">
                         {days.map((day, dayIdx) => (
                             <button key={`${day.date.year}-${paddingZero(day.date.month)}-${paddingZero(day.date.day)}`}
                                 type="button"
                                 className={clsx(
                                     'py-1.5 focus:z-10',
-                                    (day.date.day === selectedDay && day.date.month === selectedMonth) ? "bg-gray-300" :
-                                        (day.isCurrentMonth ? "hover:bg-gray-100 bg-white" : "bg-gray-50 hover:bg-gray-100"),
+                                    (day.date.day === selectedDay && day.date.month === selectedMonth) ? "bg-gray-300 dark:bg-slate-400" :
+                                        (day.isCurrentMonth ? "hover:bg-gray-100 bg-white dark:bg-slate-600" : "bg-gray-50 hover:bg-gray-100 dark:bg-slate-800"),
                                     (day.isSelected || day.isToday) && 'font-semibold',
                                     day.isSelected && 'text-white',
                                     !day.isSelected && day.isCurrentMonth && !day.isToday && 'text-gray-900',
@@ -146,8 +143,7 @@ export default function CalendarMonth({
                                 onMouseLeave={() => { setHoverDate(NaN) }}
                                 onClick={() => { if (day.date.month === selectedMonth) { setSelectedDay(day.date.day) } }}
                             >
-                                <time
-                                    dateTime={`${day.date.year}-${paddingZero(day.date.month)}-${paddingZero(day.date.day)}`}
+                                <time dateTime={`${day.date.year}-${paddingZero(day.date.month)}-${paddingZero(day.date.day)}`}
                                     className={clsx(
                                         'mx-auto flex h-7 w-7 items-center justify-center rounded-full',
                                         day.isSelected && day.isToday && 'bg-indigo-600',
