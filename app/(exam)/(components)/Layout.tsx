@@ -7,7 +7,6 @@ import { Header } from './Header'
 import { Logo } from './Logo'
 import { Navigation } from './Navigation'
 import React from 'react'
-import { SessionProvider } from 'next-auth/react'
 import { FirstLayerOfPost } from "../notion_api"
 import Toaster from 'components/Toast'
 import { ToastContainer } from 'react-toastify'
