@@ -292,7 +292,8 @@ export function Navigation({
     sectionSelected: Array<FirstLayerOfPost>,
     setSectionSelected: Dispatch<SetStateAction<Array<FirstLayerOfPost>>>
 }) {
-    const { data: session, status } = useSession()
+    props.className += ' h-full'
+    const { data: session, status, update } = useSession()
 
     const updateSemesterSelection = () => {
         // console.log(sections);
@@ -322,28 +323,30 @@ export function Navigation({
     }, [semester])
 
     return (
-        <nav {...props}>
-            <ul role="list" className='relative'>
+        <nav {...props} >
+            <ul role="list" className='relative  h-full'>
                 <TopLevelNavItem href="/articles">文章</TopLevelNavItem>
                 <TopLevelNavItem href="/activities">活動</TopLevelNavItem>
                 <TopLevelNavItem href="/booking">系窩租借</TopLevelNavItem>
                 <Selection semester={semester} setSemester={setSemester} />
-                {sectionSelected && sectionSelected.map((group, groupIndex) => (
-                    <NavigationGroup
-                        key={group.title}
-                        group={group}
-                        sections={sectionSelected}
-                        className={groupIndex === 0 && 'md:mt-0'}
-                    />
-                ))}
-                <li className="sticky bottom-0 z-10 mt-6 min-[416px]:hidden">
-                    {status === "authenticated" ?
-                        <Button  href='#' variant='filled' className='w-full'>
-                            已登入
+                <div className='pb-20'>
+                    {sectionSelected && sectionSelected.map((group, groupIndex) => (
+                        <NavigationGroup
+                            key={group.title}
+                            group={group}
+                            sections={sectionSelected}
+                            className={groupIndex === 0 && 'md:mt-0'}
+                        />
+                    ))}
+                </div>
+                <li className="absolute bottom-5 z-10 mt-6 min-[416px]:hidden w-full">
+                    {status === 'authenticated' ?
+                        <Button href='/logout' variant='filled' className='w-full'>
+                            登出
                         </Button>
                         :
                         <Button href="/login" variant="filled" className="w-full">
-                            Sign in
+                            登入
                         </Button>
                     }
                 </li>

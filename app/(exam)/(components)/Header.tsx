@@ -60,7 +60,7 @@ export const Header = forwardRef(function Header({
     const settingsRef = useRef<HTMLDivElement>(null);
 
     const { data: session, status } = useSession()
-    // console.log(session)
+    
     type ExtendedSession = typeof session & {
         user: {
             student_id: string
@@ -117,7 +117,7 @@ export const Header = forwardRef(function Header({
             )}
             />
             {/* TODO: search disabled */}
-            <div className='flex-grow'/>
+            <div className='md:flex-grow hidden md:block'/>
             {/* <Search sections={sections} /> */}
             <div className="flex items-center gap-5 lg:hidden">
                 <MobileNavigation
@@ -126,7 +126,6 @@ export const Header = forwardRef(function Header({
                     setSemester={setSemester}
                     sectionSelected={sectionSelected}
                     setSectionSelected={setSectionSelected} />
-
                 <Link href="/" aria-label="Home">
                     <Logo className="md:w-12 w-8" />
                 </Link>
@@ -153,7 +152,7 @@ export const Header = forwardRef(function Header({
                         }} id="nav_btn">
                             {session.user?.name === 'anonymous' ? (session as ExtendedSession).user.student_id : session.user?.name}
                         </Button> :
-                        <Button href="/login">Sign in</Button>
+                        <Button href="/login">登入</Button>
                     }
                     <motion.div
                         className={clsx(

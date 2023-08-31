@@ -11,39 +11,7 @@ import { Navigation } from './Navigation'
 import { FirstLayerOfPost } from '../notion_api'
 import { Dispatch, SetStateAction } from 'react'
 
-function MenuIcon({
-    ...props
-}: {
-    className: string
-}) {
-    return (
-        <svg
-            viewBox="0 0 10 9"
-            fill="none"
-            strokeLinecap="round"
-            aria-hidden="true"
-            {...props}
-        >
-            <path d="M.5 1h9M.5 8h9M.5 4.5h9" />
-        </svg>
-    )
-}
-
-function XIcon({
-    ...props
-}: {}) {
-    return (
-        <svg
-            viewBox="0 0 10 9"
-            fill="none"
-            strokeLinecap="round"
-            aria-hidden="true"
-            {...props}
-        >
-            <path d="m1.5 1 7 7M8.5 1l-7 7" />
-        </svg>
-    )
-}
+import { XIcon, MenuIcon } from 'components/Icon'
 
 const IsInsideMobileNavigationContext = createContext<boolean>(false)
 

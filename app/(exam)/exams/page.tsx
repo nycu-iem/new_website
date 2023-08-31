@@ -12,6 +12,9 @@ export default async function ExamPage() {
         return (
             <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
                 登入以查看內容
+                <div className="md:hidden block">
+                    登入鍵在功能選單裡
+                </div>
             </div>
         )
     }

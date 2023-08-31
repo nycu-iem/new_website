@@ -67,7 +67,11 @@ export default async function SectionPage({
                             const category = getCategory(result);
                             // console.log('title:', category)
                             if (category === '讀書心得') {
-                                block_blocks = true
+                                if (session.user.union_fee) {
+                                    block_blocks = false
+                                } else {
+                                    block_blocks = true
+                                }
                             } else {
                                 block_blocks = false
                             }

@@ -24,7 +24,7 @@ export function Layout({
     const [sectionSelected, setSectionSelected] = useState<Array<FirstLayerOfPost>>([]);
 
     return (
-        <SessionProvider>
+        <React.Fragment>
             <div className="h-full lg:ml-72 xl:ml-80 w-full">
                 <motion.header layoutScroll
                     className="contents lg:pointer-events-none lg:fixed lg:inset-0 lg:z-40 lg:flex"
@@ -58,7 +58,7 @@ export function Layout({
             </div>
             <Toaster />
             <ToastContainer />
-        </SessionProvider>
+        </React.Fragment>
     )
 }
 
