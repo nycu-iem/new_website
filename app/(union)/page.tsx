@@ -74,7 +74,7 @@ function Article({ article }: {
     }
 }) {
     const properties = article.properties;
-    console.log(article)
+    // console.log(article)
     // console.log(properties.description)
     // console.log(properties.title)
     return (
