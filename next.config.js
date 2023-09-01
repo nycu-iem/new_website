@@ -19,7 +19,11 @@ const nextConfig = {
         });
 
         return config;
-    }
+    },
+    experimental: {
+        serverActions: true,
+    },
+
     // webpack: (config) => { config.externals.push({ sharp: 'commonjs sharp', canvas: 'commonjs canvas' }) return config }
 }
 
