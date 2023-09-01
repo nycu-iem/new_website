@@ -59,7 +59,7 @@ export default async function SectionPage({
                 // console.log(block)
                 switch (block.type) {
                     case "paragraph":
-                        const text = block.paragraph.rich_text[0].plain_text;
+                        const text = block.paragraph?.rich_text[0]?.plain_text ?? '';
                         const result = /{(.*)}/.exec(text)?.[1]
                         if (result) {
                             // header
