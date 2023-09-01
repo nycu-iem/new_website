@@ -196,6 +196,8 @@ function NavigationGroup({
     const isActiveGroup = group.classes.findIndex((post) => encodeURI(`/exams/${post.page_id}`) === pathname) !== -1
     // console.log(isActiveGroup)
 
+    // return <></>
+
     return (
         <li className={clsx('relative mt-6', className)}>
             <motion.h2 layout="position"
@@ -301,12 +303,17 @@ export function Navigation({
 
         let sectionsToBeSelected: FirstLayerOfPost[] = [];
 
+        console.log(semesterInChinese)
+
         sections.map(s => {
+            console.log(s)
             const temp = s.classes.filter(course => {
                 if (course.semester === semesterInChinese)
                     return true
                 return false
             })
+            console.log('temp')
+            console.log(temp)
             if (temp.length !== 0) {
                 sectionsToBeSelected.push({
                     title: s.title,
@@ -315,12 +322,16 @@ export function Navigation({
             }
         })
 
+        console.log('sections selected')
+        console.log(sectionsToBeSelected)
         setSectionSelected(sectionsToBeSelected);
     }
 
     useEffect(() => {
         updateSemesterSelection();
     }, [semester])
+
+    // return <></>
 
     return (
         <nav {...props} >
