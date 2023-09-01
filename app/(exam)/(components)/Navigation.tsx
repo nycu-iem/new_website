@@ -44,14 +44,14 @@ function NavLink({
     children: React.ReactNode,
 }) {
     const pushEvent = () => {
-        // const eventEmit = document.createEvent('HTMLEvents')
-        // eventEmit.initEvent('link-clicked')
         const event = new Event("link-clicked", { "bubbles": true, "cancelable": false });
         document.dispatchEvent(event);
     }
+    const router = useRouter();
 
     return (
-        <Link href={href ?? ''}
+        <button
+            // href={href}
             aria-current={active ? 'page' : undefined}
             className={clsx(
                 'flex justify-between gap-2 py-1 pr-3 text-sm transition',
@@ -60,7 +60,15 @@ function NavLink({
                     ? 'text-zinc-900 dark:text-white'
                     : 'text-zinc-600 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-white'
             )}
-            onClick={() => { pushEvent() }}
+            onClick={() => {
+                // console.log(href)
+                router.push(href)
+                setTimeout(() => {
+                    router.push(href)
+                }, 10);
+
+                pushEvent()
+            }}
         >
             <span className="truncate">{children}</span>
             {tag && (
@@ -68,7 +76,7 @@ function NavLink({
                     {tag}
                 </Tag>
             )}
-        </Link>
+        </button>
     )
 }
 
@@ -81,7 +89,6 @@ function VisibleSectionHighlight({
     pathname: string,
     sections: Array<FirstLayerOfPost>
 }) {
-
     const visibleSections = sections.filter((section) => {
         for (let course of section.classes) {
             if (pathname === `/exams/${course.page_id}`) {
@@ -98,13 +105,11 @@ function VisibleSectionHighlight({
     const [top, setTop] = useState<number>(0);
     // const [hash, setHash] = useState<string>("");
 
-    const hashChangedHandler = useCallback(() => {
+    // const hashChangedHandler = useCallback(() => {
+    const hashChangedHandler = () => {
         setTimeout(() => {
             const courses = visibleSections[0].classes;
             const classIndex = courses.findIndex(c => (encodeURI(`/exams/${c.page_id}`) === pathname))
-
-            // console.log('hello')
-            // console.log(courses[classIndex].sections)
 
             const firstVisibleSectionIndex = Math.max(
                 0,
@@ -120,7 +125,8 @@ function VisibleSectionHighlight({
             setTop(group.classes.findIndex((course) => encodeURI(`/exams/${course.page_id}`) === pathname) * itemHeight +
                 firstVisibleSectionIndex * itemHeight)
         }, 200)
-    }, [])
+    }
+    // }, [pathname,hash])
 
     useEffect(() => {
         // console.log(courses[classIndex].sections)
@@ -129,7 +135,7 @@ function VisibleSectionHighlight({
         return () => {
             window.removeEventListener('link-clicked', hashChangedHandler)
         }
-    }, [])
+    }, [pathname])
 
     return (
         <motion.div
@@ -154,12 +160,14 @@ function ActivePageMarker({
     const itemHeight = remToPx(2)
     const offset = remToPx(0.25)
 
-    const hashChangedHandler = useCallback(() => {
+    // const hashChangedHandler = useCallback(() => {
+    const hashChangedHandler = () => {
         setTimeout(() => {
             const activePageIndex = group.classes.findIndex((course) => encodeURI(`/exams/${course.page_id}`) === pathname)
             setTop(offset + activePageIndex * itemHeight)
         }, 200)
-    }, [])
+    }
+    // }, [])
 
     useEffect(() => {
         hashChangedHandler();
@@ -167,7 +175,7 @@ function ActivePageMarker({
         return () => {
             window.removeEventListener('link-clicked', hashChangedHandler)
         }
-    }, [])
+    }, [pathname])
 
     return (
         <motion.div layout
@@ -223,7 +231,10 @@ function NavigationGroup({
                 <ul role="list" className="border-l border-transparent">
                     {group.classes.map((course) => (
                         <motion.li key={course.page_id} layout="position" className="relative">
-                            <NavLink href={`/exams/${course.page_id}`} active={`/exams/${course.page_id}` === pathname}>
+                            <NavLink
+                                href={`/exams/${course.page_id}`}
+                                active={`/exams/${course.page_id}` === pathname}
+                            >
                                 {course.title}
                             </NavLink>
                             <AnimatePresence mode="popLayout" initial={false}>
@@ -278,6 +289,7 @@ const getSectionText = (input: string) => {
 }
 
 import { useSession } from "next-auth/react"
+import { Router } from 'next/router'
 
 export function Navigation({
     sections,
@@ -303,17 +315,17 @@ export function Navigation({
 
         let sectionsToBeSelected: FirstLayerOfPost[] = [];
 
-        console.log(semesterInChinese)
+        // console.log(semesterInChinese)
 
         sections.map(s => {
-            console.log(s)
+            // console.log(s)
             const temp = s.classes.filter(course => {
                 if (course.semester === semesterInChinese)
                     return true
                 return false
             })
-            console.log('temp')
-            console.log(temp)
+            // console.log('temp')
+            // console.log(temp)
             if (temp.length !== 0) {
                 sectionsToBeSelected.push({
                     title: s.title,
@@ -322,16 +334,14 @@ export function Navigation({
             }
         })
 
-        console.log('sections selected')
-        console.log(sectionsToBeSelected)
+        // console.log('sections selected')
+        // console.log(sectionsToBeSelected)
         setSectionSelected(sectionsToBeSelected);
     }
 
     useEffect(() => {
         updateSemesterSelection();
     }, [semester])
-
-    // return <></>
 
     return (
         <nav {...props} >

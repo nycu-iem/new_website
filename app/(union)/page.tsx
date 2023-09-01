@@ -235,7 +235,7 @@ export default async function Home() {
         // console.log(arti.properties.highlight)
         return arti.properties.highlight.checkbox
     });
-    console.log(articles)
+    // console.log(articles)
 
     // console.log(props)
     return (

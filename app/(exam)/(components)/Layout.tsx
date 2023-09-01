@@ -53,6 +53,7 @@ export function Layout({
                 </motion.header>
                 <div className="relative flex h-full flex-col px-4 pt-14 sm:px-6 lg:px-8">
                     <main className="flex-auto">{children}</main>
+                    {/* TODO: footer needs to be fixed */}
                     {/* <Footer sections={sectionSelected} /> */}
                 </div>
             </div>

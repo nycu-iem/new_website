@@ -45,8 +45,9 @@ export const authOptions: AuthOptions = {
                 url: "https://id.nycu.edu.tw/api/profile/"
             },
             profile(profile) {
-                console.log("profile");
-                console.log(profile);
+                // console.log("profile");
+                // console.log(profile);
+                // TODO: get unionFee
                 return {
                     id: profile.username,
                     student_id: profile.username,

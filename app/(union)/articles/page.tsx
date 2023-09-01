@@ -58,7 +58,7 @@ function Article({ article }: {
 
 export default async function ArticlesIndex() {
     const articles = (await notion.getDatabase({ pageId: "27a55c38f3774cceabedfbce1690347e" })).results;
-    console.log(articles)
+    // console.log(articles)
     return (
         <>
             <SimpleLayout

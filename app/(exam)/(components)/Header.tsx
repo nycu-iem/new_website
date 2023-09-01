@@ -117,7 +117,7 @@ export const Header = forwardRef(function Header({
             )}
             />
             {/* TODO: search disabled */}
-            <div className='md:flex-grow hidden md:block'/>
+            <div className='sm:flex-grow hidden md:block'/>
             {/* <Search sections={sections} /> */}
             <div className="flex items-center gap-5 lg:hidden">
                 <MobileNavigation
