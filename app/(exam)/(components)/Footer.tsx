@@ -107,15 +107,15 @@ function SmallPrint() {
                 &copy; Copyright {new Date().getFullYear()}. All rights reserved.
             </p>
             <div className="flex gap-4">
-                <Link href="#" className="group">
+                <Link href="https://twitter.com/nycu_iemsa" className="group">
                     <span className="sr-only">Follow us on twitter</span>
                     <TwitterIcon className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
                 </Link>
-                <Link href="href" className='group'>
+                <Link href="https://github.com/nycu-iemsa" className='group'>
                     <span className='sr-only'>Follow us on Github</span>
                     <GitHubIcon className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
                 </Link>
-                <Link href="href" className='group'>
+                <Link href="#" className='group'>
                     <span className='sr-only'>Join our Discord server</span>
                     <DiscordIcon className="h-5 w-5 fill-zinc-700 transition group-hover:fill-zinc-900 dark:group-hover:fill-zinc-500" />
                 </Link>
