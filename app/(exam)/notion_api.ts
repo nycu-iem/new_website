@@ -42,7 +42,7 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
 
     await Promise.all(result.results.map(async (data: any) => {
         // console.log(data)
-        const permanent_course_id = data.properties["永久課號"]?.rich_text[0]?.plain_text ?? 'undefined';
+        const permanent_course_id = `${data.properties["永久課號"]?.rich_text[0]?.plain_text ?? 'undefined'}${data.properties["教授"]?.select?.name ?? 'undefined'}`;
         const teacher = data.properties["教授"]?.select?.name ?? 'undefined';
         const course_name = data.properties["課程名稱"]?.select?.name ?? 'undefined';
         const semester = data.properties["學期"]?.select?.name ?? '暑假';
