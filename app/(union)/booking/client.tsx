@@ -51,8 +51,8 @@ export default function BookingClientPage({
     }, [])
 
     useEffect(() => {
-        console.log('hello')
-        console.log(otherTheme,resolvedTheme)
+        // console.log('hello')
+        // console.log(otherTheme,resolvedTheme)
         setCustomTheme(createTheme({
             palette: {
                 mode: resolvedTheme === 'dark' ? 'dark' : 'light',

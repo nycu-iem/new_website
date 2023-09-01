@@ -201,7 +201,7 @@ function NavItem({ href, children, ...props }: { href: string, children: React.R
                         icon: "error",
                         text: props.reason
                     })
-                    console.log("pressed", props.reason)
+                    // console.log("pressed", props.reason)
                 }}>
                     {children}
                 </div>

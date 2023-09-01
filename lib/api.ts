@@ -62,13 +62,13 @@ export const getPost = async (id: string) => {
         pageId: id
     })
 
-    console.log(post)
+    // console.log(post)
 
     const blocks = await notion.getBlocks({
         pageId: id
     })
 
-    console.log(blocks)
+    // console.log(blocks)
 
     if (post.object !== 'page') {
         return undefined
@@ -76,7 +76,7 @@ export const getPost = async (id: string) => {
 
     let content = [];
     for (let e of blocks.results) {
-        console.log(e);
+        // console.log(e);
 
         let cont: ContentType;
 

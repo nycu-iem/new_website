@@ -80,8 +80,8 @@ export async function POST(
         return NextResponse.json({ error: "Event Existed" }, { status: 401 });
     }
 
-    console.log("hola")
-    console.log(data.purpose)
+    // console.log("hola")
+    // console.log(data.purpose)
 
     const res = await prisma.reserve.create({
         data: {
@@ -97,6 +97,6 @@ export async function POST(
             }
         }
     })
-    console.log("final")
+    // console.log("final")
     return NextResponse.json({ message: "good" });
 }

@@ -38,7 +38,7 @@ export default function NotionPdf({
 
     const download = async () => {
         // TODO: downloads need permission
-        console.log(session)
+        // console.log(session)
         if (!(session?.user.union_fee ?? false)) {
             toast.error('繳交系學會費以解鎖下載功能', {
                 position: "top-right",
@@ -51,7 +51,7 @@ export default function NotionPdf({
             })
             return
         }
-        console.log("prepare to download file")
+        // console.log("prepare to download file")
 
         const link = document.createElement('a');
         link.setAttribute('download', documentName);
@@ -144,7 +144,7 @@ export default function NotionPdf({
                         if (event.fingerprints[0]) {
                             setDocumentName(event.fingerprints[0])
                         }
-                        console.log(event)
+                        // console.log(event)
                     }}
                     onLoadError={() => {
                         // TODO: Update loading error

@@ -4,10 +4,33 @@ import { notion } from "lib/notion";
 import React from 'react'
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../../api/auth/[...nextauth]/route"
-import Head from 'next/head'
 import NotionPdf from "components/PdfRenderer";
 import NotionImage from "components/NotionImage";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
+
+import type { Metadata, ResolvingMetadata } from 'next'
+
+export async function generateMetadata(
+    { params, searchParams }: {
+        params: { params: Array<string> }
+        searchParams: { [key: string]: string | string[] | undefined }
+    },
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+
+    // fetch data
+    // const product = await fetch(`https://.../${id}`).then((res) => res.json())
+    const page = await notion.getPage({ pageId: params.params[0] });
+    // optionally access and extend (rather than replace) parent metadata
+    // const previousImages = (await parent).openGraph?.images || []
+
+    return {
+        title: `${page.properties['標題'].title[0].plain_text} | 工工系學會 考古網站`,
+        // openGraph: {
+        //     images: ['/some-specific-page-image.jpg', ...previousImages],
+        // },
+    }
+}
 
 export default async function SectionPage({
     params,
@@ -32,14 +55,9 @@ export default async function SectionPage({
     }
     if (!session) {
         return (
-            <React.Fragment>
-                <Head>
-                    <title>{`${page.properties['標題'].title[0].plain_text}|工工系學會考古題網站`}</title>
-                </Head>
-                <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
-                    登入以查看內容
-                </div>
-            </React.Fragment>
+            <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
+                登入以查看內容
+            </div>
         )
     }
 
@@ -47,9 +65,6 @@ export default async function SectionPage({
 
     return (
         <div className="w-full flex flex-col">
-            <Head>
-                <title>{`${page.properties['標題'].title[0].plain_text}|工工系學會考古題網站`}</title>
-            </Head>
             <div className='py-5 font-bold text-2xl'>
                 {page.properties['標題'].title[0].plain_text}
             </div>
