@@ -1,6 +1,7 @@
 import NextAuth, { AuthOptions } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "lib/prisma"
+import { getStudent } from "../../../../lib/api"
 
 export const authOptions: AuthOptions = {
     // Configure one or more authentication providers
@@ -44,10 +45,17 @@ export const authOptions: AuthOptions = {
             userinfo: {
                 url: "https://id.nycu.edu.tw/api/profile/"
             },
-            profile(profile) {
-                // console.log("profile");
-                // console.log(profile);
-                // TODO: get unionFee
+            async profile(profile) {
+                const student = await getStudent({ student_id: profile.username });
+                if (student) {
+                    return {
+                        id: profile.username,
+                        student_id: profile.username,
+                        email: profile.email,
+                        union_fee: student.union_fee,
+                        name: student.name
+                    }
+                }
                 return {
                     id: profile.username,
                     student_id: profile.username,
