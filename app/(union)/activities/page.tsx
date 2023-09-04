@@ -2,8 +2,9 @@ import Image from 'next/image'
 
 import { Card, CardLink, CardDescription } from 'components/Card'
 import { SimpleLayout } from 'components/SimpleLayout'
-import logoHelioStream from 'public/images/logos/helio-stream.svg'
+import facebookIcon from 'public/images/logos/facebook.svg'
 import logoPlanetaria from 'public/images/logos/planetaria.svg'
+import googleFormsIcon from 'public/images/logos/google_forms.png'
 
 export const metadata = {
     title: '相關活動 | 陽明交大 工工系學會 | NYCU IEM SA',
@@ -22,24 +23,24 @@ const page = [
 const team = [
     {
         name: '系羽',
-        description: "系上的羽球隊",
-        link: { href: "#", label: "facebook.com" },
-        logo: logoHelioStream
+        description: "系上的羽球隊，連結是系羽社群",
+        link: { href: "https://www.facebook.com/groups/125387687561451", label: "facebook.com" },
+        logo: facebookIcon
     }, {
         name: "男籃",
-        description: "系上的男子籃球隊",
-        link: { href: "#", label: "facebook.com" },
-        logo: logoHelioStream
+        description: "系上的男子籃球隊，連結是隊長的 Facebook",
+        link: { href: "https://www.facebook.com/profile.php?id=100006992283746", label: "facebook.com" },
+        logo: facebookIcon
     }, {
         name: "男排",
-        description: "系上的男子排球隊",
-        link: { href: "#", label: "facebook.com" },
-        logo: logoHelioStream
+        description: "系上的男子排球隊，連結是入隊表單",
+        link: { href: "https://docs.google.com/forms/d/e/1FAIpQLSdRHl7qlcy7FPVdT4WiNcvLoPVLqi6_cCs49HMu0FgtPDEDjw/viewform?usp=sf_link", label: "docs.google.com" },
+        logo: googleFormsIcon
     }, {
         name: "女排",
-        description: "系上的女子排球隊",
-        link: { href: "#", label: "facebook.com" },
-        logo: logoHelioStream
+        description: "系上的女子排球隊，連結是女排社群",
+        link: { href: "https://facebook.com/groups/1707578539378408", label: "facebook.com" },
+        logo: facebookIcon
     }
 ]
 
@@ -74,7 +75,7 @@ export default function Projects() {
                                 />
                             </div>
                             <h2 className="mt-6 text-base font-semibold text-zinc-800 dark:text-zinc-100">
-                                <CardLink href={project.link.href}>{project.name}</CardLink>
+                                <CardLink href={project.link.href} _blank={true}>{project.name}</CardLink>
                             </h2>
                             <CardDescription>{project.description}</CardDescription>
                             <p className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200">
@@ -85,7 +86,7 @@ export default function Projects() {
                     ))}
                 </ul>
                 <hr className='my-10' />
-                <ul role="list" className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
+                {/* <ul role="list" className="grid grid-cols-1 gap-x-12 gap-y-16 sm:grid-cols-2 lg:grid-cols-3">
                     {page.map((project) => (
                         <Card as="li" key={project.name}>
                             <div className="relative z-10 flex h-12 w-12 items-center justify-center rounded-full bg-white shadow-md shadow-zinc-800/5 ring-1 ring-zinc-900/5 dark:border dark:border-zinc-700/50 dark:bg-zinc-800 dark:ring-0">
@@ -105,7 +106,7 @@ export default function Projects() {
                             </p>
                         </Card>
                     ))}
-                </ul>
+                </ul> */}
             </SimpleLayout>
         </>
     )
