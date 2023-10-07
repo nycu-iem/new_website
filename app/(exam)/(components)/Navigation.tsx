@@ -306,7 +306,7 @@ export function Navigation({
     sectionSelected: Array<FirstLayerOfPost>,
     setSectionSelected: Dispatch<SetStateAction<Array<FirstLayerOfPost>>>
 }) {
-    props.className += ' h-full'
+    props.className += ' h-full md:h-auto'
     const { data: session, status, update } = useSession()
 
     const updateSemesterSelection = () => {
@@ -350,7 +350,7 @@ export function Navigation({
                 <TopLevelNavItem href="/activities">活動</TopLevelNavItem>
                 <TopLevelNavItem href="/booking">系窩租借</TopLevelNavItem>
                 <Selection semester={semester} setSemester={setSemester} />
-                <div className='pb-20'>
+                <div className='pb-20 md:pb-0'>
                     {sectionSelected && sectionSelected.map((group, groupIndex) => (
                         <NavigationGroup
                             key={group.title}
