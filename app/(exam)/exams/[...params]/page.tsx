@@ -104,7 +104,7 @@ export default async function SectionPage({
                         }
                         return (
                             <div key={block.id} className="select-none">
-                                {block.paragraph.rich_text[0].plain_text}
+                                {block.paragraph.rich_text[0]?.plain_text}
                             </div>
                         )
                     case "file":

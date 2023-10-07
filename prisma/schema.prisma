@@ -68,6 +68,7 @@ model VerificationRequest {
 
 model Reserve {
     id        String   @id @default(uuid()) @map("_id")
+    room      RoomAvailable?
     purpose   String
     startedAt DateTime
     endedAt   DateTime
@@ -76,4 +77,9 @@ model Reserve {
     userId    String
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+}
+
+enum RoomAvailable{
+    MOJODOJO
+    CASAHOUSE
 }
