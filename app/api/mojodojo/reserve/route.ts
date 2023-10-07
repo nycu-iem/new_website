@@ -46,7 +46,7 @@ export async function POST(
                             }
                         }, {
                             room: {
-                                equals: 'CASAHOUSE'
+                                equals: 'MOJODOJO'
                             }
                         }
                     ]
@@ -62,7 +62,7 @@ export async function POST(
                             }
                         }, {
                             room: {
-                                equals: 'CASAHOUSE'
+                                equals: 'MOJODOJO'
                             }
                         }
                     ]
@@ -79,7 +79,7 @@ export async function POST(
                             }
                         }, {
                             room: {
-                                equals: 'CASAHOUSE'
+                                equals: 'MOJODOJO'
                             }
                         }
                     ]
@@ -97,7 +97,7 @@ export async function POST(
             // userId: person?.accounts[0].providerAccountId as string,
             purpose: data.purpose,
             startedAt: start_time,
-            room: 'CASAHOUSE',
+            room: 'MOJODOJO',
             endedAt: end_time,
             interval: (((end_time.getDate() * 24 + end_time.getHours()) * 60) + end_time.getMinutes()) - ((start_time.getDate() * 24 + start_time.getHours()) * 60 + start_time.getMinutes()),
             user: {

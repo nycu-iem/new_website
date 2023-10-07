@@ -25,12 +25,11 @@ export default function DayView({
     const [eventsToday, setEventsToday] = useState<Array<EventWithColor>>([]);
 
     useEffect(() => {
-        updateList();
+        updateList(); 
         updateWeekDay();
     }, [date])
 
     const updateList = async () => {
-        // console.log(events)
         const event_today = events.filter((event) => {
             const start = new Date(event.startedAt).getDate();
             const end = new Date(event.endedAt).getDate();
@@ -48,14 +47,16 @@ export default function DayView({
 
     const updateWeekDay = () => {
         const day = new Date(date.year, date.month - 1, date.day);
-        // console.log(date.year, date.month - 1, date.day)
         setWeekDay(day.getDay());
     }
 
     return (
         <div className="w-full bg-white dark:bg-slate-800 rounded-lg pt-5">
             <div className="text-center text-black dark:text-white">
-                {weekInEng(weekDay)} {date.day}
+                {date.day ? 
+                `${weekInEng(weekDay)} ${date.day}`:
+                "未指定日期"
+                }
             </div>
             <div className="mt-10">
                 <ol className="w-full space-y-5 select-none">

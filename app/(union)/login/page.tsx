@@ -3,16 +3,13 @@ import { getProviders } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
 import { authOptions } from "../../api/auth/[...nextauth]/route";
 import Client from "./page_client";
-import { redirect } from "next/navigation";
+import ClientRedirect from "./ClientRedirect"
 
 export default async function LoginPage() {
     const session = await getServerSession(authOptions);
 
     if (session) {
-        redirect("/?" + new URLSearchParams({
-            text: "登入成功",
-            type: "success"
-        }),)
+        return <ClientRedirect />
     }
 
     const providers = await getProviders() ?? [];

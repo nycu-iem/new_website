@@ -31,6 +31,7 @@ export default function CalendarMonth({
     loading,
     setReserve,
     toggleMonth,
+    room
 }: {
     calendarName: string,
     selectedDay: number,
@@ -41,7 +42,8 @@ export default function CalendarMonth({
     selectedYear: number,
     rentedDays: Array<number>,
     loading: boolean,
-    setReserve: Dispatch<SetStateAction<boolean>>,
+    setReserve: Dispatch<SetStateAction<"MOJODOJO" | "CASAHOUSE" | undefined>>,
+    room: "MOJODOJO" | "CASAHOUSE",
     toggleMonth: (val: 1 | -1) => void
 }) {
     const today = new Date();
@@ -158,7 +160,7 @@ export default function CalendarMonth({
                     <button
                         type="button"
                         className="mt-8 w-full rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-                        onClick={() => { setReserve(true) }}
+                        onClick={() => { setReserve(room) }}
                     >
                         預約系窩
                     </button>
