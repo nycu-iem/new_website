@@ -3,8 +3,8 @@ import React from 'react'
 import ClientPage from './client'
 
 import { Reserve, User } from '@prisma/client'
-import { getCasaReserve } from '../../api/casahouse/[year]/[month]/route'
-
+import { getCasaHouseReserve } from '../../api/casahouse/[year]/[month]/route'
+import { getMojoDojoReserve } from '../../api/mojodojo/[year]/[month]/route'
 
 export default async function RoomRenting() {
     const thisMonthData = await fetchAPI();
@@ -28,45 +28,74 @@ interface DateTime {
 
 const fetchAPI = async () => {
     const date = new Date();
-    let events;
-    let daysWithEvents;
+    let CasaHouseEvents;
+    let CasaHouseDaysWithEvents;
+    let MojoDojoEvents;
+    let MojoDojoDaysWithEvents;
+
     try {
-        // const res = await fetch(`/api/casahouse/${date.getFullYear()}/${date.getMonth() + 1}`, {
-        //     method: "GET"
-        // })
-        const result = await getCasaReserve({
+        const casaHouseResult = await getCasaHouseReserve({
             year: `${date.getFullYear()}`,
             month: `${date.getMonth()}`
         })
-        // const result: Array<EventType> = await res.json();
-        // console.log(result);
-        events = result;
+        const MojoDojoResult = await getMojoDojoReserve({
+            year: `${date.getFullYear()}`,
+            month: `${date.getMonth()}`
+        })
+        CasaHouseEvents = casaHouseResult;
+        MojoDojoEvents = MojoDojoResult;
         // setEvents(result);
-        let days: Set<number> = new Set();
-        result.map(e => {
+        let mojoDojoDays: Set<number> = new Set();
+        let casaHouseDays: Set<number> = new Set();
+        casaHouseResult.map(e => {
             const a = new Date(e.startedAt).getDate();
             const b = new Date(e.endedAt).getDate();
-            days.add(a);
-            days.add(b);
+            casaHouseDays.add(a);
+            casaHouseDays.add(b);
         })
-        daysWithEvents = Array.from(days.values());
-        // setDaysWithEvent(Array.from(days.values()));
+        MojoDojoResult.map(e => {
+            const a = new Date(e.startedAt).getDate();
+            const b = new Date(e.endedAt).getDate();
+            mojoDojoDays.add(a);
+            mojoDojoDays.add(b);
+        })
+        CasaHouseDaysWithEvents = Array.from(casaHouseDays.values());
+        MojoDojoDaysWithEvents = Array.from(mojoDojoDays.values());
+        // daysWithEvents = Array.from(days.values());
     } catch (err) {
         console.log(err)
         return {
-            events,
-            daysWithEvents,
+            MojoDojo: {
+                events: MojoDojoEvents,
+                daysWithEvents: MojoDojoDaysWithEvents,
+            },
+            CasaHouse: {
+                events: CasaHouseEvents,
+                daysWithEvents: CasaHouseDaysWithEvents
+            }
         }
     }
 
     console.log({
-        events,
-        daysWithEvents,
+        MojoDojo: {
+            events: MojoDojoEvents,
+            daysWithEvents: MojoDojoDaysWithEvents,
+        },
+        CasaHouse: {
+            events: CasaHouseEvents,
+            daysWithEvents: CasaHouseDaysWithEvents
+        }
     })
 
     return {
-        events,
-        daysWithEvents,
+        MojoDojo: {
+            events: MojoDojoEvents,
+            daysWithEvents: MojoDojoDaysWithEvents,
+        },
+        CasaHouse: {
+            events: CasaHouseEvents,
+            daysWithEvents: CasaHouseDaysWithEvents
+        }
     }
 }
 

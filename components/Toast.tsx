@@ -11,41 +11,17 @@ export default function Client() {
 
     useEffect(() => {
         showAlert();
-    }, [searchParams,pathname])
+    }, [searchParams, pathname])
 
     const showAlert = () => {
         const type = searchParams.get('type');
         const text = searchParams.get("text")
         if (type === "success") {
-            toast.success(text, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                progress: undefined,
-                theme: "light",
-            })
+            customToast.success(text as string);
         } else if (type === "error") {
-            toast.error(text, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                progress: undefined,
-                theme: "light",
-            })
+            customToast.error(text as string);
         } else if (type === "info") {
-            toast.info(text, {
-                position: "top-right",
-                autoClose: 2000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                progress: undefined,
-                theme: "light",
-            })
+            customToast.info(text as string);
         }
         window.history.replaceState({}, document.title, pathname);
     }
@@ -53,4 +29,40 @@ export default function Client() {
     return (
         <></>
     )
+}
+
+export const customToast = {
+    success: (text: string) => {
+        toast.success(text, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            progress: undefined,
+            theme: "light",
+        })
+    },
+    error: (text: string) => {
+        toast.error(text, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            progress: undefined,
+            theme: "light",
+        })
+    },
+    info: (text: string) => {
+        toast.info(text, {
+            position: "top-right",
+            autoClose: 2000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            progress: undefined,
+            theme: "light",
+        })
+    }
 }
