@@ -131,11 +131,14 @@ export default async function SectionPage({
                             return <LockClosedIcon className="w-20 self-center" />
                         }
                         return (
-                            <NotionImage
-                                src={block.image.type === "external" ? block.image.external.url : block.image.file.url}
-                                alt={"notion Image"}
-                                blockId={block.id}
-                            />
+                            <div className="relative w-80 h-80">
+                                <NotionImage
+                                    src={block.image.type === "external" ? block.image.external.url : block.image.file.url}
+                                    alt={"notion Image"}
+                                    blockId={block.id}
+                                    className="object-contain"
+                                />
+                            </div>
                         )
                     // TODO:add other file types
                     default:
