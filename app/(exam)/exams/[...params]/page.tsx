@@ -111,15 +111,21 @@ export default async function SectionPage({
                         if (block_blocks) {
                             return <LockClosedIcon className="w-20 self-center" />
                         }
-                        return (
-                            <div className="w-full flex flex-row md:justify-start justify-center">
-                                <NotionPdf
-                                    key={block.id}
-                                    blockId={block.id}
-                                    fileSrc={block.file.file.url}
-                                />
-                            </div>
-                        )
+                        if (block.file && block.file.file && block.file.file.url) {
+                            return (
+                                <div className="w-full flex flex-row md:justify-start justify-center">
+                                    <NotionPdf
+                                        key={block.id}
+                                        blockId={block.id}
+                                        fileSrc={block.file.file.url}
+                                    />
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>PDF Not Found</div>
+                            )
+                        }
                     case "image":
                         if (block_blocks) {
                             return <LockClosedIcon className="w-20 self-center" />
