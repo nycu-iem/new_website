@@ -3,7 +3,7 @@ import { prisma } from "lib/prisma"
 
 export async function GET(request: Request, { params }: { params: { year: string, month: string } }) {
     try {
-        const days = await getCasaHouseReserve({
+        const days = await getMojoDojoReserve({
             month: params.month,
             year: params.year
         })
@@ -11,10 +11,9 @@ export async function GET(request: Request, { params }: { params: { year: string
     } catch (err) {
         return NextResponse.json({ message: 'fuck you' })
     }
-
 }
 
-export const getCasaHouseReserve = async ({
+export const getMojoDojoReserve = async ({
     month,
     year,
 }: {
@@ -26,12 +25,13 @@ export const getCasaHouseReserve = async ({
 
     const days = await prisma.reserve.findMany({
         where: {
-            startedAt: {
-                // gte, lte
-                gte: startTimeOfTheMonth,
-                lte: endTimeOfTheMonth,
-            }, room: {
-                equals: "CASAHOUSE"
+            AND: {
+                startedAt: {
+                    // gte, lte
+                    gte: startTimeOfTheMonth,
+                    lte: endTimeOfTheMonth,
+                },
+                room: { equals: 'MOJODOJO' }
             }
         }, select: {
             startedAt: true,
@@ -46,6 +46,6 @@ export const getCasaHouseReserve = async ({
             }
         }
     })
-
+    console.log(days)
     return days;
 }

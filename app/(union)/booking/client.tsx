@@ -10,11 +10,13 @@ import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Button } from 'components/Button'
 import { Router } from 'next/router'
 import clsx from 'clsx'
-import { useRouter } from 'next/navigation'
+import { usePathname, useRouter } from 'next/navigation'
 import { Switch } from '@headlessui/react'
 import { useSession } from 'next-auth/react'
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useTheme } from 'next-themes'
+
+import { customToast } from 'components/Toast'
 
 type EventType = Reserve & { user: User }
 interface DateTime {
@@ -23,19 +25,22 @@ interface DateTime {
     day?: number,
 }
 
-
 export default function BookingClientPage({
     thisMonthData,
 }: {
     thisMonthData: {
-        events: any
-        daysWithEvents: any
+        MojoDojo: {
+            events: any
+            daysWithEvents: any
+        }, CasaHouse: {
+            events: any
+            daysWithEvents: any
+        }
     }
 }) {
-    const [calendarType, setCalendarType] = useState<boolean>(false);
-    const [reserve, setReserve] = useState<boolean>(false);
+    const [reserve, setReserve] = useState<"MOJODOJO" | "CASAHOUSE" | undefined>(undefined);
     const [dateSelected, setDateSelected] = useState<DateTime>({});
-    const { themes,resolvedTheme, setTheme } = useTheme()
+    const { themes, resolvedTheme, setTheme } = useTheme()
     const otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
     const [customTheme, setCustomTheme] = useState<any>(
         createTheme({
@@ -51,8 +56,6 @@ export default function BookingClientPage({
     }, [])
 
     useEffect(() => {
-        // console.log('hello')
-        // console.log(otherTheme,resolvedTheme)
         setCustomTheme(createTheme({
             palette: {
                 mode: resolvedTheme === 'dark' ? 'dark' : 'light',
@@ -63,29 +66,31 @@ export default function BookingClientPage({
     return (
         <React.Fragment>
             <ThemeProvider theme={customTheme}>
-
                 <div className="space-y-8">
-                    <SpeakingSection title={["MOJO DOJO", "CASA HOUSE"]}>
-                        {/* <OnOffSwitch
-                        enable={calendarType}
-                        setEnable={setCalendarType}
-                        text={calendarType ? "單周顯示" : "整月顯示"}
-                    /> */}
-                        {calendarType ?
-                            <CalendarDetailedView />
-                            :
-                            <CalendarSeperate
-                                dateSelected={dateSelected}
-                                setDateSelected={setDateSelected}
-                                reserve={reserve}
-                                setReserve={setReserve}
-                                defaultData={thisMonthData}
-                            />
-                        }
+                    <SpeakingSection title={["MOJO DOJO"]} description="系窩">
+                        <CalendarSeperate
+                            dateSelected={dateSelected}
+                            setDateSelected={setDateSelected}
+                            reserve={reserve}
+                            setReserve={setReserve}
+                            defaultData={thisMonthData.MojoDojo}
+                            room="MOJODOJO"
+                        />
+                    </SpeakingSection>
+                    <SpeakingSection title={["CASA HOUSE"]} description="系K">
+                        <CalendarSeperate
+                            dateSelected={dateSelected}
+                            setDateSelected={setDateSelected}
+                            reserve={reserve}
+                            setReserve={setReserve}
+                            defaultData={thisMonthData.CasaHouse}
+                            room="CASAHOUSE"
+                        />
                     </SpeakingSection>
                 </div>
 
                 {reserve && <ReservePrompt
+                    reserveRoom={reserve}
                     setReserve={setReserve}
                     dateSelected={dateSelected}
                 />}
@@ -94,28 +99,22 @@ export default function BookingClientPage({
     )
 }
 
-function CalendarDetailedView() {
-    return (
-        <div>
-            Calendar Detailed View
-        </div>
-    )
-}
-
 function CalendarSeperate({
     reserve,
     setReserve,
     setDateSelected,
     defaultData,
+    room,
 }: {
-    reserve: boolean,
-    setReserve: Dispatch<SetStateAction<boolean>>,
+    reserve: "MOJODOJO" | "CASAHOUSE" | undefined,
+    setReserve: Dispatch<SetStateAction<"MOJODOJO" | "CASAHOUSE" | undefined>>,
     dateSelected: DateTime,
     setDateSelected: Dispatch<SetStateAction<DateTime>>,
     defaultData: {
         events: Array<EventType>
         daysWithEvents: Array<number>
-    }
+    },
+    room: "MOJODOJO" | "CASAHOUSE"
 }) {
     const today = new Date();
     const [selectedMonth, setSelectedMonth] = useState(today.getMonth() + 1);
@@ -125,24 +124,43 @@ function CalendarSeperate({
     const [loading, setLoading] = useState<boolean>(false);
     const [daysWithEvent, setDaysWithEvent] = useState<Array<number>>(defaultData?.daysWithEvents ?? []);
     const [events, setEvents] = useState<Array<EventType>>(defaultData?.events ?? []);
+    const [reload, setReload] = useState<boolean>(false);
 
     const fetchAPI = async () => {
         setLoading(true)
         try {
-            const res = await fetch(`/api/casahouse/${selectedYear}/${selectedMonth}`, {
-                method: "GET"
-            })
-            const result: Array<EventType> = await res.json();
-            // console.log(result);
-            setEvents(result);
-            let days: Set<number> = new Set();
-            result.map(e => {
-                const a = new Date(e.startedAt).getDate();
-                const b = new Date(e.endedAt).getDate();
-                days.add(a);
-                days.add(b);
-            })
-            setDaysWithEvent(Array.from(days.values()));
+            if (room === "MOJODOJO") {
+                const res = await fetch(`/api/mojodojo/${selectedYear}/${selectedMonth}`, {
+                    method: "GET"
+                })
+                const result: Array<EventType> = await res.json();
+                // console.log(result);
+                setEvents(result);
+                let days: Set<number> = new Set();
+                result.map(e => {
+                    const a = new Date(e.startedAt).getDate();
+                    const b = new Date(e.endedAt).getDate();
+                    days.add(a);
+                    days.add(b);
+                })
+                setDaysWithEvent(Array.from(days.values()));
+            } else if (room === "CASAHOUSE") {
+                const res = await fetch(`/api/casahouse/${selectedYear}/${selectedMonth}`, {
+                    method: "GET"
+                })
+                const result: Array<EventType> = await res.json();
+                // console.log(result);
+                setEvents(result);
+                let days: Set<number> = new Set();
+                result.map(e => {
+                    const a = new Date(e.startedAt).getDate();
+                    const b = new Date(e.endedAt).getDate();
+                    days.add(a);
+                    days.add(b);
+                })
+                setDaysWithEvent(Array.from(days.values()));
+            }
+
         } catch (err) {
             console.log(err)
         }
@@ -151,7 +169,7 @@ function CalendarSeperate({
 
     useEffect(() => {
         fetchAPI();
-    }, [selectedMonth, selectedYear, reserve])
+    }, [selectedMonth, selectedYear, reserve, reload])
 
     useEffect(() => {
         setDateSelected({
@@ -190,6 +208,7 @@ function CalendarSeperate({
                 loading={loading}
                 toggleMonth={toggleMonth}
                 setReserve={setReserve}
+                room={room}
             />
             <div className="mt-8 pl-5 flex flex-row justify-center md:w-80">
                 <DayView date={{
@@ -198,13 +217,14 @@ function CalendarSeperate({
                     day: isNaN(hoverDate) ? selectedDay : hoverDate,
                 }}
                     events={events}
+                    setReload={setReload}
                 />
             </div>
         </div>
     )
 }
 
-function SpeakingSection({ children, ...props }: { children: React.ReactNode, title: string | Array<string> }) {
+function SpeakingSection({ children, ...props }: { children: React.ReactNode, title: string | Array<string>, description?: string }) {
     return (
         <Section {...props}>
             <div className="space-y-16">{children}</div>
@@ -212,12 +232,13 @@ function SpeakingSection({ children, ...props }: { children: React.ReactNode, ti
     )
 }
 
-
 function ReservePrompt({
     setReserve,
+    reserveRoom,
     dateSelected,
 }: {
-    setReserve: Dispatch<SetStateAction<boolean>>,
+    setReserve: Dispatch<SetStateAction<"MOJODOJO" | "CASAHOUSE" | undefined>>,
+    reserveRoom?: "MOJODOJO" | "CASAHOUSE",
     dateSelected: DateTime,
 }) {
     const session = useSession();
@@ -227,7 +248,9 @@ function ReservePrompt({
     const [purpose, setPurpose] = useState<string>("");
     const [loading, setLoading] = useState<boolean>(false);
 
+    const pathname = usePathname();
     if (session.status === "unauthenticated") {
+        localStorage.setItem('redirect_to', pathname)
         router.push(`/login?${new URLSearchParams({
             text: "請先登入",
             type: "info"
@@ -242,7 +265,7 @@ function ReservePrompt({
             const end_time = new Date((dateSelected.year ?? 0), (dateSelected.month ?? 1) - 1,
                 (timeEnded.getMinutes() + timeEnded.getHours() * 60 - timeStarted.getHours() * 60 - timeStarted.getMinutes()) < 0 ? (dateSelected.day ?? 0) + 1 : dateSelected.day, timeEnded.getHours(), timeEnded.getMinutes())
 
-            const res = await fetch(`/api/casahouse/reserve`, {
+            const res = await fetch(`/api/${reserveRoom === "CASAHOUSE" ? "casahouse" : "mojodojo"}/reserve`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -257,31 +280,31 @@ function ReservePrompt({
             if (!res.ok) {
                 throw new Error(result.error)
             }
-            router.push(`/booking?${new URLSearchParams({
-                text: "預約成功",
-                type: "success"
-            })}`)
+            customToast.success(`預約成功`)
         } catch (err) {
             console.log(err)
-            router.push(`/booking?${new URLSearchParams({
-                text: `預約失敗-${err}`,
-                type: "error"
-            })}`)
+            customToast.error(`預約失敗-${err}`);
         }
         setLoading(false)
-        setReserve(false)
+        setReserve(undefined)
     }
 
     return (
         <LocalizationProvider dateAdapter={AdapterDateFns}>
             <div className='w-screen h-screen z-50 bg-black fixed top-0 left-0 bg-opacity-70 flex flex-row justify-center items-center backdrop-blur-sm'
-                onClick={() => { setReserve(false) }}
+                onClick={() => { setReserve(undefined) }}
             >
                 <div className="bg-white dark:bg-slate-800 rounded-lg max-w-3xl w-[90%] z-50 px-5 py-3 flex flex-col text-black dark:text-gray-50"
                     onClick={(e) => {
                         e.stopPropagation();
                     }}>
                     <div className="grid grid-cols-2 gap-3">
+                        <div>
+                            租借空間
+                        </div>
+                        <div>
+                            {reserveRoom}
+                        </div>
                         <div>
                             起始日
                         </div>

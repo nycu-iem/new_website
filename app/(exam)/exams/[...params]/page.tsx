@@ -104,32 +104,41 @@ export default async function SectionPage({
                         }
                         return (
                             <div key={block.id} className="select-none">
-                                {block.paragraph.rich_text[0].plain_text}
+                                {block.paragraph.rich_text[0]?.plain_text}
                             </div>
                         )
                     case "file":
                         if (block_blocks) {
                             return <LockClosedIcon className="w-20 self-center" />
                         }
-                        return (
-                            <div className="w-full flex flex-row md:justify-start justify-center">
-                                <NotionPdf
-                                    key={block.id}
-                                    blockId={block.id}
-                                    fileSrc={block.file.file.url}
-                                />
-                            </div>
-                        )
+                        if (block.file && block.file.file && block.file.file.url) {
+                            return (
+                                <div className="w-full flex flex-row md:justify-start justify-center">
+                                    <NotionPdf
+                                        key={block.id}
+                                        blockId={block.id}
+                                        fileSrc={block.file.file.url}
+                                    />
+                                </div>
+                            )
+                        } else {
+                            return (
+                                <div>PDF Not Found</div>
+                            )
+                        }
                     case "image":
                         if (block_blocks) {
                             return <LockClosedIcon className="w-20 self-center" />
                         }
                         return (
-                            <NotionImage
-                                src={block.image.type === "external" ? block.image.external.url : block.image.file.url}
-                                alt={"notion Image"}
-                                blockId={block.id}
-                            />
+                            <div className="relative w-80 h-80">
+                                <NotionImage
+                                    src={block.image.type === "external" ? block.image.external.url : block.image.file.url}
+                                    alt={"notion Image"}
+                                    blockId={block.id}
+                                    className="object-contain"
+                                />
+                            </div>
                         )
                     // TODO:add other file types
                     default:

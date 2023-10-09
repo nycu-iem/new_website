@@ -2,22 +2,8 @@ import Link from 'next/link'
 import clsx from 'clsx'
 import React from 'react'
 
-function ArrowIcon({
-    ...props
-}: {
-    className: string
-}) {
-    return (
-        <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" {...props}>
-            <path
-                stroke="currentColor"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="m11.5 6.5 3 3.5m0 0-3 3.5m3-3.5h-9"
-            />
-        </svg>
-    )
-}
+import { ArrowIcon } from 'components/Icon'
+import { usePathname } from 'next/navigation'
 
 const variantStyles = {
     primary:
@@ -49,7 +35,7 @@ export function Button({
     onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void
 }) {
     // const Component = props.href ? Link : 'button'
-
+    const pathname = usePathname();
     className = clsx(
         'inline-flex gap-0.5 justify-center overflow-hidden text-sm font-medium transition',
         variantStyles[variant],
@@ -67,6 +53,10 @@ export function Button({
     )
 
     if (href) {
+        if (href === "/login") {
+            localStorage.setItem('redirect_to', pathname);
+        }
+
         return (
             <Link className={className} href={href} {...props}>
                 {arrow === 'left' && arrowIcon
@@ -78,8 +68,7 @@ export function Button({
     } else {
         return (
             <button className={className} onClick={onClick} {...props}>
-                {arrow === 'left' && arrowIcon
-                }
+                {arrow === 'left' && arrowIcon}
                 {children}
                 {arrow === 'right' && arrowIcon}
             </button>
