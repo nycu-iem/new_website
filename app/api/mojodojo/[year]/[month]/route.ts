@@ -31,15 +31,13 @@ export const getMojoDojoReserve = async ({
                     gte: startTimeOfTheMonth,
                     lte: endTimeOfTheMonth,
                 },
-                OR: [
-                    { room: { equals: 'MOJODOJO' } },
-                    { room: null }
-                ]
+                room: { equals: 'MOJODOJO' }
             }
         }, select: {
             startedAt: true,
             endedAt: true,
             purpose: true,
+            id:true,
             user: {
                 select: {
                     student_id: true,
@@ -48,6 +46,6 @@ export const getMojoDojoReserve = async ({
             }
         }
     })
-
+    console.log(days)
     return days;
 }

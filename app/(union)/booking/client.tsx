@@ -124,6 +124,7 @@ function CalendarSeperate({
     const [loading, setLoading] = useState<boolean>(false);
     const [daysWithEvent, setDaysWithEvent] = useState<Array<number>>(defaultData?.daysWithEvents ?? []);
     const [events, setEvents] = useState<Array<EventType>>(defaultData?.events ?? []);
+    const [reload, setReload] = useState<boolean>(false);
 
     const fetchAPI = async () => {
         setLoading(true)
@@ -168,7 +169,7 @@ function CalendarSeperate({
 
     useEffect(() => {
         fetchAPI();
-    }, [selectedMonth, selectedYear, reserve])
+    }, [selectedMonth, selectedYear, reserve, reload])
 
     useEffect(() => {
         setDateSelected({
@@ -216,6 +217,7 @@ function CalendarSeperate({
                     day: isNaN(hoverDate) ? selectedDay : hoverDate,
                 }}
                     events={events}
+                    setReload={setReload}
                 />
             </div>
         </div>
@@ -262,8 +264,8 @@ function ReservePrompt({
             const start_time = new Date((dateSelected.year ?? 0), (dateSelected.month ?? 1) - 1, dateSelected.day, timeStarted.getHours(), timeStarted.getMinutes())
             const end_time = new Date((dateSelected.year ?? 0), (dateSelected.month ?? 1) - 1,
                 (timeEnded.getMinutes() + timeEnded.getHours() * 60 - timeStarted.getHours() * 60 - timeStarted.getMinutes()) < 0 ? (dateSelected.day ?? 0) + 1 : dateSelected.day, timeEnded.getHours(), timeEnded.getMinutes())
-            
-            const res = await fetch(`/api/${reserveRoom === "CASAHOUSE" ? "casahouse":"mojodojo"}/reserve`, {
+
+            const res = await fetch(`/api/${reserveRoom === "CASAHOUSE" ? "casahouse" : "mojodojo"}/reserve`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

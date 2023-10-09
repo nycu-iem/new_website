@@ -37,6 +37,7 @@ export const getCasaHouseReserve = async ({
             startedAt: true,
             endedAt: true,
             purpose: true,
+            id:true,
             user: {
                 select: {
                     student_id: true,
