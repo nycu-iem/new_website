@@ -2,7 +2,7 @@
 import { Document, Page, pdfjs } from "react-pdf"
 pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
-import { useEffect, useRef, useState } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { ArrowDownTrayIcon, ChevronLeftIcon, ChevronRightIcon, ForwardIcon } from "@heroicons/react/20/solid";
 import { clsx } from "clsx"
 import { useSession } from "next-auth/react";
@@ -11,18 +11,26 @@ import { toast } from "react-toastify";
 export default function NotionPdf({
     blockId,
     fileSrc,
+    // fileName = "PDF File",
+    block,
 }: {
     blockId: string,
-    fileSrc: string
+    fileSrc: string,
+    // fileName: string,
+    block: any
 }) {
     const [fileUrl, setFileUrl] = useState<string>(fileSrc);
     const [page, setPage] = useState<number>(1);
     const [totalPage, setTotalPage] = useState<number | undefined>();
     const [width, setWidth] = useState<number>(0);
-    const [documentName, setDocumentName] = useState<string>("PDF_file");
+    const [showDocument, setShowDocument] = useState<boolean>(false);
     const currentPageRef = useRef<HTMLInputElement>(null);
+    const re = /\/(.*)\/(.*)\?/gm
+    const [documentName, setDocumentName] = useState<string>(decodeURI(re.exec(fileSrc)?.[2] ?? "PDF File"));
 
     const { data: session, status } = useSession();
+
+    // console.log(block)
 
     useEffect(() => {
         window.addEventListener('resize', () => {
@@ -69,95 +77,104 @@ export default function NotionPdf({
 
     return (
         <div className="bg-slate-100 dark:bg-slate-700 rounded-lg self-center shadow-inner w-80 min-w-fit mt-5">
-            <nav className='flex flex-row justify-between py-3 px-5 select-none'>
-                <div className='flex flex-row space-x-3'>
-                    <div onClick={() => {
-                        download();
-                    }} className="cursor-pointer">
-                        <ArrowDownTrayIcon
-                            className="w-6"
-                            aria-label="Download"
-                        />
-                    </div>
-                    <div onClick={() => {
-                        forwardToPage();
-                    }} className="cursor-pointer">
-                        <ForwardIcon
-                            className="w-6"
-                            aria-label="Jump"
-                        />
-                    </div>
-                </div>
-                <div className="flex flex-row">
-                    {totalPage && <>
-                        <input className="w-16 mr-2 px-1 rounded-md"
-                            ref={currentPageRef}
-                            onChange={() => {
-                                if (currentPageRef.current) {
-                                    setPage(parseInt(currentPageRef.current.value))
-                                }
-                            }}
-                            value={page}
-                            type="number" />
-                        /
-                        <p>{totalPage}</p>
-                    </>}
-                    {totalPage === undefined && <h2>載入中</h2>}
-                </div>
-                <div className="flex flex-row space-x-3">
-                    <div onClick={() => {
-                        setPage((previous_page) => {
-                            if (previous_page <= 1) {
-                                return 1;
-                            }
-                            return previous_page - 1;
-                        })
-                    }} className={clsx(
-                        page === 1 ? "text-gray-500 cursor-not-allowed" : " text-black dark:text-white cursor-pointer"
-                    )}>
-                        <ChevronLeftIcon
-                            className="w-6"
-                            aria-label="Previous"
-                        />
-                    </div>
-                    <div onClick={() => {
-                        setPage((previous_page) => {
-                            if (totalPage && (previous_page >= totalPage)) {
-                                return previous_page;
-                            }
-                            return previous_page + 1;
-                        })
-                    }} className={clsx(
-                        page === totalPage ? "text-gray-500 cursor-not-allowed" : "text-black dark:text-white cursor-pointer"
-                    )}>
-                        <ChevronRightIcon
-                            className="w-6"
-                            aria-label="Next"
-                        />
-                    </div>
-                </div>
-            </nav>
-            <div className='mx-1 pb-2 select-none cursor-default'>
-                <Document file={fileUrl}
-                    onLoadSuccess={(event) => {
-                        setTotalPage(event.numPages)
-                        if (event.fingerprints[0]) {
-                            setDocumentName(event.fingerprints[0])
-                        }
-                        // console.log(event)
-                    }}
-                    onLoadError={() => {
-                        // TODO: Update loading error
-                    }}
-                    loading={<PDFLoading />}
-                    className="md:h-[600px] h-[400px]">
-                    <Page pageNumber={page}
-                        // scale={width > 786 ? 1 : 0.6}
-                        height={width > 768 ? 600 : 400}
-                        className="cursor-default"
-                    />
-                </Document>
+            <div className="px-3 space-x-2 flex flex-row py-2">
+                <Switch checked={showDocument}
+                    text={documentName}
+                    setChecked={setShowDocument} />
             </div>
+            {showDocument &&
+                <React.Fragment>
+                    <nav className='flex flex-row justify-between py-3 px-5 select-none'>
+                        <div className='flex flex-row space-x-3'>
+                            <div onClick={() => {
+                                download();
+                            }} className="cursor-pointer">
+                                <ArrowDownTrayIcon
+                                    className="w-6"
+                                    aria-label="Download"
+                                />
+                            </div>
+                            <div onClick={() => {
+                                forwardToPage();
+                            }} className="cursor-pointer">
+                                <ForwardIcon
+                                    className="w-6"
+                                    aria-label="Jump"
+                                />
+                            </div>
+                        </div>
+                        <div className="flex flex-row">
+                            {totalPage && <>
+                                <input className="w-16 mr-2 px-1 rounded-md"
+                                    ref={currentPageRef}
+                                    onChange={() => {
+                                        if (currentPageRef.current) {
+                                            setPage(parseInt(currentPageRef.current.value))
+                                        }
+                                    }}
+                                    value={page}
+                                    type="number" />
+                                /
+                                <p>{totalPage}</p>
+                            </>}
+                            {totalPage === undefined && <h2>載入中</h2>}
+                        </div>
+                        <div className="flex flex-row space-x-3">
+                            <div onClick={() => {
+                                setPage((previous_page) => {
+                                    if (previous_page <= 1) {
+                                        return 1;
+                                    }
+                                    return previous_page - 1;
+                                })
+                            }} className={clsx(
+                                page === 1 ? "text-gray-500 cursor-not-allowed" : " text-black dark:text-white cursor-pointer"
+                            )}>
+                                <ChevronLeftIcon
+                                    className="w-6"
+                                    aria-label="Previous"
+                                />
+                            </div>
+                            <div onClick={() => {
+                                setPage((previous_page) => {
+                                    if (totalPage && (previous_page >= totalPage)) {
+                                        return previous_page;
+                                    }
+                                    return previous_page + 1;
+                                })
+                            }} className={clsx(
+                                page === totalPage ? "text-gray-500 cursor-not-allowed" : "text-black dark:text-white cursor-pointer"
+                            )}>
+                                <ChevronRightIcon
+                                    className="w-6"
+                                    aria-label="Next"
+                                />
+                            </div>
+                        </div>
+                    </nav>
+                    <div className='mx-1 pb-2 select-none cursor-default'>
+                        <Document file={fileUrl}
+                            onLoadSuccess={(event) => {
+                                setTotalPage(event.numPages)
+                                // if (event.fingerprints[0]) {
+                                //     setDocumentName(event.fingerprints[0])
+                                // }
+                                // console.log(event)
+                            }}
+                            onLoadError={() => {
+                                // TODO: Update loading error
+                            }}
+                            loading={<PDFLoading />}
+                            className="md:h-[600px] h-[400px]">
+                            <Page pageNumber={page}
+                                // scale={width > 786 ? 1 : 0.6}
+                                height={width > 768 ? 600 : 400}
+                                className="cursor-default"
+                            />
+                        </Document>
+                    </div>
+                </React.Fragment>
+            }
         </div>
     )
 }
@@ -169,5 +186,25 @@ const PDFLoading = () => {
                 載入中
             </div>
         </div>
+    )
+}
+
+const Switch = ({
+    checked,
+    text,
+    setChecked
+}: {
+    checked: boolean,
+    setChecked: Dispatch<SetStateAction<boolean>>
+    text: string
+}) => {
+    return (
+        <label className="relative inline-flex items-center cursor-pointer">
+            <input type="checkbox" value="" className="sr-only peer" checked={checked} onChange={() => {
+                setChecked(p => !p)
+            }} />
+            <div className="w-11 h-6 bg-gray-200 rounded-full peer peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 dark:bg-gray-800 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">{text}</span>
+        </label>
     )
 }
