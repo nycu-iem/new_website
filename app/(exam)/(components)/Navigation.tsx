@@ -229,7 +229,7 @@ function NavigationGroup({
                 </AnimatePresence>
 
                 <ul role="list" className="border-l border-transparent">
-                    {group.classes.map((course) => (
+                    {group.classes.sort().map((course) => (
                         <motion.li key={course.page_id} layout="position" className="relative">
                             <NavLink
                                 href={`/exams/${course.page_id}`}
@@ -316,6 +316,7 @@ export function Navigation({
         let sectionsToBeSelected: FirstLayerOfPost[] = [];
 
         // console.log(semesterInChinese)
+        // console.log(sections)
 
         sections.map(s => {
             // console.log(s)
@@ -360,7 +361,7 @@ export function Navigation({
                         />
                     ))}
                 </div>
-                <li className="absolute bottom-5 z-10 mt-6 min-[416px]:hidden w-full">
+                <li className="bottom-5 z-10 mt-6 min-[416px]:hidden w-full">
                     {status === 'authenticated' ?
                         <Button href='/logout' variant='filled' className='w-full'>
                             登出
