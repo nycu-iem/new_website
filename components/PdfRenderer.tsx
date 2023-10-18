@@ -26,7 +26,7 @@ export default function NotionPdf({
     const [showDocument, setShowDocument] = useState<boolean>(false);
     const currentPageRef = useRef<HTMLInputElement>(null);
     const re = /\/(.*)\/(.*)\?/gm
-    const [documentName, setDocumentName] = useState<string>(decodeURI(re.exec(fileSrc)?.[2] ?? "PDF File"));
+    const [documentName, setDocumentName] = useState<string>(decodeURI(re.exec(fileSrc)?.[2] ?? "File"));
 
     const { data: session, status } = useSession();
 
@@ -44,20 +44,22 @@ export default function NotionPdf({
         }
     }, [])
 
-    const download = async () => {
+    const download = async ({ permission }: { permission?: boolean }) => {
         // TODO: downloads need permission
         // console.log(session)
-        if (!(session?.user.union_fee ?? false)) {
-            toast.error('繳交系學會費以解鎖下載功能', {
-                position: "top-right",
-                autoClose: 5000,
-                hideProgressBar: false,
-                closeOnClick: true,
-                pauseOnHover: true,
-                progress: undefined,
-                theme: "light",
-            })
-            return
+        if (!permission) {
+            if (!(session?.user.union_fee ?? false)) {
+                toast.error('繳交系學會費以解鎖下載功能', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    progress: undefined,
+                    theme: "light",
+                })
+                return
+            }
         }
         // console.log("prepare to download file")
 
@@ -78,16 +80,33 @@ export default function NotionPdf({
     return (
         <div className="bg-slate-100 dark:bg-slate-700 rounded-lg self-center shadow-inner w-80 min-w-fit mt-5">
             <div className="px-3 space-x-2 flex flex-row py-2">
-                <Switch checked={showDocument}
-                    text={documentName}
-                    setChecked={setShowDocument} />
+                {documentName.endsWith(".pdf") ? <React.Fragment>
+                    <Switch checked={showDocument}
+                        text={documentName}
+                        setChecked={setShowDocument} />
+                </React.Fragment> : <div className="w-full">
+                    <div className="flex flex-row px-3 space-x-2">
+                        <div onClick={() => {
+                            download({ permission: true });
+                        }} className="cursor-pointer">
+                            <ArrowDownTrayIcon
+                                className="w-6"
+                                aria-label="Download"
+                            />
+                        </div>
+                        <div className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                            {documentName}
+                        </div>
+                    </div>
+                    <div className="w-full text-center">不支援的檔案類型</div>
+                </div>}
             </div>
             {showDocument &&
                 <React.Fragment>
                     <nav className='flex flex-row justify-between py-3 px-5 select-none'>
                         <div className='flex flex-row space-x-3'>
                             <div onClick={() => {
-                                download();
+                                download({});
                             }} className="cursor-pointer">
                                 <ArrowDownTrayIcon
                                     className="w-6"
