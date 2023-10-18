@@ -229,7 +229,7 @@ function NavigationGroup({
                 </AnimatePresence>
 
                 <ul role="list" className="border-l border-transparent">
-                    {group.classes.sort().map((course) => (
+                    {group.classes.sort((a, b) => a.title.localeCompare(b.title)).map((course) => (
                         <motion.li key={course.page_id} layout="position" className="relative">
                             <NavLink
                                 href={`/exams/${course.page_id}`}
