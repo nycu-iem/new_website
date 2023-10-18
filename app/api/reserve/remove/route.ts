@@ -20,8 +20,9 @@ export async function POST(
     }
     // verify owner
 
-    console.log(session.user.student_id)
-    console.log(data.id)
+    // console.log(session.user.student_id)
+    // console.log(data.id)
+    
     const verify = await prisma.reserve.findMany({
         where: {
             AND: {
