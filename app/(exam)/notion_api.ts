@@ -48,7 +48,10 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
         const semester = data.properties["學期"]?.select?.name ?? '暑假';
         const title = data.properties["標題"]?.title[0]?.plain_text ?? '標題';
         const grade_temp = data.properties["年級"]?.select?.name ?? '其他';
-        const grade = (grade_temp.includes("大一") ? grade_temp : "其他")
+        // console.log("temp: ", grade_temp)
+        const re = /[大一|大二|大三|大四]/
+        const grade = (re.exec(grade_temp) ? grade_temp : "其他")
+        // console.log("final: ", grade)
         const id = data.id
 
         const course_info = await notion.getBlocks({ pageId: id });

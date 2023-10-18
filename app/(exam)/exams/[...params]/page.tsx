@@ -64,7 +64,7 @@ export default async function SectionPage({
     let block_blocks = false;
 
     return (
-        <div className="w-full flex flex-col">
+        <div className="w-full flex flex-col pb-10">
             <div className='py-5 font-bold text-2xl'>
                 {page.properties['標題'].title[0].plain_text}
             </div>
@@ -118,6 +118,7 @@ export default async function SectionPage({
                                         key={block.id}
                                         blockId={block.id}
                                         fileSrc={block.file.file.url}
+                                        block={block}
                                     />
                                 </div>
                             )
