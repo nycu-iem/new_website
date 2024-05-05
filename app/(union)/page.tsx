@@ -208,8 +208,8 @@ function Photos() {
     let rotations = ['rotate-2', '-rotate-2', 'rotate-2', 'rotate-2', '-rotate-2']
 
     return (
-        <div className="mt-16 sm:mt-20">
-            <div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8">
+        <div className="mt-16 sm:mt-20 w-full">
+            <div className="-my-4 flex justify-center gap-5 overflow-hidden py-4 sm:gap-8 w-full">
                 {["/images/photos/image-1.jpg", "/images/photos/image-2.jpg", "/images/photos/image-3.jpg", "/images/photos/image-4.jpg", "/images/photos/image-5.jpg"].map((uri, imageIndex) => (
                     <div key={uri}
                         className={clsx(
@@ -268,7 +268,9 @@ export default async function Home() {
                     </div>
                 </div>
             </Container>
-            <Photos />
+            <section className="mx-auto lg:w-4/5 xl:px-10 w-full max-w-[80rem]">
+                <Photos />
+            </section>
             <Container className="mt-24 md:mt-28">
                 <div className="mx-auto grid max-w-xl grid-cols-1 gap-y-20 lg:max-w-none lg:grid-cols-2">
                     <div className="flex flex-col gap-16">
