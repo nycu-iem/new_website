@@ -51,9 +51,13 @@ model User {
     createdAt     DateTime  @default(now())
     updatedAt     DateTime  @updatedAt
 
-    accounts      Account[]
-    sessions      Session[]
-    reserves      Reserve[]
+    accounts Account[]
+    sessions Session[]
+    reserves Reserve[]
+
+    vote2024  Vote2024[]
+    nominated Nominee2024?  @relation(name: "nominated") // 被提名
+    Nominee   Nominee2024[] @relation(name: "nominates") // 提名
 }
 
 model VerificationRequest {
@@ -68,19 +72,51 @@ model VerificationRequest {
 }
 
 model Reserve {
-    id        String   @id @default(uuid()) @map("_id")
+    id        String         @id @default(uuid()) @map("_id")
     room      RoomAvailable?
     purpose   String
     startedAt DateTime
     endedAt   DateTime
     interval  Int
-    user      User     @relation(fields: [userId], references: [id])
+    user      User           @relation(fields: [userId], references: [id])
     userId    String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt DateTime       @default(now())
+    updatedAt DateTime       @updatedAt
 }
 
-enum RoomAvailable{
+enum RoomAvailable {
     MOJODOJO
     CASAHOUSE
+}
+
+// The following blocks are used for the voting system 2024
+
+model Vote2024 {
+    id        String @id @default(uuid()) @map("_id")
+    userId    String
+    reserveId String
+
+    valid Boolean
+
+    VotedTo Nominee2024 @relation(fields: [nominee2024Id], references: [id])
+    user    User        @relation(fields: [userId], references: [id])
+
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+    nominee2024Id String
+}
+
+model Nominee2024 {
+    id String @id @default(uuid()) @map("_id")
+
+    nominee       User   @relation(fields: [userNomineeId], references: [id], name: "nominates")
+    userNomineeId String @unique
+
+    nomiatedBy      User   @relation(name: "nominated", fields: [userNominatedId], references: [id])
+    userNominatedId String @unique
+
+    votes Vote2024[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
