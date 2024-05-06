@@ -32,6 +32,8 @@ export default function ClientRenderedPage({ post }: { post: PostsType }) {
                         )
                     default:
                         // regard as paragraph
+                        if (block.content.length === 0) return (<div key={`fjiesjfli`}/>)
+
                         return (
                             <div key={`${clsx(block.content[0].text.content)}z`}>
                                 <ParagraphRenderer content={block.content} />

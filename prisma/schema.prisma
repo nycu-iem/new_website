@@ -93,27 +93,25 @@ enum RoomAvailable {
 
 model Vote2024 {
     id        String @id @default(uuid()) @map("_id")
-    userId    String
-    reserveId String
-
     valid Boolean
 
     VotedTo Nominee2024 @relation(fields: [nominee2024Id], references: [id])
+    nominee2024Id String
     user    User        @relation(fields: [userId], references: [id])
+    userId    String
 
     createdAt     DateTime @default(now())
     updatedAt     DateTime @updatedAt
-    nominee2024Id String
 }
 
 model Nominee2024 {
     id String @id @default(uuid()) @map("_id")
 
-    nominee       User   @relation(fields: [userNomineeId], references: [id], name: "nominates")
+    nominee       User   @relation(fields: [userNomineeId], references: [id], name: "nominated")
     userNomineeId String @unique
 
-    nomiatedBy      User   @relation(name: "nominated", fields: [userNominatedId], references: [id])
-    userNominatedId String @unique
+    nomiatedBy      User   @relation(fields: [userNominatedId], references: [id], name: "nominates")
+    userNominatedId String
 
     votes Vote2024[]
 
