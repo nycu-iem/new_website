@@ -46,16 +46,22 @@ export const authOptions: AuthOptions = {
                 url: "https://id.nycu.edu.tw/api/profile/"
             },
             async profile(profile) {
-                const student = await getStudent({ student_id: profile.username });
-                if (student) {
-                    return {
-                        id: profile.username,
-                        student_id: profile.username,
-                        email: profile.email,
-                        union_fee: student.union_fee,
-                        name: student.name
+                try{
+                    const student = await getStudent({ student_id: profile.username });
+
+                    if (student) {
+                        return {
+                            id: profile.username,
+                            student_id: profile.username,
+                            email: profile.email,
+                            union_fee: student.union_fee,
+                            name: student.name
+                        }
                     }
+                }catch(err){
+                    console.log(err)
                 }
+
                 return {
                     id: profile.username,
                     student_id: profile.username,
@@ -80,6 +86,7 @@ export const authOptions: AuthOptions = {
                 textDark: "NYCU Oauth Signin"
             },
             checks: [],
+            allowDangerousEmailAccountLinking: true,
         }
     ],
     pages: {
