@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/react-highlight-words": "^0.16.4",
+    "encoding": "^0.1.13",
     "prisma": "^5.1.1"
   }
 }

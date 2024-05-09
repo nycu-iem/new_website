@@ -5,22 +5,24 @@ import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { customToast } from 'components/Toast'
 import clsx from "clsx";
-import { toast } from "react-toastify";
+import LoadingCircle from "components/LoadingCircle"
 
 export default function VotingPage() {
     const { data: session, status } = useSession()
 
     const [nominees, setNominees] = useState<string[]>([]);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         if (status !== "loading") {
             // console.log("status got")
-
+            setLoading(true);
             fetch(`/api/voting2024/get_nominees`)
                 .then(res => res.json())
                 .then(response => {
                     console.log(response)
                     setNominees(response)
+                    setLoading(false)
                 })
         }
     }, [status])
@@ -51,6 +53,7 @@ export default function VotingPage() {
                 }
             </section>
             <section className="flex flex-col space-y-2 items-center px-5">
+                {loading && <LoadingCircle size="xl"/>}
                 {nominees.map((nominee: any) => (<NominatedCard
                     key={nominee.id}
                     selected={nominee.selected}
