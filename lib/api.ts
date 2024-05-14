@@ -13,21 +13,45 @@ const real_notion = new Client({
 })
 
 export const getStudents = cache(async ({
-    student_id
+    student_id,
+    student_id_or_name = false
 }: {
     student_id: string
+    student_id_or_name?: boolean
 }) => {
     await avoidRateLimit();
 
-    const result = await real_notion.databases.query({
-        database_id: '0e90f296e95e42018ee4b777265979e2',
-        filter: {
-            property: '學號',
-            rich_text: {
-                contains: student_id
+    let result;
+
+    if (student_id_or_name) {
+        result = await real_notion.databases.query({
+            database_id: '0e90f296e95e42018ee4b777265979e2',
+            filter: {
+                or: [{
+                    property: '學號',
+                    rich_text: {
+                        contains: student_id
+                    }
+
+                }, {
+                    property: '姓名',
+                    rich_text: {
+                        contains: student_id
+                    }
+                }]
             }
-        }
-    })
+        })
+    } else {
+        result = await real_notion.databases.query({
+            database_id: '0e90f296e95e42018ee4b777265979e2',
+            filter: {
+                property: '學號',
+                rich_text: {
+                    contains: student_id
+                }
+            }
+        })
+    }
 
     if (!result) {
         return []
