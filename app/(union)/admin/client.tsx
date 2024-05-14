@@ -26,7 +26,7 @@ export default function ClientSide({
                         onChange={(event) => {
                             setInput(event.target.value)
                             if (event.target.value !== "") {
-                                getStudents({ student_id: event.target.value })
+                                getStudents({ student_id: event.target.value, student_id_or_name: true })
                                     .then(res => {
                                         if (event.target.value !== "") {
                                             setSearchResult(res)
