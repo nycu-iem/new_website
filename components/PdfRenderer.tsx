@@ -47,20 +47,20 @@ export default function NotionPdf({
     const download = async ({ permission }: { permission?: boolean }) => {
         // TODO: downloads need permission
         // console.log(session)
-        if (!permission) {
-            if (!(session?.user.union_fee ?? false)) {
-                toast.error('繳交系學會費以解鎖下載功能', {
-                    position: "top-right",
-                    autoClose: 5000,
-                    hideProgressBar: false,
-                    closeOnClick: true,
-                    pauseOnHover: true,
-                    progress: undefined,
-                    theme: "light",
-                })
-                return
-            }
-        }
+        // if (!permission) {
+        //     if (!(session?.user.union_fee ?? false)) {
+        //         toast.error('繳交系學會費以解鎖下載功能', {
+        //             position: "top-right",
+        //             autoClose: 5000,
+        //             hideProgressBar: false,
+        //             closeOnClick: true,
+        //             pauseOnHover: true,
+        //             progress: undefined,
+        //             theme: "light",
+        //         })
+        //         return
+        //     }
+        // }
         // console.log("prepare to download file")
 
         const link = document.createElement('a');
