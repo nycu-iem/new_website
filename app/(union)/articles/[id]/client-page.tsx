@@ -1,4 +1,5 @@
 "use client"
+
 import clsx from "clsx"
 import {
     GetPostReturnType,
@@ -35,7 +36,7 @@ export default function ClientRenderedPage({ post }: { post: PostsType }) {
                         if (block.content.length === 0) return (<div key={`fjiesjfli`}/>)
 
                         return (
-                            <div key={`${clsx(block.content[0].text.content)}z`}>
+                            <div key={`${clsx(block.content[0].text.content)}z`} className="flex flex-row">
                                 <ParagraphRenderer content={block.content} />
                             </div>
                         )
