@@ -188,8 +188,9 @@ export const getPost = async (id: string) => {
 
         let cont: ContentType;
 
-        switch (e.type) {
+        console.log(e.type)
 
+        switch (e.type) {
             case "image":
                 cont = {
                     type: "image",
@@ -203,11 +204,51 @@ export const getPost = async (id: string) => {
                     content: e.quote.rich_text
                 }
                 break;
-            default:
-                // all data type unsupported assume its paragraph
+            case "paragraph":
+                // console.log(e)
                 cont = {
                     type: "paragraph",
                     content: e.paragraph.rich_text
+                }
+                break;
+            case "numbered_list_item":
+                // assume numbered list item is paragraph
+                // console.log(e.numbered_list_item)
+                cont = {
+                    type: "paragraph",
+                    content: e.numbered_list_item.rich_text
+                }
+                break;
+            case "heading_2":
+                // assume heading 2 is paragraph
+                // console.log(e.heading_2.rich_text)
+                cont = {
+                    // size: "xl",
+                    type: "paragraph",
+                    content: e.heading_2.rich_text
+                }
+                break;
+            case "bulleted_list_item":
+                console.log(e.bulleted_list_item)
+
+                cont = {
+                    type: "paragraph",
+                    content: [{
+                        plain_text: "•　",
+                        type: "text",
+                        text: {
+                            content: "•　"
+                        }
+                    }, ...e.bulleted_list_item.rich_text]
+                }
+                break;
+            default:
+                // all data type unsupported assume its paragraph
+                console.log(e)
+                console.error("unsupported block type")
+                cont = {
+                    type: "paragraph",
+                    content: []
                 }
                 break;
         }
