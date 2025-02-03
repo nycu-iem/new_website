@@ -158,14 +158,13 @@ const trim = (str: string) => {
     return newStr;
 }
 
-export type ParagraphType = { type: "paragraph", content: any[] }
-export type ImageType = { type: "image", content: string, id: string }
-export type QuoteType = { type: "quote", content: any[] }
+export type ParagraphType = { type: "paragraph", content: any[], className?: string }
+export type ImageType = { type: "image", content: string, id: string, className?: string }
+export type QuoteType = { type: "quote", content: any[], className?: string }
 
 type ContentType = ParagraphType | ImageType | QuoteType;
 
 export const getPost = async (id: string) => {
-
     const post = await notion.getPage({
         pageId: id
     })
@@ -188,14 +187,14 @@ export const getPost = async (id: string) => {
 
         let cont: ContentType;
 
-        console.log(e.type)
+        // console.log(e.type)
 
         switch (e.type) {
             case "image":
                 cont = {
                     type: "image",
                     content: e.image.type === 'external' ? e.image.external.url : e.image.file.url,
-                    id: e.id
+                    id: e.id,
                 }
                 break;
             case "quote":
@@ -213,7 +212,8 @@ export const getPost = async (id: string) => {
                 break;
             case "numbered_list_item":
                 // assume numbered list item is paragraph
-                // console.log(e.numbered_list_item)
+                console.log(e)
+                // console.log(e.has_children ? e.numbered_list_item.children : e.numbered_list_item.rich_text)
                 cont = {
                     type: "paragraph",
                     content: e.numbered_list_item.rich_text
@@ -223,7 +223,7 @@ export const getPost = async (id: string) => {
                 // assume heading 2 is paragraph
                 // console.log(e.heading_2.rich_text)
                 cont = {
-                    // size: "xl",
+                    className: "text-2xl font-bold py-2",
                     type: "paragraph",
                     content: e.heading_2.rich_text
                 }
