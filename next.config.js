@@ -20,11 +20,15 @@ const nextConfig = {
         ]
     },
     // config.module.rules.push()
-    webpack: (config) => {
+    webpack: (config, { isServer }) => {
         config.module.rules.push({
             test: /\.node/,
             use: 'raw-loader',
         });
+
+        if (!isServer) {
+            config.resolve.alias["canvas"] = false;
+        }
 
         return config;
     },
