@@ -6,8 +6,10 @@ generator client {
 }
 
 datasource db {
-    provider = "mongodb"
-    url      = env("DATABASE_URL")
+    provider = "postgresql"
+
+    url       = env("DATABASE_URL")
+    directUrl = env("DIRECT_URL")
 }
 
 model Account {
@@ -92,16 +94,16 @@ enum RoomAvailable {
 // The following blocks are used for the voting system 2024
 
 model Vote2024 {
-    id        String @id @default(uuid()) @map("_id")
+    id    String  @id @default(uuid()) @map("_id")
     valid Boolean
 
-    VotedTo Nominee2024 @relation(fields: [nominee2024Id], references: [id])
+    VotedTo       Nominee2024 @relation(fields: [nominee2024Id], references: [id])
     nominee2024Id String
-    user    User        @relation(fields: [userId], references: [id])
-    userId    String
+    user          User        @relation(fields: [userId], references: [id])
+    userId        String
 
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
 
 model Nominee2024 {
