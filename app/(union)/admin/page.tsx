@@ -7,7 +7,7 @@ import { getStudent } from "lib/api";
 
 import ClientSide from './client'
 
-export default async function () {
+export default async function AdminPage() {
     const session = await getServerSession(authOptions)
 
     if (!session) {
