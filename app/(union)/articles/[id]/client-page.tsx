@@ -26,14 +26,14 @@ export default function ClientRenderedPage({ post }: { post: PostsType }) {
                     case "quote":
                         return (
                             <div className="relative z-10 mt-6 flex text-sm font-medium text-zinc-400 transition group-hover:text-teal-500 dark:text-zinc-200 pl-8"
-                                key={`${clsx(block.content[0].text.content)}z`}>
+                                key={`${clsx(block.content[0].text.content)}z${Math.random()}`}>
                                 <ParagraphRenderer content={block.content} className={block.className} />
                                 <div className="h-full w-2 absolute bg-stone-700 left-0 dark:bg-slate-400" />
                             </div>
                         )
                     default:
                         // regard as paragraph
-                        if (block.content.length === 0) return (<div key={`fjiesjfli`} />)
+                        if (block.content.length === 0) return (<div key={Math.random()} />)
 
                         return (
                             <div key={`${clsx(block.content[0].text.content)}z`} className="flex flex-row">
