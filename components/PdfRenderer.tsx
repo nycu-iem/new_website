@@ -1,12 +1,7 @@
 'use client'
-// import { Document, Page, pdfjs } from "react-pdf"
-// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
-
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
-import { ArrowDownTrayIcon, ChevronLeftIcon, ChevronRightIcon, ForwardIcon } from "@heroicons/react/20/solid";
-import { clsx } from "clsx"
+import { ArrowDownTrayIcon } from "@heroicons/react/20/solid";
 import { useSession } from "next-auth/react";
-import { toast } from "react-toastify";
 
 export default function NotionPdf({
     blockId,
@@ -182,7 +177,7 @@ export default function NotionPdf({
                         </div>
                     </nav> */}
                     <div className='mx-1 pb-2 select-none cursor-default w-full'>
-                        <iframe src={fileUrl} className='w-full aspect-[9/16]'/>
+                        <iframe src={fileUrl} className='w-full aspect-[9/16]' />
                     </div>
                 </React.Fragment>
             }
