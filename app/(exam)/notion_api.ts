@@ -39,8 +39,30 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
         '大四': {},
         '其他': {},
     }
+    let navigation: Array<FirstLayerOfPost> = [
+        {
+            title: "大一",
+            classes: []
+        }, {
+            title: "大二",
+            classes: []
+        }, {
+            title: "大三",
+            classes: []
+        }, {
+            title: "大四",
+            classes: []
+        }, {
+            title: "其他選修課",
+            classes: []
+        }
+    ];
 
-    await Promise.all(result.results.map(async (data: any) => {
+    if(!result.results) {
+        return navigation;
+    }
+
+    await Promise.all(result.results.forEach(async (data: any) => {
         // console.log(data)
         const permanent_course_id = `${data.properties["永久課號"]?.rich_text[0]?.plain_text ?? 'undefined'}${data.properties["教授"]?.select?.name ?? 'undefined'}`;
         const teacher = data.properties["教授"]?.select?.name ?? 'undefined';
@@ -82,34 +104,17 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
 
     // example
     // exams/[notion uuid]#[段落摘要]
-    let navigation: Array<FirstLayerOfPost> = [
-        {
-            title: "大一",
-            classes: []
-        }, {
-            title: "大二",
-            classes: []
-        }, {
-            title: "大三",
-            classes: []
-        }, {
-            title: "大四",
-            classes: []
-        }, {
-            title: "其他選修課",
-            classes: []
-        }
-    ];
+
 
     // console.log("posts with keys")
     // console.log(posts_with_keys)
 
-    Object.keys(posts_with_keys).map((grade: string) => {
+    Object.keys(posts_with_keys).forEach((grade: string) => {
         const gradeInNumber = (grade === '大一') ? 0
             : (grade === '大二' ? 1 :
                 (grade === '大三') ? 2 :
                     (grade === '大四' ? 3 : 4))
-        Object.keys(posts_with_keys[grade]).map((semester) => {
+        Object.keys(posts_with_keys[grade]).forEach((semester) => {
             Object.keys(posts_with_keys[grade][semester]).map((course_id) => {
                 const teacher_array = Object.keys(posts_with_keys[grade][semester][course_id]);
 
