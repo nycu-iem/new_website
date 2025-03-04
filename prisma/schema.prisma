@@ -44,8 +44,8 @@ model Session {
 
 model User {
     id            String    @id @default(cuid())
-    name          String?
-    student_id    String?
+    name          String
+    student_id    String
     email         String?   @unique
     emailVerified DateTime?
     password      String?
