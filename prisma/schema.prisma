@@ -13,7 +13,7 @@ datasource db {
 }
 
 model Account {
-    id                String   @id @default(cuid()) @map("_id")
+    id                String   @id @default(cuid())
     type              String
     provider          String
     providerAccountId String
@@ -33,7 +33,7 @@ model Account {
 }
 
 model Session {
-    id           String   @id @default(cuid()) @map("_id")
+    id           String   @id @default(cuid())
     sessionToken String   @unique
     expires      DateTime
     createdAt    DateTime @default(now())
@@ -43,27 +43,49 @@ model Session {
 }
 
 model User {
-    id            String    @id @default(cuid()) @map("_id")
-    name          String
-    student_id    String
-    email         String    @unique
+    id            String    @id @default(cuid())
+    name          String?
+    student_id    String?
+    email         String?   @unique
     emailVerified DateTime?
+    password      String?
     image         String?
     union_fee     Boolean
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @updatedAt
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 
     accounts Account[]
     sessions Session[]
-    reserves Reserve[]
 
-    vote2024  Vote2024[]
+    reserves Reserve[]
+    vote2024 Vote2024[]
     nominated Nominee2024?  @relation(name: "nominated") // 被提名
     Nominee   Nominee2024[] @relation(name: "nominates") // 提名
 }
 
+// model User {
+//     id            String    @id @default(cuid()) @map("_id")
+//     name          String
+//     student_id    String
+//     email         String    @unique
+//     emailVerified DateTime?
+//     image         String?
+//     union_fee     Boolean
+//     createdAt     DateTime  @default(now())
+//     updatedAt     DateTime  @updatedAt
+
+//     accounts Account[]
+//     sessions Session[]
+//     reserves Reserve[]
+
+//     vote2024  Vote2024[]
+//     nominated Nominee2024?  @relation(name: "nominated") // 被提名
+//     Nominee   Nominee2024[] @relation(name: "nominates") // 提名
+// }
+
 model VerificationRequest {
-    id         String   @id @default(cuid()) @map("_id")
+    id         String   @id @default(cuid())
     identifier String
     token      String   @unique
     expires    DateTime
@@ -74,7 +96,7 @@ model VerificationRequest {
 }
 
 model Reserve {
-    id        String         @id @default(uuid()) @map("_id")
+    id        String         @id @default(uuid())
     room      RoomAvailable?
     purpose   String
     startedAt DateTime
@@ -94,7 +116,7 @@ enum RoomAvailable {
 // The following blocks are used for the voting system 2024
 
 model Vote2024 {
-    id    String  @id @default(uuid()) @map("_id")
+    id    String  @id @default(uuid())
     valid Boolean
 
     VotedTo       Nominee2024 @relation(fields: [nominee2024Id], references: [id])
@@ -107,7 +129,7 @@ model Vote2024 {
 }
 
 model Nominee2024 {
-    id String @id @default(uuid()) @map("_id")
+    id String @id @default(uuid())
 
     nominee       User   @relation(fields: [userNomineeId], references: [id], name: "nominated")
     userNomineeId String @unique

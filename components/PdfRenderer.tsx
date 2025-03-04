@@ -1,6 +1,6 @@
 'use client'
-import { Document, Page, pdfjs } from "react-pdf"
-pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
+// import { Document, Page, pdfjs } from "react-pdf"
+// pdfjs.GlobalWorkerOptions.workerSrc = `//unpkg.com/pdfjs-dist@${pdfjs.version}/build/pdf.worker.min.js`;
 
 import React, { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { ArrowDownTrayIcon, ChevronLeftIcon, ChevronRightIcon, ForwardIcon } from "@heroicons/react/20/solid";
@@ -78,32 +78,42 @@ export default function NotionPdf({
     }
 
     return (
-        <div className="bg-slate-100 dark:bg-slate-700 rounded-lg self-center shadow-inner w-80 min-w-fit mt-5">
+        <div className="bg-slate-100 dark:bg-slate-700 rounded-lg self-center shadow-inner w-[60rem] min-w-fit mt-5">
             <div className="px-3 space-x-2 flex flex-row py-2">
-                {documentName.endsWith(".pdf") ? <React.Fragment>
-                    <Switch checked={showDocument}
-                        text={documentName}
-                        setChecked={setShowDocument} />
-                </React.Fragment> : <div className="w-full">
-                    <div className="flex flex-row px-3 space-x-2">
+                {documentName.endsWith(".pdf") ?
+                    <div className='w-full justify-between flex flex-row'>
+                        <Switch checked={showDocument}
+                            text={documentName}
+                            setChecked={setShowDocument} />
                         <div onClick={() => {
-                            download({ permission: true });
+                            download({});
                         }} className="cursor-pointer">
                             <ArrowDownTrayIcon
                                 className="w-6"
                                 aria-label="Download"
                             />
                         </div>
-                        <div className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            {documentName}
+                    </div> :
+                    <div className="w-full">
+                        <div className="flex flex-row px-3 space-x-2">
+                            <div onClick={() => {
+                                download({ permission: true });
+                            }} className="cursor-pointer">
+                                <ArrowDownTrayIcon
+                                    className="w-6"
+                                    aria-label="Download"
+                                />
+                            </div>
+                            <div className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300">
+                                {documentName}
+                            </div>
                         </div>
-                    </div>
-                    <div className="w-full text-center">不支援的檔案類型</div>
-                </div>}
+                        <div className="w-full text-center">不支援的檔案類型</div>
+                    </div>}
             </div>
             {showDocument &&
                 <React.Fragment>
-                    <nav className='flex flex-row justify-between py-3 px-5 select-none'>
+                    {/* <nav className='flex flex-row justify-between py-3 px-5 select-none'>
                         <div className='flex flex-row space-x-3'>
                             <div onClick={() => {
                                 download({});
@@ -170,27 +180,9 @@ export default function NotionPdf({
                                 />
                             </div>
                         </div>
-                    </nav>
-                    <div className='mx-1 pb-2 select-none cursor-default'>
-                        <Document file={fileUrl}
-                            onLoadSuccess={(event) => {
-                                setTotalPage(event.numPages)
-                                // if (event.fingerprints[0]) {
-                                //     setDocumentName(event.fingerprints[0])
-                                // }
-                                // console.log(event)
-                            }}
-                            onLoadError={() => {
-                                // TODO: Update loading error
-                            }}
-                            loading={<PDFLoading />}
-                            className="md:h-[600px] h-[400px]">
-                            <Page pageNumber={page}
-                                // scale={width > 786 ? 1 : 0.6}
-                                height={width > 768 ? 600 : 400}
-                                className="cursor-default"
-                            />
-                        </Document>
+                    </nav> */}
+                    <div className='mx-1 pb-2 select-none cursor-default w-full'>
+                        <iframe src={fileUrl} className='w-full aspect-[9/16]'/>
                     </div>
                 </React.Fragment>
             }
