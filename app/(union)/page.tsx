@@ -234,7 +234,8 @@ export default async function Home() {
     const results = (await notion.getDatabase({ pageId: "27a55c38f3774cceabedfbce1690347e" })).results
     const articles = results?.filter((arti: any) => {
         return arti.properties.highlight.checkbox
-    }) ?? results
+    }) ?? []
+
     return (
         <>
             <Container className="mt-9">
