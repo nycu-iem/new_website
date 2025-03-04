@@ -8,6 +8,7 @@ export default async function RootLayout({
 }) {
     const res = await getNavigationLinks();
 
+    console.log(res)
     const posts = typeof res !== "undefined" ? res : [];
 
     return (
