@@ -59,6 +59,7 @@
         "csv-parser": "^3.2.0",
         "encoding": "^0.1.13",
         "fs": "0.0.1-security",
-        "ts-node": "^10.9.2"
+        "ts-node": "^10.9.2",
+        "wrangler": "^3.111.0"
     }
 }
