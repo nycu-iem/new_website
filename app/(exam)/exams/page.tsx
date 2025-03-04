@@ -8,6 +8,7 @@ export const metadata = {
 
 export default async function ExamPage() {
     const session = await getServerSession(authOptions);
+    
     if (!session) {
         return (
             <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
