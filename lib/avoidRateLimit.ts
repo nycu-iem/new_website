@@ -1,7 +1,7 @@
 let lastFetch = new Date()
 
 export async function avoidRateLimit() {
-    if (process.env.NEXT_PHASE === 'phase-production-build') {
+    if (process.env.CLOUDFLARE_PAGES) {
         let sinceLastFetch = new Date().getTime() - lastFetch.getTime()
         if (sinceLastFetch < 350) {
             await sleepMs()
