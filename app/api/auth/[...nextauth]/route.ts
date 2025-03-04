@@ -1,3 +1,5 @@
+export const runtime = "edge";
+
 import NextAuth, { AuthOptions } from "next-auth"
 import { PrismaAdapter } from "@next-auth/prisma-adapter"
 import { prisma } from "lib/prisma"
