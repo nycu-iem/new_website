@@ -8,8 +8,7 @@ export default async function RootLayout({
 }) {
     const res = await getNavigationLinks();
 
-    console.log(res)
-    const posts = typeof res !== "undefined" ? res : [];
+    const posts = res.filter(t => true) ?? []
 
     return (
         <div className="flex min-h-full bg-white antialiased dark:bg-zinc-900 w-full">
