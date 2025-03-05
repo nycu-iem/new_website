@@ -1,10 +1,12 @@
-@tailwind base;
-
 @plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
+
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
+
+@import 'tailwindcss';
 
 .linear-activity {
     overflow: hidden;
@@ -19,9 +21,9 @@
     max-width: 100%;
     height: 100%;
     -webkit-transition: width 500ms ease-out 1s;
-       -moz-transition: width 500ms ease-out 1s;
-         -o-transition: width 500ms ease-out 1s;
-            transition: width 500ms ease-out 1s;
+    -moz-transition: width 500ms ease-out 1s;
+    -o-transition: width 500ms ease-out 1s;
+    transition: width 500ms ease-out 1s;
     background-color: #03A9F4;
 }
 
@@ -52,6 +54,7 @@
         left: -100%;
         width: 100%;
     }
+
     100% {
         left: 100%;
         width: 10%;
@@ -63,6 +66,7 @@
         left: -150%;
         width: 100%;
     }
+
     100% {
         left: 100%;
         width: 10%;
@@ -71,67 +75,67 @@
 
 body {
     margin: 0;
-    background-color: #525659;
+    /* background-color: #525659; */
     font-family: Segoe UI, Tahoma, sans-serif;
-  }
+}
 
-  .Example input,
-  .Example button {
+.Example input,
+.Example button {
     font: inherit;
-  }
+}
 
-  .Example header {
+.Example header {
     background-color: #323639;
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     padding: 20px;
     color: white;
-  }
+}
 
-  .Example header h1 {
+.Example header h1 {
     font-size: inherit;
     margin: 0;
-  }
+}
 
-  .Example__container {
+.Example__container {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin: 10px 0;
     padding: 10px;
-  }
+}
 
-  .Example__container__load {
+.Example__container__load {
     margin-top: 1em;
     color: white;
-  }
+}
 
-  .Example__container__document {
+.Example__container__document {
     margin: 1em 0;
-  }
+}
 
-  .Example__container__document .react-pdf__Document {
+.Example__container__document .react-pdf__Document {
     display: flex;
     flex-direction: column;
     align-items: center;
-  }
+}
 
-  .Example__container__document .react-pdf__Page {
+.Example__container__document .react-pdf__Page {
     max-width: calc(100% - 2em);
     box-shadow: 0 0 8px rgba(0, 0, 0, 0.5);
     margin: 1em;
-  }
+}
 
-  .Example__container__document .react-pdf__Page canvas {
+.Example__container__document .react-pdf__Page canvas {
     max-width: 100%;
     height: auto !important;
-  }
+}
 
-  .Example__container__document .react-pdf__message {
+.Example__container__document .react-pdf__message {
     padding: 20px;
     color: white;
-  }
+}
 
-  :root {
+:root {
     --background: oklch(1 0 0);
     --foreground: oklch(0.129 0.042 264.695);
     --card: oklch(1 0 0);
@@ -167,7 +171,7 @@ body {
     --sidebar-ring: oklch(0.704 0.04 256.788);
 }
 
-  .dark {
+.dark {
     --background: oklch(0.129 0.042 264.695);
     --foreground: oklch(0.984 0.003 247.858);
     --card: oklch(0.129 0.042 264.695);
@@ -202,7 +206,7 @@ body {
     --sidebar-ring: oklch(0.446 0.043 257.281);
 }
 
-  @theme inline {
+@theme inline {
     --color-background: var(--background);
     --color-foreground: var(--foreground);
     --color-card: var(--card);
@@ -241,12 +245,12 @@ body {
     --color-sidebar-ring: var(--sidebar-ring);
 }
 
-  @layer base {
-  * {
-    @apply border-border outline-ring/50;
+@layer base {
+    * {
+        @apply border-border outline-ring/50;
     }
-  body {
-    @apply bg-background text-foreground;
+
+    body {
+        @apply bg-background text-foreground;
     }
 }
-  

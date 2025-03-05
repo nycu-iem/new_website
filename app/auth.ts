@@ -99,31 +99,3 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         }
     ],
 })
-
-// export const authOptions: AuthOptions = {
-//     // Configure one or more authentication providers
-//     providers: [
-//     ],
-//     pages: {
-//         signIn: '/login',
-//         signOut: '/logout',
-//         error: '/error', // Error code passed in query string as ?error=
-//         // verifyRequest: '/auth/verify-request', // (used for check email message)
-//         // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
-//     },
-//     debug: process.env.NODE_ENV === "development",
-//     useSecureCookies: process.env.NODE_ENV === "production",
-//     adapter: PrismaAdapter(prisma),
-//     callbacks: {
-//         async session({ session, token, user }) {
-//             session.user.student_id = user.student_id;
-//             session.user.union_fee = user.union_fee;
-
-//             return session
-//         }
-//     }
-// }
-
-// const handler = NextAuth(authOptions);
-
-// export { handler as GET, handler as POST }

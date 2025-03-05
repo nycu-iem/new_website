@@ -2,11 +2,10 @@ import { notFound } from "next/navigation";
 import { getExams } from "../../notion_api"
 import { notion } from "lib/notion";
 import React from 'react'
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "../../../api/auth/[...nextauth]/route"
 import NotionPdf from "components/PdfRenderer";
 import NotionImage from "components/NotionImage";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
+import { auth } from "@/app/auth";
 
 import type { Metadata, ResolvingMetadata } from 'next'
 
@@ -39,7 +38,7 @@ export default async function SectionPage({
     params: { params: Array<string> },
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
-    const session = await getServerSession(authOptions);
+    const session = await auth();
 
     let blocks;
     let page;

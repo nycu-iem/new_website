@@ -24,7 +24,7 @@ export default function RootLayout({
     return (
         <html lang="zh-tw">
             <body className={clsx(
-                'flex min-h-full bg-white antialiased dark:bg-zinc-900',
+                'flex min-h-full antialiased dark:bg-zinc-900 bg-white',
                 inter.className
             )}>
                 <SessionProvider>

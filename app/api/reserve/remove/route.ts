@@ -1,15 +1,16 @@
 export const runtime = "edge";
 
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+
 import { prisma } from "lib/prisma";
+import { auth } from "@/app/auth";
 
 export async function POST(
     request: Request,
 ) {
     // start verification
-    const session = await getServerSession(authOptions)
+    const session = await auth();
+
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -24,7 +25,7 @@ export async function POST(
 
     // console.log(session.user.student_id)
     // console.log(data.id)
-    
+
     const verify = await prisma.reserve.findMany({
         where: {
             AND: {
@@ -36,7 +37,7 @@ export async function POST(
         }
     })
 
-    
+
     if (verify.length === 0) {
         return NextResponse.json({ message: 'Bad Guy Go Away' }, { status: 403 });
     }

@@ -40,7 +40,6 @@
         "next": "^15.2.1",
         "next-auth": "5.0.0-beta.25",
         "next-themes": "^0.4.4",
-        "postcss": "8.5.3",
         "prisma": "^6.4.1",
         "raw-loader": "^4.0.2",
         "react": "^19.0.0",
@@ -58,10 +57,12 @@
     },
     "devDependencies": {
         "@cloudflare/next-on-pages": "^1.13.8",
+        "@tailwindcss/postcss": "^4.0.9",
         "@types/react-highlight-words": "^0.20.0",
         "csv-parser": "^3.2.0",
         "encoding": "^0.1.13",
         "fs": "0.0.1-security",
+        "postcss": "8.5.3",
         "ts-node": "^10.9.2",
         "wrangler": "^3.112.0"
     }
