@@ -13,21 +13,22 @@ datasource db {
 }
 
 model Account {
-    id                String   @id @default(cuid())
-    type              String
-    provider          String
-    providerAccountId String
-    refresh_token     String?
-    access_token      String?
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String?
-    session_state     String?
-    createdAt         DateTime @default(now())
-    updatedAt         DateTime @updatedAt
-    userId            String
-    user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                       String   @id @default(cuid())
+    type                     String
+    provider                 String
+    providerAccountId        String
+    refresh_token            String?
+    access_token             String?
+    expires_at               Int?
+    token_type               String?
+    scope                    String?
+    id_token                 String?
+    session_state            String?
+    createdAt                DateTime @default(now())
+    updatedAt                DateTime @updatedAt
+    userId                   String
+    user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    refresh_token_expires_in DateTime?
 
     @@unique([provider, providerAccountId])
 }
@@ -58,8 +59,8 @@ model User {
     accounts Account[]
     sessions Session[]
 
-    reserves Reserve[]
-    vote2024 Vote2024[]
+    reserves  Reserve[]
+    vote2024  Vote2024[]
     nominated Nominee2024?  @relation(name: "nominated") // 被提名
     Nominee   Nominee2024[] @relation(name: "nominates") // 提名
 }

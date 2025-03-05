@@ -5,15 +5,12 @@ import DayView from 'components/calendar/DayView'
 import React, { useEffect, useState, Dispatch, SetStateAction } from 'react'
 import { Section } from 'components/Section'
 import { Reserve, User } from '@prisma/client'
-import { LocalizationProvider, TimePicker } from '@mui/x-date-pickers';
-import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns'
 import { Button } from 'components/Button'
 import { Router } from 'next/router'
 import clsx from 'clsx'
 import { usePathname, useRouter } from 'next/navigation'
 import { Switch } from '@headlessui/react'
 import { useSession } from 'next-auth/react'
-import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { useTheme } from 'next-themes'
 
 import { customToast } from 'components/Toast'
@@ -40,32 +37,10 @@ export default function BookingClientPage({
 }) {
     const [reserve, setReserve] = useState<"MOJODOJO" | "CASAHOUSE" | undefined>(undefined);
     const [dateSelected, setDateSelected] = useState<DateTime>({});
-    const { themes, resolvedTheme, setTheme } = useTheme()
-    const otherTheme = resolvedTheme === 'dark' ? 'light' : 'dark';
-    const [customTheme, setCustomTheme] = useState<any>(
-        createTheme({
-            palette: {
-                mode: otherTheme === 'dark' ? 'dark' : 'light',
-            },
-        })
-    );
-    const [mounted, setMounted] = useState<boolean>(false)
-
-    useEffect(() => {
-        setMounted(true)
-    }, [])
-
-    useEffect(() => {
-        setCustomTheme(createTheme({
-            palette: {
-                mode: resolvedTheme === 'dark' ? 'dark' : 'light',
-            },
-        }))
-    }, [themes])
 
     return (
         <React.Fragment>
-            <ThemeProvider theme={customTheme}>
+            {/* <ThemeProvider theme={customTheme}>
                 <div className="space-y-8">
                     <SpeakingSection title={["MOJO DOJO"]} description="系窩">
                         <CalendarSeperate
@@ -94,7 +69,7 @@ export default function BookingClientPage({
                     setReserve={setReserve}
                     dateSelected={dateSelected}
                 />}
-            </ThemeProvider>
+            </ThemeProvider> */}
         </React.Fragment>
     )
 }
@@ -290,80 +265,83 @@ function ReservePrompt({
     }
 
     return (
-        <LocalizationProvider dateAdapter={AdapterDateFns}>
-            <div className='w-screen h-screen z-50 bg-black fixed top-0 left-0 bg-opacity-70 flex flex-row justify-center items-center backdrop-blur-sm'
-                onClick={() => { setReserve(undefined) }}
-            >
-                <div className="bg-white dark:bg-slate-800 rounded-lg max-w-3xl w-[90%] z-50 px-5 py-3 flex flex-col text-black dark:text-gray-50"
-                    onClick={(e) => {
-                        e.stopPropagation();
-                    }}>
-                    <div className="grid grid-cols-2 gap-3">
-                        <div>
-                            租借空間
-                        </div>
-                        <div>
-                            {reserveRoom}
-                        </div>
-                        <div>
-                            起始日
-                        </div>
-                        <div>
-                            {`${dateSelected.year} ${dateSelected.month} ${dateSelected.day}`}
-                        </div>
-                        <div className='flex flex-col justify-center'>
-                            事由
-                        </div>
-                        <div>
-                            <input value={purpose} type="text"
-                                onChange={(e) => { setPurpose(e.target.value) }}
-                                className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-                                required
-                            />
-                        </div>
-                        <div className='flex flex-col justify-center'>
-                            開始時間
-                        </div>
-                        <div>
-                            <TimePicker
-                                label="開始時間"
-                                value={timeStarted}
-                                onChange={(event) => {
-                                    if (event)
-                                        setTimeStarted(event);
-                                }} />
-                        </div>
-                        <div className='flex flex-col justify-center'>
-                            結束時間
-                        </div>
-                        <div>
-                            <TimePicker
-                                label="結束時間"
-                                value={timeEnded}
-                                onChange={(event) => {
-                                    if (event)
-                                        setTimeEnded(event);
-                                }} />
-                        </div>
-                        <div className='col-span-2'>
-                            租借時長: {getMinutes(timeEnded.getMinutes() + timeEnded.getHours() * 60 - timeStarted.getHours() * 60 - timeStarted.getMinutes())}
-                            {/* {timeStarted.toISOString()}
-                            {timeEnded.toISOString()} */}
-                        </div>
-                    </div>
-                    <Button className={clsx(
-                        'w-20 mt-5 self-end',
-                        loading && "cursor-not-allowed"
-                    )} variant='primary' onClick={() => {
-                        if (!loading) {
-                            reserve();
-                        }
-                    }} type="submit">
-                        預約
-                    </Button>
-                </div>
-            </div>
-        </LocalizationProvider>
+        <div>
+
+        </div>
+        // <LocalizationProvider dateAdapter={AdapterDateFns}>
+        //     <div className='w-screen h-screen z-50 bg-black fixed top-0 left-0 bg-opacity-70 flex flex-row justify-center items-center backdrop-blur-sm'
+        //         onClick={() => { setReserve(undefined) }}
+        //     >
+        //         <div className="bg-white dark:bg-slate-800 rounded-lg max-w-3xl w-[90%] z-50 px-5 py-3 flex flex-col text-black dark:text-gray-50"
+        //             onClick={(e) => {
+        //                 e.stopPropagation();
+        //             }}>
+        //             <div className="grid grid-cols-2 gap-3">
+        //                 <div>
+        //                     租借空間
+        //                 </div>
+        //                 <div>
+        //                     {reserveRoom}
+        //                 </div>
+        //                 <div>
+        //                     起始日
+        //                 </div>
+        //                 <div>
+        //                     {`${dateSelected.year} ${dateSelected.month} ${dateSelected.day}`}
+        //                 </div>
+        //                 <div className='flex flex-col justify-center'>
+        //                     事由
+        //                 </div>
+        //                 <div>
+        //                     <input value={purpose} type="text"
+        //                         onChange={(e) => { setPurpose(e.target.value) }}
+        //                         className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+        //                         required
+        //                     />
+        //                 </div>
+        //                 <div className='flex flex-col justify-center'>
+        //                     開始時間
+        //                 </div>
+        //                 <div>
+        //                     <TimePicker
+        //                         label="開始時間"
+        //                         value={timeStarted}
+        //                         onChange={(event) => {
+        //                             if (event)
+        //                                 setTimeStarted(event);
+        //                         }} />
+        //                 </div>
+        //                 <div className='flex flex-col justify-center'>
+        //                     結束時間
+        //                 </div>
+        //                 <div>
+        //                     <TimePicker
+        //                         label="結束時間"
+        //                         value={timeEnded}
+        //                         onChange={(event) => {
+        //                             if (event)
+        //                                 setTimeEnded(event);
+        //                         }} />
+        //                 </div>
+        //                 <div className='col-span-2'>
+        //                     租借時長: {getMinutes(timeEnded.getMinutes() + timeEnded.getHours() * 60 - timeStarted.getHours() * 60 - timeStarted.getMinutes())}
+        //                     {/* {timeStarted.toISOString()}
+        //                     {timeEnded.toISOString()} */}
+        //                 </div>
+        //             </div>
+        //             <Button className={clsx(
+        //                 'w-20 mt-5 self-end',
+        //                 loading && "cursor-not-allowed"
+        //             )} variant='primary' onClick={() => {
+        //                 if (!loading) {
+        //                     reserve();
+        //                 }
+        //             }} type="submit">
+        //                 預約
+        //             </Button>
+        //         </div>
+        //     </div>
+        // </LocalizationProvider>
     )
 }
 

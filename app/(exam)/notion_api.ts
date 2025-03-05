@@ -58,11 +58,11 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
         }
     ];
 
-    if(!result.results) {
+    if (!result.results) {
         return navigation;
     }
 
-    await Promise.all(result.results.forEach(async (data: any) => {
+    const tasks = result.results.map(async (data: any) => {
         // console.log(data)
         const permanent_course_id = `${data.properties["永久課號"]?.rich_text[0]?.plain_text ?? 'undefined'}${data.properties["教授"]?.select?.name ?? 'undefined'}`;
         const teacher = data.properties["教授"]?.select?.name ?? 'undefined';
@@ -90,8 +90,6 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
             return "";
         }).filter((str: string) => (str !== ""))
 
-        // console.log(sections)
-
         posts_with_keys[grade] = posts_with_keys[grade] || {};
         posts_with_keys[grade][semester] = posts_with_keys[grade][semester] || {}
         posts_with_keys[grade][semester][permanent_course_id] = posts_with_keys[grade][semester][permanent_course_id] || {};
@@ -100,7 +98,9 @@ export const getNavigationLinks: () => Promise<Array<FirstLayerOfPost>> = async 
             sections,
             page_id: id,
         };
-    }))
+    })
+
+    await Promise.all(tasks)
 
     // example
     // exams/[notion uuid]#[段落摘要]

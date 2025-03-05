@@ -8,6 +8,7 @@ import {
     useTheme
 } from 'next-themes';
 
+import { useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react'
@@ -21,6 +22,20 @@ export default function RootLayout({
 }: {
     children: React.ReactNode
 }) {
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
+    if (!mounted) {
+        return <html>
+            <body>
+                {children}
+            </body>
+        </html>;
+    }
+
     return (
         <html lang="zh-tw">
             <body className={clsx(
