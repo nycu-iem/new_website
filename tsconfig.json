@@ -1,6 +1,6 @@
 {
     "compilerOptions": {
-        "target": "es5",
+        "target": "ES2017",
         "lib": [
             "dom",
             "dom.iterable",
@@ -25,17 +25,8 @@
             }
         ],
         "paths": {
-            "../../*": [
+            "@/*": [
                 "./*"
-            ],
-            "lib/*": [
-                "./lib/*"
-            ],
-            "components/*": [
-                "./components/*"
-            ],
-            "public/*":[
-                "./public/*"
             ]
         }
     },
