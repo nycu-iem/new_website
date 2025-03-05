@@ -1,15 +1,15 @@
 'use server'
 import { SimpleLayout } from "components/SimpleLayout";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../api/auth/[...nextauth]/route";
 import { notFound } from "next/navigation";
 import { getStudent } from "lib/api";
+import { auth } from "@/app/auth"
+
 
 import ClientSide from './client'
 
 export default async function AdminPage() {
-    const session = await getServerSession(authOptions)
-
+    const session = await auth();
+    
     if (!session) {
         notFound();
     }

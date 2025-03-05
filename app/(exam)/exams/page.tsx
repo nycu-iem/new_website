@@ -1,5 +1,4 @@
-import { getServerSession } from "next-auth/next"
-import { authOptions } from "../../api/auth/[...nextauth]/route"
+import { auth } from "@/app/auth";
 
 export const metadata = {
     title: '陽明交大 工工系學會 考古題網站 | NYCU IEMSA EXAM',
@@ -7,8 +6,8 @@ export const metadata = {
 }
 
 export default async function ExamPage() {
-    const session = await getServerSession(authOptions);
-    
+    const session = await auth()
+
     if (!session) {
         return (
             <div className="h-[70vh] flex flex-col justify-center text-center text-xl">

@@ -2,9 +2,8 @@ export const runtime = "edge";
 
 import { NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
 import { notion } from "../../../../lib/notion";
+import { auth } from "@/app/auth";
 
 /*  There is two places that website need to get notion files
     1. displaying the file => every logged in account
@@ -23,7 +22,7 @@ export async function GET(
     const blockId = context.params.blockId
 
     // use prisma to confirm whether the student paid union_fee
-    const session = await getServerSession(authOptions)
+    const session = await auth();
 
     if (!session) {
         console.log('not logged in')

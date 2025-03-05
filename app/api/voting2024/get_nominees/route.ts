@@ -3,8 +3,7 @@ export const runtime = "edge";
 import { NextResponse } from "next/server";
 
 import { prisma } from "lib/prisma"
-import { getServerSession } from "next-auth";
-import { authOptions } from "app/api/auth/[...nextauth]/route";
+import { auth } from "@/app/auth";
 
 export async function GET(
     request: Request,
@@ -43,7 +42,7 @@ export async function GET(
 
         console.log("verified user")
 
-        const session = await getServerSession(authOptions)
+        const session = await auth()
         if (!session) {
             return NextResponse.json(nominees_with_year)
             // return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
@@ -52,18 +51,18 @@ export async function GET(
         const my_votes = await prisma.vote2024.findMany({
             where: {
                 valid: true,
-                user:{
+                user: {
                     student_id: session.user.student_id
                 }
             },
-            include:{
+            include: {
                 VotedTo: true
             }
         })
 
         const nominees_with_year_with_selections = nominees_with_year.map(n => {
             const vote = my_votes.find(v => v.VotedTo.id === n.id)
-            
+
             return {
                 ...n,
                 selected: !!vote

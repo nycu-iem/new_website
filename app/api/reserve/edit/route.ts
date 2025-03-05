@@ -1,15 +1,15 @@
 export const runtime = "edge";
 
 import { NextResponse } from "next/server";
-import { getServerSession } from "next-auth";
-import { authOptions } from "../../auth/[...nextauth]/route";
+import { auth } from "@/app/auth"
 import { prisma } from "lib/prisma";
 
 export async function POST(
     request: Request,
 ) {
     // start verification
-    const session = await getServerSession(authOptions)
+    const session = await auth();
+    
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
@@ -52,7 +52,7 @@ export async function POST(
                 }
             }
         },
-        data:{
+        data: {
             purpose: data.new_title
         }
     })
