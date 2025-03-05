@@ -6,7 +6,6 @@ import { useSession } from "next-auth/react";
 import Swal from "sweetalert2";
 import { customToast } from "../Toast";
 import { Dispatch, SetStateAction } from "react";
-import { Box, CircularProgress } from "@mui/material";
 type EventType = Reserve & { user: User }
 
 interface ColorSet {
@@ -165,9 +164,7 @@ export default function DayView({
                                             className="rounded-md px-2 py-0.5 bg-gray-700 outline-none w-36"
                                         />
                                         {loading ?
-                                            <Box >
-                                                <CircularProgress size={20} />
-                                            </Box>
+                                            <p>loading...</p>
                                             :
                                             <CheckCircleIcon className="w-6 bg-gray-700 rounded-md cursor-pointer" onClick={() => {
                                                 submitEditEvent();

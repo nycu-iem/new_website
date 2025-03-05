@@ -1,5 +1,4 @@
 // import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
-import { getProviders } from "next-auth/react"
 import Client from "./page_client";
 // import ClientRedirect from "./ClientRedirect"
 
@@ -19,7 +18,5 @@ export default async function LoginPage() {
         console.log("not logged in")
     }
 
-    const providers = await getProviders() ?? [];
-
-    return (<Client providers={providers as { name: string, id: string }[]} />)
+    return (<Client />)
 }
