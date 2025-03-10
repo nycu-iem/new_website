@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState, useEffect, useRef } from "react";
 
 // Function to generate time options
@@ -36,9 +38,11 @@ export default function TimePicker({
     // Handle time selection
     const handleTimeSelection = (hour: string, minute: string, period: string) => {
         setSelectedTime(`${hour} ${minute} ${period}`);
-        console.log(`${hour} ${minute} ${period}`);
+        // console.log(`${hour} ${minute} ${period}`);
         setIsVisible(false);
+        if(hour === "12") hour = "00";
         if(period === "PM") hour = (parseInt(hour) + 12).toString();
+        console.log(new Date(0, 0, 0, parseInt(hour), parseInt(minute), 0));
         onChange(new Date(0, 0, 0, parseInt(hour), parseInt(minute), 0));
     };
 
