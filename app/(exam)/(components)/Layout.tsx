@@ -10,13 +10,16 @@ import React from 'react'
 import { FirstLayerOfPost } from "../notion_api"
 import Toaster from 'components/Toast'
 import { ToastContainer } from 'react-toastify'
+import { Session } from 'next-auth'
 
 export function Layout({
     children,
-    allSections = []
+    allSections = [],
+    session,
 }: {
     children: React.ReactNode,
-    allSections: Array<FirstLayerOfPost>
+    allSections: Array<FirstLayerOfPost>,
+    session?: Session
 }) {
     // TODO: set semester according to date
     const [semester, setSemester] = useState<"first" | "second" | "summer">("first");
@@ -39,6 +42,8 @@ export function Layout({
                             setSemester={setSemester}
                             sectionSelected={sectionSelected}
                             setSectionSelected={setSectionSelected}
+                            // session={session}
+                            session={session}
                         />
                         <Navigation
                             className="hidden lg:mt-10 lg:block"
