@@ -7,18 +7,18 @@ export const metadata = {
 }
 
 export default async function ExamPage() {
-    // const session = await getServerSession(authOptions);
+    const session = await getServerSession(authOptions);
 
-    // if (!session) {
-    //     return (
-    //         <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
-    //             登入以查看內容
-    //             <div className="md:hidden block">
-    //                 登入鍵在功能選單裡
-    //             </div>
-    //         </div>
-    //     )
-    // }
+    if (!session) {
+        return (
+            <div className="h-[70vh] flex flex-col justify-center text-center text-xl">
+                登入以查看內容
+                <div className="md:hidden block">
+                    登入鍵在功能選單裡
+                </div>
+            </div>
+        )
+    }
 
     return (
         <div className="py-[36vh]">
