@@ -4,7 +4,6 @@ import clsx from "clsx"
 import {
     GetPostReturnType,
 } from "lib/api"
-import Link from "next/link"
 import NotionImage from "../../../../components/NotionImage"
 
 type PostsType = NonNullable<Awaited<GetPostReturnType>>

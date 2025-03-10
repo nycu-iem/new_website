@@ -270,3 +270,78 @@ function getReturnType<R>(f: (...args: any[]) => R): { returnType: R } {
 // dummy variable, used for retrieving toast return type only
 let PostType = getReturnType(getPost);
 export type GetPostReturnType = typeof PostType.returnType;
+
+import { prisma } from "lib/prisma"
+
+export const getCasaHouseReserve = async ({
+    month,
+    year,
+}: {
+    year: string,
+    month: string
+}) => {
+    const startTimeOfTheMonth = new Date(parseInt(year), parseInt(month) - 1, -1);
+    const endTimeOfTheMonth = new Date(parseInt(year), parseInt(month));
+
+    const days = await prisma.reserve.findMany({
+        where: {
+            startedAt: {
+                // gte, lte
+                gte: startTimeOfTheMonth,
+                lte: endTimeOfTheMonth,
+            }, room: {
+                equals: "CASAHOUSE"
+            }
+        }, select: {
+            startedAt: true,
+            endedAt: true,
+            purpose: true,
+            id:true,
+            user: {
+                select: {
+                    student_id: true,
+                    name: true,
+                }
+            }
+        }
+    })
+
+    return days;
+}
+
+export const getMojoDojoReserve = async ({
+    month,
+    year,
+}: {
+    year: string,
+    month: string
+}) => {
+    const startTimeOfTheMonth = new Date(parseInt(year), parseInt(month) - 1, -1);
+    const endTimeOfTheMonth = new Date(parseInt(year), parseInt(month));
+
+    const days = await prisma.reserve.findMany({
+        where: {
+            AND: {
+                startedAt: {
+                    // gte, lte
+                    gte: startTimeOfTheMonth,
+                    lte: endTimeOfTheMonth,
+                },
+                room: { equals: 'MOJODOJO' }
+            }
+        }, select: {
+            startedAt: true,
+            endedAt: true,
+            purpose: true,
+            id:true,
+            user: {
+                select: {
+                    student_id: true,
+                    name: true,
+                }
+            }
+        }
+    })
+    console.log(days)
+    return days;
+}

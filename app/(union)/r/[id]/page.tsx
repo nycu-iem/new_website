@@ -1,15 +1,15 @@
 import { redirect } from "next/navigation"
 
-export default function PageRedirect({
+export default async function PageRedirect({
     params
 }: {
-    params: {
+    params: Promise<{
         id: string
-    }
+    }>
 }) {
+    const p = await params
 
-
-    switch(params.id){
+    switch (p.id) {
         case "2024_summer_camp":
             return redirect("https://www.facebook.com/nctuiemcamp/");
         case "2024_summer_camp_ins":

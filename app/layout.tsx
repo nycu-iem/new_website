@@ -8,7 +8,7 @@ import {
     useTheme
 } from 'next-themes';
 
-import { useState } from 'react';
+import { Suspense, useState } from 'react';
 import { Analytics } from '@vercel/analytics/react';
 import { useEffect } from 'react';
 import { SessionProvider } from 'next-auth/react'
@@ -43,11 +43,13 @@ export default function RootLayout({
                 inter.className
             )}>
                 <SessionProvider>
-                    <ThemeProvider disableTransitionOnChange defaultTheme='system' attribute='class'>
-                        {/* attribute="className" disableTransitionOnChange */}
-                        <ThemeWatcher />
-                        {children}
-                    </ThemeProvider>
+                    <Suspense fallback={null} >
+                        <ThemeProvider disableTransitionOnChange defaultTheme='system' attribute='class'>
+                            {/* attribute="className" disableTransitionOnChange */}
+                            <ThemeWatcher />
+                            {children}
+                        </ThemeProvider>
+                    </Suspense>
                 </SessionProvider>
                 <Analytics />
                 <Script id="ms-clarity" strategy="afterInteractive">

@@ -3,8 +3,7 @@ import React from 'react'
 import ClientPage from './client'
 
 import { Reserve, User } from '@prisma/client'
-import { getCasaHouseReserve } from '../../api/casahouse/[year]/[month]/route'
-import { getMojoDojoReserve } from '../../api/mojodojo/[year]/[month]/route'
+import { getCasaHouseReserve, getMojoDojoReserve } from '@/lib/api'
 
 export default async function RoomRenting() {
     const thisMonthData = await fetchAPI();
