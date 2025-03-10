@@ -1,27 +1,15 @@
 "use client"
-import { signIn, getProviders } from "next-auth/react"
+import { signIn } from "next-auth/react"
 import { Button } from "components/Button"
-import { useEffect, useState } from "react"
 
-export default function Client() {
-    const [providers, setProviders] = useState({});
-
-    useEffect(() => {
-        (async () => {
-            const res = (await getProviders()) as any;
-            setProviders(res);
-        })();
-    }, []);
-
-    // const providers = await getProviders() ?? [];
-
+export default function Client({ providers }: { providers: { name: string, id: string }[] }) {
     return (
         <>
             {
-                Object.values(providers).map((provider: any) => (
+                Object.values(providers).map((provider) => (
                     <Button key={provider.name} onClick={() => {
                         signIn(provider.id)
-                    }} variant="primary" className="cursor-pointer">
+                    }} variant="primary" className="">
                         Sign in with {provider.name}
                     </Button>
                 ))
