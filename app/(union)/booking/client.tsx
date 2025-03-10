@@ -249,6 +249,8 @@ function ReservePrompt({
             })
             const result = await res.json();
             if (!res.ok) {
+                console.log("error")
+                console.log(result)
                 throw new Error(result.error)
             }
             customToast.success(`預約成功`)
@@ -356,7 +358,7 @@ const getMinutes = (value: number) => {
     if (value < 0) {
         return `${Math.floor((value + 1440) / 60)}時${paddingZero((value + 1440) % 60)}分 (註: 至隔天)`
     }
-    return (Math.floor(value / 60) === 0) ? `${value}分鐘` : `${value / 60}時${paddingZero(value % 60)}分`
+    return (Math.floor(value / 60) === 0) ? `${value}分鐘` : `${Math.floor(value / 60)}時${paddingZero(value % 60)}分`
 }
 
 const paddingZero = (value: string | number) => {
