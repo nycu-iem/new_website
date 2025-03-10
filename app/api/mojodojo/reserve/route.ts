@@ -40,6 +40,12 @@ export async function POST(
             return NextResponse.json({ error: "start_time can not be gte end_time" }, { status: 422 })
         }
 
+        const now = new Date()
+        // can only reserve 2 weeks ahead
+        if (start_time.getTime() - now.getTime() > 1000 * 60 * 60 * 24 * 14) {
+            return NextResponse.json({ error: "只能提前兩週預約" }, { status: 422 })
+        }
+
         const result = await prisma.reserve.findMany({
             where: {
                 OR: [
