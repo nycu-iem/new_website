@@ -28,7 +28,6 @@ model Account {
     updatedAt                DateTime @updatedAt
     userId                   String
     user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    refresh_token_expires_in DateTime?
 
     @@unique([provider, providerAccountId])
 }

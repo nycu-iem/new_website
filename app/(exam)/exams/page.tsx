@@ -1,4 +1,5 @@
-import { auth } from "@/app/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 export const metadata = {
     title: '陽明交大 工工系學會 考古題網站 | NYCU IEMSA EXAM',
@@ -6,7 +7,7 @@ export const metadata = {
 }
 
 export default async function ExamPage() {
-    const session = await auth()
+    const session = await getServerSession(authOptions);
 
     if (!session) {
         return (

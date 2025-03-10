@@ -2,13 +2,14 @@
 import { SimpleLayout } from "components/SimpleLayout";
 import { notFound } from "next/navigation";
 import { getStudent } from "lib/api";
-import { auth } from "@/app/auth"
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 
 import ClientSide from './client'
 
 export default async function AdminPage() {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
     
     if (!session) {
         notFound();

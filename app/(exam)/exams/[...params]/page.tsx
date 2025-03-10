@@ -5,7 +5,8 @@ import React from 'react'
 import NotionPdf from "components/PdfRenderer";
 import NotionImage from "components/NotionImage";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
-import { auth } from "@/app/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 
 import type { Metadata, ResolvingMetadata } from 'next'
 
@@ -38,7 +39,7 @@ export default async function SectionPage({
     params: { params: Array<string> },
     searchParams: { [key: string]: string | string[] | undefined }
 }) {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
 
     let blocks;
     let page;
