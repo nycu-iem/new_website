@@ -1,7 +1,7 @@
 // import type { GetServerSidePropsContext, InferGetServerSidePropsType } from "next";
 import { getProviders } from "next-auth/react"
 import { getServerSession } from "next-auth/next"
-import { authOptions } from "../../api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 import Client from "./page_client";
 import ClientRedirect from "./ClientRedirect"
 

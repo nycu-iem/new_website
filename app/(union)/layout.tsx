@@ -1,5 +1,6 @@
 import { Footer } from "components/Footer"
 import { Header } from "components/Header"
+import { Suspense } from "react"
 
 export const metadata = {
     title: '陽明交大 工工系學會 | NYCU IEM SA',
@@ -20,11 +21,13 @@ export default function RootLayout({
                 </div>
             </div>
             <div className="relative">
-                <Header />
-                <main>
-                    {children}
-                </main>
-                <Footer />
+                <Suspense>
+                    <Header />
+                    <main>
+                        {children}
+                    </main>
+                    <Footer />
+                </Suspense>
             </div>
 
         </div>

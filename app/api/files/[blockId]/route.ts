@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "lib/prisma";
 import { notion } from "../../../../lib/notion";
 import { getServerSession } from "next-auth";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 
 /*  There is two places that website need to get notion files
     1. displaying the file => every logged in account
@@ -13,12 +13,13 @@ import { authOptions } from "@/app/api/auth/[...nextauth]/route";
 export async function GET(
     request: Request,
     context: {
-        params: {
+        params: Promise<{
             blockId: string
-        }
+        }>
     }
 ) {
-    const blockId = context.params.blockId
+    const p = await context.params
+    const blockId = p.blockId
 
     // use prisma to confirm whether the student paid union_fee
     const session = await getServerSession(authOptions);
