@@ -4,6 +4,7 @@ import ClientPage from './client'
 
 import { Reserve, User } from '@prisma/client'
 import { getCasaHouseReserve, getMojoDojoReserve } from '@/lib/api'
+import Link from "next/link"
 
 export default async function RoomRenting() {
     const thisMonthData = await fetchAPI();
@@ -13,8 +14,11 @@ export default async function RoomRenting() {
             title="公共空間租借"
             intro="系學會空間出借"
         >
+            <p>系窩租借規則<Link href="/articles/1557ddbd-0190-4812-990f-3062ca910643"
+                className="text-zinc-900 transition dark:text-zinc-400 hover:text-teal-300 dark:hover:text-teal-600 underline"
+            >連結！</Link></p>
             <ClientPage thisMonthData={thisMonthData} />
-        </SimpleLayout>
+        </SimpleLayout >
     )
 }
 
