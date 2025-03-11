@@ -157,16 +157,16 @@ export default function DayView({
                                     event.preventDefault();
                                     submitEditEvent();
                                 }} className="order-1">
-                                    <div className="flex flex-row bg-gray-700 w-40 rounded-md">
+                                    <div className="flex flex-row bg-gray-50 w-40 rounded-md ring mt-2 h-6 dark:bg-gray-700">
                                         <input type="text"
                                             value={updatedEventName}
                                             onChange={(event) => { setUpdatedEventName(event.target.value) }}
-                                            className="rounded-md px-2 py-0.5 bg-gray-700 outline-none w-36"
+                                            className="rounded-md px-2 py-0.5 bg-gray-50 outline-none w-36 dark:bg-gray-700"
                                         />
                                         {loading ?
                                             <p>loading...</p>
                                             :
-                                            <CheckCircleIcon className="w-6 bg-gray-700 rounded-md cursor-pointer" onClick={() => {
+                                            <CheckCircleIcon className="w-6 bg-gray-50 rounded-md cursor-pointer dark:bg-gray-700" onClick={() => {
                                                 submitEditEvent();
                                             }} />
                                         }

@@ -35,7 +35,7 @@ export default function ClientRenderedPage({ post }: { post: PostsType }) {
                         if (block.content.length === 0) return (<div key={Math.random()} />)
 
                         return (
-                            <div key={`${clsx(block.content[0].text.content)}z`} className="flex flex-row">
+                            <div key={`${clsx(block.content[0].text.content, Math.random())}z`} className="flex flex-row">
                                 <ParagraphRenderer content={block.content} className={block.className} />
                             </div>
                         )
