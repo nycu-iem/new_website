@@ -3,7 +3,7 @@ import Head from 'next/head'
 import { Card, CardTitle, CardEyebrow, CardDescription, CardCta } from 'components/Card'
 import { Section } from 'components/Section'
 import { SimpleLayout } from 'components/SimpleLayout'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 export const metadata = {
     title: '公開文件 | 陽明交大 工工系學會 | NYCU IEM SA',
@@ -32,7 +32,7 @@ function Appearance({ title, description, event, cta, href }: { title: string, d
 
 export default function Speaking() {
     return (
-        <>
+        <Suspense fallback={null}>
             <SimpleLayout
                 title="公開文件"
                 intro="資料公開是本會所秉持的信念，故所有會議記錄只要能公開的都會放在這邊"
@@ -79,6 +79,6 @@ export default function Speaking() {
                     </SpeakingSection>
                 </div>
             </SimpleLayout>
-        </>
+        </Suspense>
     )
 }

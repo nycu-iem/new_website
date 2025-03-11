@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { Header } from 'components/Header'
 import { Footer } from 'components/Footer'
 import { SimpleLayout } from '../components/SimpleLayout'
+import { Suspense } from 'react'
 
 // export default function NotFound() {
 //   return <div>
@@ -22,16 +23,18 @@ export default function NotFound() {
                 </div>
             </div>
             <div className="relative">
-                <Header />
-                <main>
-                    <SimpleLayout
-                        title="ㄨㄚˊ找不到啦"
-                        intro=''>
+                <Suspense>
+                    <Header />
+                    <main>
+                        <SimpleLayout
+                            title="ㄨㄚˊ找不到啦"
+                            intro=''>
                             如果你沒有亂打網址的話，請幫我複製網站連結並且到首頁填寫表單ㄅㄞˇㄊㄨㄛ。我程式很爛，但有ㄋㄧˇ的幫助我就能改進吧。
-                        {/* <Link href="/">回主畫面</Link> */}
-                    </SimpleLayout>
-                </main>
-                <Footer />
+                            {/* <Link href="/">回主畫面</Link> */}
+                        </SimpleLayout>
+                    </main>
+                    <Footer />
+                </Suspense>
             </div>
 
         </div>

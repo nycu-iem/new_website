@@ -1,17 +1,16 @@
-export const runtime = "edge";
-
 import { NextResponse } from "next/server";
 import { getChangeLogImageSrc } from "lib/api"
 
 export async function GET(
     request: Request,
     context: {
-        params: {
+        params: Promise<{
             blockId: string
-        }
+        }>
     }
 ) {
-    const blockId = context.params.blockId
+    const p = await context.params
+    const blockId = p.blockId
 
     const imageSrc = await getChangeLogImageSrc(blockId);
 

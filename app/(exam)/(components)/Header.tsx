@@ -15,7 +15,8 @@ import { useMobileNavigationStore } from './MobileNavigation'
 import { MobileSearch, Search } from './Search'
 import { ThemeToggle } from './ThemeToggle'
 import { FirstLayerOfPost } from '../notion_api'
-import { useSession } from 'next-auth/react'
+import { Session } from 'next-auth'
+// import { useSession } from 'next-auth/react'
 
 function TopLevelNavItem({
     href,
@@ -42,6 +43,7 @@ export const Header = forwardRef(function Header({
     setSemester,
     sectionSelected,
     setSectionSelected,
+    session,
 }: {
     sections: Array<FirstLayerOfPost>
     className?: string
@@ -49,6 +51,7 @@ export const Header = forwardRef(function Header({
     setSemester: Dispatch<SetStateAction<"first" | "second" | "summer">>,
     sectionSelected: Array<FirstLayerOfPost>,
     setSectionSelected: Dispatch<SetStateAction<Array<FirstLayerOfPost>>>,
+    session?: Session
 }, ref: React.ForwardedRef<HTMLDivElement>) {
     const { isOpen: mobileNavIsOpen } = useMobileNavigationStore()
     const isInsideMobileNavigation = useIsInsideMobileNavigation()
@@ -59,7 +62,7 @@ export const Header = forwardRef(function Header({
     const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
     const settingsRef = useRef<HTMLDivElement>(null);
 
-    const { data: session, status } = useSession()
+    // const { data: session, status } = useSession()
     
     type ExtendedSession = typeof session & {
         user: {
@@ -150,7 +153,7 @@ export const Header = forwardRef(function Header({
                                 settingsRef.current.focus();
                             }
                         }} id="nav_btn">
-                            {session.user?.name === 'anonymous' ? (session as ExtendedSession).user.student_id : session.user?.name}
+                            {session?.user?.name === 'anonymous' ? (session as ExtendedSession).user.student_id : session?.user?.name}
                         </Button> :
                         <Button href="/login">登入</Button>
                     }

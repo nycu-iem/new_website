@@ -5,21 +5,23 @@ import React from 'react'
 import NotionPdf from "components/PdfRenderer";
 import NotionImage from "components/NotionImage";
 import { LockClosedIcon } from "@heroicons/react/20/solid";
-import { auth } from "@/app/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "@/app/api/auth/[...nextauth]/auth";
 
 import type { Metadata, ResolvingMetadata } from 'next'
 
 export async function generateMetadata(
     { params, searchParams }: {
-        params: { params: Array<string> }
-        searchParams: { [key: string]: string | string[] | undefined }
+        params: Promise<{ params: Array<string> }>
+        searchParams: Promise<{ [key: string]: string | string[] | undefined }>
     },
     parent: ResolvingMetadata
 ): Promise<Metadata> {
+    const p = await params;
 
     // fetch data
     // const product = await fetch(`https://.../${id}`).then((res) => res.json())
-    const page = await notion.getPage({ pageId: params.params[0] });
+    const page = await notion.getPage({ pageId: p.params[0] });
     // optionally access and extend (rather than replace) parent metadata
     // const previousImages = (await parent).openGraph?.images || []
 
@@ -35,16 +37,18 @@ export default async function SectionPage({
     params,
     searchParams,
 }: {
-    params: { params: Array<string> },
-    searchParams: { [key: string]: string | string[] | undefined }
+    params: Promise<{ params: string[] }>,
+    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }) {
-    const session = await auth();
+    const session = await getServerSession(authOptions);
 
     let blocks;
     let page;
+
     try {
-        blocks = await getExams({ pageId: params.params[0] });
-        page = await notion.getPage({ pageId: params.params[0] });
+        const p = await params;
+        blocks = await getExams({ pageId: p.params[0] });
+        page = await notion.getPage({ pageId: p.params[0] });
         // console.log(blocks)
         if (blocks.object === 'error') {
             throw new Error("page not found")

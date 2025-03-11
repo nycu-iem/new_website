@@ -5,6 +5,7 @@ import { SimpleLayout } from 'components/SimpleLayout'
 import facebookIcon from 'public/images/logos/facebook.svg'
 import logoPlanetaria from 'public/images/logos/planetaria.svg'
 import googleFormsIcon from 'public/images/logos/google_forms.png'
+import { Suspense } from 'react'
 
 export const metadata = {
     title: '相關活動 | 陽明交大 工工系學會 | NYCU IEM SA',
@@ -57,7 +58,7 @@ function LinkIcon(props: any) {
 
 export default function Projects() {
     return (
-        <>
+        <Suspense fallback={null}>
             <SimpleLayout
                 title="相關活動"
                 intro="系上最近將舉辦的活動，以及系隊組成"
@@ -108,6 +109,6 @@ export default function Projects() {
                     ))}
                 </ul> */}
             </SimpleLayout>
-        </>
+        </Suspense>
     )
 }

@@ -8,6 +8,7 @@ import {
     InstagramIcon,
     TwitterIcon,
 } from 'components/Icon'
+import { Suspense } from 'react'
 
 export const metadata = {
     title: '系學會組成介紹 | 陽明交大 工工系學會 | NYCU IEM SA'
@@ -38,7 +39,7 @@ function MailIcon(props: any) {
 
 export default function About() {
     return (
-        <>
+        <Suspense fallback={null}>
             <Container className="mt-16 sm:mt-32">
                 <div className="grid grid-cols-1 gap-y-16 lg:grid-cols-2 lg:grid-rows-[auto_1fr] lg:gap-y-12">
                     <div className="lg:pl-20">
@@ -93,6 +94,6 @@ export default function About() {
                     </div>
                 </div>
             </Container>
-        </>
+        </Suspense>
     )
 }

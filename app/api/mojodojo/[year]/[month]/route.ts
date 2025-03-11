@@ -1,13 +1,12 @@
-export const runtime = "edge";
-
 import { NextResponse } from 'next/server'
-import { prisma } from "lib/prisma"
+import { getMojoDojoReserve } from '@/lib/api'
 
-export async function GET(request: Request, { params }: { params: { year: string, month: string } }) {
+export async function GET(request: Request, { params }: { params: Promise<{ year: string, month: string }> }) {
+    const p = await params
     try {
         const days = await getMojoDojoReserve({
-            month: params.month,
-            year: params.year
+            month: p.month,
+            year: p.year
         })
         return NextResponse.json(days)
     } catch (err) {
@@ -15,39 +14,3 @@ export async function GET(request: Request, { params }: { params: { year: string
     }
 }
 
-export const getMojoDojoReserve = async ({
-    month,
-    year,
-}: {
-    year: string,
-    month: string
-}) => {
-    const startTimeOfTheMonth = new Date(parseInt(year), parseInt(month) - 1, -1);
-    const endTimeOfTheMonth = new Date(parseInt(year), parseInt(month));
-
-    const days = await prisma.reserve.findMany({
-        where: {
-            AND: {
-                startedAt: {
-                    // gte, lte
-                    gte: startTimeOfTheMonth,
-                    lte: endTimeOfTheMonth,
-                },
-                room: { equals: 'MOJODOJO' }
-            }
-        }, select: {
-            startedAt: true,
-            endedAt: true,
-            purpose: true,
-            id:true,
-            user: {
-                select: {
-                    student_id: true,
-                    name: true,
-                }
-            }
-        }
-    })
-    console.log(days)
-    return days;
-}

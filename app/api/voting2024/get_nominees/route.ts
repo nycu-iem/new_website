@@ -1,9 +1,8 @@
-export const runtime = "edge";
-
 import { NextResponse } from "next/server";
 
 import { prisma } from "lib/prisma"
-import { auth } from "@/app/auth";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../../auth/[...nextauth]/auth";
 
 export async function GET(
     request: Request,
@@ -42,7 +41,7 @@ export async function GET(
 
         console.log("verified user")
 
-        const session = await auth()
+        const session = await getServerSession(authOptions);
         if (!session) {
             return NextResponse.json(nominees_with_year)
             // return NextResponse.json({ error: "Unauthorized" }, { status: 401 })

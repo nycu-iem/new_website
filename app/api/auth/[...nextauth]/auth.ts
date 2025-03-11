@@ -1,9 +1,10 @@
-import NextAuth from "next-auth"
+import { AuthOptions } from "next-auth"
 import { getStudent } from "@/lib/api"
-import { PrismaAdapter } from "@auth/prisma-adapter"
+import { PrismaAdapter } from "@next-auth/prisma-adapter"
+import { prisma } from "lib/prisma"
 
-export const { auth, handlers, signIn, signOut } = NextAuth({
-    debug: process.env.NODE_ENV === "development",
+export const authOptions: AuthOptions = {
+    // Configure one or more authentication providers
     providers: [
         {
             id: "nycu",
@@ -18,13 +19,11 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 },
             },
             token: {
-                async request(context: any) {
-                    console.log("context")
-                    console.log(context)
+                async request(context) {
                     // context contains useful properties to help you make the request.
                     const formData = new URLSearchParams({
                         grant_type: "authorization_code",
-                        code: context.query.code as string,
+                        code: context.params.code as string,
                         client_id: process.env.NYCU_ID as string,
                         client_secret: process.env.NYCU_SECRET as string,
                         redirect_uri: `${process.env.NEXTAUTH_URL}/api/auth/callback/nycu`,
@@ -72,7 +71,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
                 }
             },
             type: "oauth",
-            // version: "2.0",
+            version: "2.0",
             clientId: process.env.NYCU_ID,
             clientSecret: process.env.NYCU_SECRET,
             /**
@@ -80,14 +79,32 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
             */
             style: {
                 logo: "someplace",
-                // logoDark: "someplace",
+                logoDark: "someplace",
                 bg: "",
-                // bgDark: "",
+                bgDark: "",
                 text: "NYCU Oauth Signin",
-                // textDark: "NYCU Oauth Signin"
+                textDark: "NYCU Oauth Signin"
             },
             checks: [],
             allowDangerousEmailAccountLinking: true,
         }
     ],
-})
+    pages: {
+        signIn: '/login',
+        signOut: '/logout',
+        error: '/error', // Error code passed in query string as ?error=
+        // verifyRequest: '/auth/verify-request', // (used for check email message)
+        // newUser: '/auth/new-user' // New users will be directed here on first sign in (leave the property out if not of interest)
+    },
+    debug: process.env.NODE_ENV === "development",
+    useSecureCookies: process.env.NODE_ENV === "production",
+    adapter: PrismaAdapter(prisma),
+    callbacks: {
+        async session({ session, token, user }) {
+            session.user.student_id = user.student_id;
+            session.user.union_fee = user.union_fee;
+
+            return session
+        }
+    }
+}
