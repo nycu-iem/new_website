@@ -154,7 +154,7 @@ export default function TimePicker({
                                     {isVisible && (
                                         <div
                                             ref={timepickerRef}
-                                            className="shadow-datepicker no-scrollbar absolute -left-48 -mt-40 h-[262px] w-[162px] overflow-hidden overflow-y-auto rounded-md border border-stroke bg-white p-2 dark:border-dark-3 dark:bg-dark-2"
+                                            className="shadow-datepicker no-scrollbar absolute -left-48 -mt-40 h-[262px] w-[162px] dark:bg-slate-700 overflow-hidden overflow-y-auto rounded-md border border-stroke bg-white p-2 dark:border-dark-3 dark:bg-dark-2"
                                         >
                                             {times.map((time, index) => {
                                                 const timeString = `${time.hour} ${time.minute} ${time.period}`;
@@ -162,7 +162,7 @@ export default function TimePicker({
                                                 return (
                                                     <div
                                                         key={index}
-                                                        className={`z-50 time-option flex cursor-pointer justify-between gap-1 rounded-md transition ${isSelected ? "selected-time" : ""
+                                                        className={`z-50 time-option flex cursor-pointer justify-between gap-1 rounded-md transition  ${isSelected ? "selected-time" : ""
                                                             }`}
                                                         onClick={() =>
                                                             handleTimeSelection(

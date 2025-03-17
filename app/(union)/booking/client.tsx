@@ -266,7 +266,7 @@ function ReservePrompt({
         <div className='w-screen h-screen z-50 bg-opacity-20 fixed top-0 left-0 flex flex-row justify-center items-center backdrop-blur-sm'
             onClick={() => { setReserve(undefined) }}
         >
-            <div className="bg-white p-5 rounded-lg z-50 shadow-xl text-lg"
+            <div className="bg-white p-5 rounded-lg z-50 shadow-xl text-lg dark:bg-black"
                 onClick={(e) => {
                     e.stopPropagation();
                 }}>
