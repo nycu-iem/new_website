@@ -11,60 +11,67 @@ export const POST = async (request: Request) => {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    try {
-        const body = await request.json();
-        const { id } = body;
+    return NextResponse.json({
+        error: "已經結束報名了",
+        message: "Nominations are closed"
+    }, {
+        status: 400
+    })
 
-        const student = await getStudent({
-            student_id: id
-        })
+    // try {
+    //     const body = await request.json();
+    //     const { id } = body;
 
-        if (student?.student_id !== id) {
-            return NextResponse.json({
-                message: "Student Not Found"
-            }, {
-                status: 404
-            })
-        }
+    //     const student = await getStudent({
+    //         student_id: id
+    //     })
 
-        if (!student) {
-            console.log("Student Not found")
-            return NextResponse.json({
-                message: "Student Not Found"
-            })
-        }
+    //     if (student?.student_id !== id) {
+    //         return NextResponse.json({
+    //             message: "Student Not Found"
+    //         }, {
+    //             status: 404
+    //         })
+    //     }
 
-        const stu = await prisma.nominee2024.findMany({
-            where: {
-                nominee: {
-                    student_id: student.student_id
-                }
-            }
-        })
+    //     if (!student) {
+    //         console.log("Student Not found")
+    //         return NextResponse.json({
+    //             message: "Student Not Found"
+    //         })
+    //     }
 
-        console.log(stu)
+    //     const stu = await prisma.nominee2024.findMany({
+    //         where: {
+    //             nominee: {
+    //                 student_id: student.student_id
+    //             }
+    //         }
+    //     })
 
-        if (stu.length > 0) {
-            return NextResponse.json({
-                error: "Nominated"
-            }, {
-                status: 400,
-                statusText: "Nominated"
-            });
-        }
+    //     console.log(stu)
 
-        return NextResponse.json({
-            student_name: student.name,
-            student_id: student.student_id,
-            nominator: session.user.name
-        });
-    } catch (error) {
-        console.log("error")
+    //     if (stu.length > 0) {
+    //         return NextResponse.json({
+    //             error: "Nominated"
+    //         }, {
+    //             status: 400,
+    //             statusText: "Nominated"
+    //         });
+    //     }
 
-        return NextResponse.json({
-            message: "error"
-        }, {
-            status: 500
-        });
-    }
+    //     return NextResponse.json({
+    //         student_name: student.name,
+    //         student_id: student.student_id,
+    //         nominator: session.user.name
+    //     });
+    // } catch (error) {
+    //     console.log("error")
+
+    //     return NextResponse.json({
+    //         message: "error"
+    //     }, {
+    //         status: 500
+    //     });
+    // }
 }

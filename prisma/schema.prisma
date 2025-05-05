@@ -13,21 +13,21 @@ datasource db {
 }
 
 model Account {
-    id                       String   @id @default(cuid())
-    type                     String
-    provider                 String
-    providerAccountId        String
-    refresh_token            String?
-    access_token             String?
-    expires_at               Int?
-    token_type               String?
-    scope                    String?
-    id_token                 String?
-    session_state            String?
-    createdAt                DateTime @default(now())
-    updatedAt                DateTime @updatedAt
-    userId                   String
-    user                     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+    id                String   @id @default(cuid())
+    type              String
+    provider          String
+    providerAccountId String
+    refresh_token     String?
+    access_token      String?
+    expires_at        Int?
+    token_type        String?
+    scope             String?
+    id_token          String?
+    session_state     String?
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
+    userId            String
+    user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
 }
@@ -62,6 +62,10 @@ model User {
     vote2024  Vote2024[]
     nominated Nominee2024?  @relation(name: "nominated") // 被提名
     Nominee   Nominee2024[] @relation(name: "nominates") // 提名
+    Vote2025  Vote2025[]    @relation(name: "vote2025")
+
+    nominated25 Nominee2025? @relation(name: "nominated25") // 被提名
+    nominee25 Nominee2025[]   @relation(name: "nominates25") // 提名
 }
 
 // model User {
@@ -138,6 +142,34 @@ model Nominee2024 {
     userNominatedId String
 
     votes Vote2024[]
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Vote2025 {
+    id    String  @id @default(uuid())
+    valid Boolean
+
+    VotedTo       Nominee2025 @relation(fields: [nominee2024Id], references: [id])
+    nominee2024Id String
+    user          User        @relation(fields: [userId], references: [id], name: "vote2025")
+    userId        String
+
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
+model Nominee2025 {
+    id String @id @default(uuid())
+
+    nominee       User   @relation(fields: [userNomineeId], references: [id], name: "nominated25")
+    userNomineeId String @unique
+
+    nomiatedBy      User   @relation(fields: [userNominatedId], references: [id], name: "nominates25")
+    userNominatedId String
+
+    votes Vote2025[]
 
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt

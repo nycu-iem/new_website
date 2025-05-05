@@ -71,17 +71,6 @@ export async function GET(
         console.log(nominees_with_year_with_selections)
 
         return NextResponse.json(nominees_with_year_with_selections)
-        // [
-        //     {
-        //         nominatedBy:{
-        //             name: ""
-        //         },
-        //         nominee:{
-        //             name:"",
-        //             student_id: ""
-        //         }
-        //     }
-        // ]
     } catch (error) {
         return NextResponse.json({
             message: "error"
