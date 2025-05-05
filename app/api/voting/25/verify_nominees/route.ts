@@ -4,22 +4,37 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/auth";
 import { prisma } from "lib/prisma"
 
+import { z } from "zod"
+
 export const POST = async (request: Request) => {
+
+    const bodySchema = z.object({
+        id: z.string().min(1, "ID is required")
+    })
+
     const session = await getServerSession(authOptions);
-    
+
     if (!session) {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
     try {
-        const body = await request.json();
-        const { id } = body;
+        // zod validation
+        const body = bodySchema.safeParse(await request.json())
+        if (!body.success) {
+            return NextResponse.json({
+                message: body.error.issues[0].message
+            }, {
+                status: 400
+            })
+        }
+        const params = body.data
 
         const student = await getStudent({
-            student_id: id
+            student_id: params.id
         })
 
-        if (student?.student_id !== id) {
+        if (student?.student_id !== params.id) {
             return NextResponse.json({
                 message: "Student Not Found"
             }, {
