@@ -34,11 +34,21 @@ export const POST = async (request: Request) => {
             student_id: params.id
         })
 
+        console.log(student)
+
         if (student?.student_id !== params.id) {
             return NextResponse.json({
                 message: "Student Not Found"
             }, {
                 status: 404
+            })
+        }
+
+        if (student.in_department === false) {
+            return NextResponse.json({
+                message: "學生不在籍是要投什麼"
+            }, {
+                status: 400
             })
         }
 

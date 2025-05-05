@@ -4,6 +4,8 @@ import { prisma } from "lib/prisma"
 import { getServerSession } from "next-auth";
 import { authOptions } from "../../../auth/[...nextauth]/auth";
 
+import { z } from "zod"
+
 export async function GET(
     request: Request,
 ) {
@@ -98,17 +100,32 @@ export const POST = async (request: Request) => {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
+    const bodySchema = z.object({
+        nominee_id: z.string().min(1, "Nominee ID is required"),
+        nominee_name: z.string().min(1, "Nominee Name is required")
+    })
+
     try {
-        const body = await request.json();
-        const { nominee_id, nominee_name } = body;
+        const body = bodySchema.safeParse(await request.json())
+
+        if (!body.success) {
+            return NextResponse.json({
+                message: body.error.issues[0].message
+            }, {
+                status: 400
+            })
+        }
+
+        const params = body.data
 
         // verify input data in request
 
         const stu = await getStudent({
-            student_id: nominee_id
+            student_id: params.nominee_id
         })
+        
 
-        if (stu?.name !== nominee_name) {
+        if (stu?.name !== params.nominee_name) {
             return NextResponse.json({
                 message: "Student Not Found"
             }, {
@@ -116,11 +133,19 @@ export const POST = async (request: Request) => {
             })
         }
 
+        if(stu.in_department === false){
+            return NextResponse.json({
+                message: "學生不在籍是要投什麼"
+            }, {
+                status: 400
+            })
+        }
+
         // verify nominated or not
         const nominatees = await prisma.nominee2025.findMany({
             where: {
                 nominee: {
-                    id: nominee_id
+                    id: params.nominee_id
                 }
             }
         })
@@ -136,7 +161,7 @@ export const POST = async (request: Request) => {
         // nominated student might not exist in the database USER
         const student = await prisma.user.findMany({
             where: {
-                student_id: nominee_id
+                student_id: params.nominee_id
             }
         })
 
@@ -147,8 +172,8 @@ export const POST = async (request: Request) => {
             console.log("creating dummy user")
             await prisma.user.create({
                 data: {
-                    student_id: nominee_id,
-                    name: nominee_name,
+                    student_id: params.nominee_id,
+                    name: params.nominee_name,
                     union_fee: stu?.union_fee,
                     email: `${stu?.student_id}@fake.arpa`,
                 }
@@ -166,8 +191,8 @@ export const POST = async (request: Request) => {
 
         const nominatee = await prisma.user.findFirst({
             where:{
-                student_id: nominee_id,
-                name: nominee_name
+                student_id: params.nominee_id,
+                name: params.nominee_name
             }
         })
 
@@ -215,7 +240,10 @@ export const PUT = async (request: Request) => {
         return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
     }
 
-    const { id, option } = await request.json();
+    const bodySchema = z.object({
+        id: z.string().min(1, "Nominee ID is required"),
+        option: z.boolean()
+    })
 
     // option : true / false
     // id => nominee id
@@ -225,6 +253,15 @@ export const PUT = async (request: Request) => {
 
         // if greater than 2 skipped
         // get votes
+        const body = bodySchema.safeParse(await request.json())
+        if (!body.success) {
+            return NextResponse.json({
+                message: body.error.issues[0].message
+            }, {
+                status: 400
+            })
+        }
+        const params = body.data
 
         const my_votes = await prisma.vote2025.findMany({
             where: {
@@ -247,7 +284,7 @@ export const PUT = async (request: Request) => {
 
         const voteTo = await prisma.nominee2025.findUnique({
             where: {
-                id: id
+                id: params.id
             }
         })
 
@@ -261,7 +298,7 @@ export const PUT = async (request: Request) => {
 
         console.log("user and voteTo got")
 
-        if (option === true) {
+        if (params.option === true) {
             console.log("vote")
             if (my_votes.length >= 2) {
                 return NextResponse.json({
@@ -272,7 +309,7 @@ export const PUT = async (request: Request) => {
             }
 
             my_votes.forEach(async (v) => {
-                if (v.VotedTo.id === id) {
+                if (v.VotedTo.id === params.id) {
                     return NextResponse.json({
                         message: "You have voted this person"
                     }, {
@@ -306,7 +343,7 @@ export const PUT = async (request: Request) => {
         } else {
             console.log("unvote")
             my_votes.forEach(async (v) => {
-                if (v.VotedTo.id === id) {
+                if (v.VotedTo.id === params.id) {
                     await prisma.vote2025.update({
                         where: {
                             id: v.id
