@@ -35,8 +35,8 @@ export default function VotingPage() {
                     <h2 className="text-gray-700 dark:text-slate-200">投票說明</h2>
 
                     <ul className="list-disc pl-5">
-                        <li>選舉期間：即日起至 5/20 23:00 <strong>待定</strong></li>
-                        <li>正副會長公布時間：即日起至 5/21 00:00<strong>待定</strong></li>
+                        <li>選舉期間：即日起至 5/13 23:00 <strong>二</strong></li>
+                        <li>正副會長公布時間： 5/14 00:00<strong>待定</strong></li>
                         <li>每人 2 票、提名以及選舉皆於此頁面</li>
                         <li>於選舉時間結束之際皆可更改意願</li>
                         <li>提名人將顯示於頁面上</li>
