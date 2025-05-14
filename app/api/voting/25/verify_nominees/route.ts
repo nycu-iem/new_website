@@ -6,7 +6,17 @@ import { prisma } from "lib/prisma"
 
 import { z } from "zod"
 
+const votable = false;
+
 export const POST = async (request: Request) => {
+
+    if (!votable) {
+        return NextResponse.json({
+            message: "投票尚未開始"
+        }, {
+            status: 400
+        })
+    }
 
     const bodySchema = z.object({
         id: z.string().min(1, "ID is required")

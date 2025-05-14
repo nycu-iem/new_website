@@ -6,6 +6,8 @@ import { authOptions } from "../../../auth/[...nextauth]/auth";
 
 import { z } from "zod"
 
+const votable = false;
+
 export async function GET(
     request: Request,
 ) {
@@ -63,7 +65,6 @@ export async function GET(
 
         const nominees_with_year_with_selections = nominees_with_year.map(n => {
             const vote = my_votes.find(v => v.VotedTo.id === n.id)
-
             return {
                 ...n,
                 selected: !!vote
@@ -105,6 +106,14 @@ export const POST = async (request: Request) => {
         nominee_name: z.string().min(1, "Nominee Name is required")
     })
 
+    if (!votable) {
+        return NextResponse.json({
+            message: "Not votable"
+        }, {
+            status: 400
+        })
+    }
+
     try {
         const body = bodySchema.safeParse(await request.json())
 
@@ -123,7 +132,7 @@ export const POST = async (request: Request) => {
         const stu = await getStudent({
             student_id: params.nominee_id
         })
-        
+
 
         if (stu?.name !== params.nominee_name) {
             return NextResponse.json({
@@ -133,7 +142,7 @@ export const POST = async (request: Request) => {
             })
         }
 
-        if(stu.in_department === false){
+        if (stu.in_department === false) {
             return NextResponse.json({
                 message: "學生不在籍是要投什麼"
             }, {
@@ -183,20 +192,20 @@ export const POST = async (request: Request) => {
         // add nominated student to database
 
         const nominator = await prisma.user.findFirst({
-            where:{
+            where: {
                 student_id: session.user.student_id,
                 name: session.user.name
             }
         })
 
         const nominatee = await prisma.user.findFirst({
-            where:{
+            where: {
                 student_id: params.nominee_id,
                 name: params.nominee_name
             }
         })
 
-        if(nominator === null || nominatee === null){
+        if (nominator === null || nominatee === null) {
             return NextResponse.json({
                 message: "No nominator or nominatee found"
             }, {
@@ -205,7 +214,7 @@ export const POST = async (request: Request) => {
         }
 
         console.log("creating the nominee")
-        
+
         await prisma.nominee2025.create({
             data: {
                 nomiatedBy: {
@@ -244,6 +253,14 @@ export const PUT = async (request: Request) => {
         id: z.string().min(1, "Nominee ID is required"),
         option: z.boolean()
     })
+
+    if (!votable) {
+        return NextResponse.json({
+            message: "Not votable"
+        }, {
+            status: 400
+        })
+    }
 
     // option : true / false
     // id => nominee id

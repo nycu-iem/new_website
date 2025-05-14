@@ -53,7 +53,7 @@ export default function VotingPage() {
                 }
             </section>
             <section className="flex flex-col space-y-2 items-center px-5">
-                {loading && <LoadingCircle size="xl"/>}
+                {loading && <LoadingCircle size="xl" />}
                 {nominees.map((nominee: any) => (<NominatedCard
                     key={nominee.id}
                     selected={nominee.selected}
@@ -62,18 +62,6 @@ export default function VotingPage() {
                     nominator={`${nominee.nominatedBy.name} (${nominee.nominatedBy.year})`}
                     id={nominee.id}
                 />))}
-                {/* <NominatedCard
-                    selected={false}
-                    selectable={status === "authenticated"}
-                    nominee="A (12)"
-                    nominator="B (14)"
-                />
-                <NominatedCard
-                    selected={true}
-                    selectable={status === "authenticated"}
-                    nominee="A (15)"
-                    nominator="B (12)"
-                /> */}
             </section>
             {status === "authenticated" &&
                 <section className="flex flex-col space-y-3 items-center px-5">
